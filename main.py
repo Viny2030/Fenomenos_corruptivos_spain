@@ -1,126 +1,267 @@
+import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 import os
-import logging
 import time
-import analisis  # <--- Importamos el otro script
+import random
+import analisis
 
-# --- CONFIGURACIÓN ---
-DATA_DIR = "/app/data"
+# ===============================
+# CONFIGURACIÓN UI
+# ===============================
+st.set_page_config(page_title="Gran Corrupción - Monitor Teórico", layout="wide")
+
+if os.path.exists("/app"):
+    DATA_DIR = "/app/data"
+else:
+    DATA_DIR = os.path.join(os.getcwd(), "data")
 os.makedirs(DATA_DIR, exist_ok=True)
-
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
-# Definimos las secciones que queremos scrapear
-SECCIONES_INTERES = ["primera", "tercera"]
-FECHA_OBJETIVO = datetime.now().strftime("%Y%m%d")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Language": "es-ES,es;q=0.9",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "es-419,es;q=0.9",
+    "Connection": "keep-alive",
 }
 
-KEYWORDS_TEORIA = [
-    "tarifas", "concesión", "privatización", "subsidio",
-    "deuda pública", "fideicomiso", "ajuste", "jubilaciones",
-    "impuesto", "exención", "obra pública", "licitación",
-    "redeterminación de precios", "compra directa", "adjudicación"
-]
+# ===============================
+# CLASIFICACIÓN BASADA EN PAPER
+# ===============================
+TIPO_DECISION_ESTATAL = {
+    "Privatización / Concesión": [
+        "concesión",
+        "privatización",
+        "venta de pliegos",
+        "adjudicación",
+        "licitación pública nacional e internacional",
+    ],
+    "Obra Pública / Contratos": [
+        "obra pública",
+        "redeterminación de precios",
+        "contratación directa",
+        "ajuste de contrato",
+        "continuidad de obra",
+    ],
+    "Tarifas Servicios Públicos": [
+        "cuadro tarifario",
+        "aumento de tarifa",
+        "revisión tarifaria",
+        "ente regulador",
+        "precio mayorista",
+        "peaje",
+    ],
+    "Compensación por Devaluación": [
+        "compensación cambiaria",
+        "diferencia de cambio",
+        "bono fiscal",
+        "subsidio extraordinario",
+    ],
+    "Servicios Privados (Salud/Educación)": [
+        "medicina prepaga",
+        "cuota colegio",
+        "arancel educativo",
+        "superintendencia de servicios de salud",
+        "autorízase aumento",
+    ],
+    "Jubilaciones / Pensiones": [
+        "movilidad jubilatoria",
+        "haber mínimo",
+        "anses",
+        "índice de actualización",
+        "bono previsional",
+    ],
+    "Traslado Impositivo": [
+        "traslado a precios",
+        "incidencia impositiva",
+        "impuesto al consumo",
+        "tasas y contribuciones",
+    ],
+}
 
 
+def clasificar_decision_estatal(texto: str) -> str:
+    texto = texto.lower()
+    for tipo, palabras in TIPO_DECISION_ESTATAL.items():
+        if any(p in texto for p in palabras):
+            return tipo
+    return "No identificado"
+
+
+# ===============================
+# SCRAPING
+# ===============================
 def obtener_boletin(url):
-    logging.info(f"Conectando con BORA: {url}")
     try:
         response = requests.get(url, headers=HEADERS, timeout=20)
-        response.raise_for_status()
-        return response.text
-    except Exception as e:
-        logging.error(f"Error de conexión: {e}")
+        return response.text if response.status_code == 200 else None
+    except:
         return None
 
 
-def parsear_normas(html, seccion_nombre):
-    # Guardamos debug específico por sección
-    debug_path = os.path.join(DATA_DIR, f"debug_page_{seccion_nombre}.html")
-    with open(debug_path, "w", encoding="utf-8") as f:
-        f.write(html)
-    logging.info(f"🔍 HTML de '{seccion_nombre}' guardado en {debug_path}")
-
+def parsear_normas(html, seccion_nombre, fecha_target):
     soup = BeautifulSoup(html, "html.parser")
-    normas_list = []
-
-    links = soup.find_all("a", href=True)
-    logging.info(f"   -> Se encontraron {len(links)} enlaces en {seccion_nombre}.")
-
-    for link in links:
+    normas = []
+    for link in soup.find_all("a", href=True):
         href = link.get("href", "")
-        # Filtramos por tipos de enlaces comunes en 1ra y 3ra sección
-        if "DetalleNorma" in href or "detalleAviso" in href:
-            try:
-                detalle = link.get_text(strip=True)
-                full_link = (
-                    f"https://www.boletinoficial.gob.ar{href}"
-                    if href.startswith("/")
-                    else href
-                )
-                posible_fenomeno = any(kw in detalle.lower() for kw in KEYWORDS_TEORIA)
-
-                normas_list.append(
+        if any(x in href for x in ["DetalleNorma", "idNorma", "detalleAviso"]):
+            detalle = link.get_text(strip=True)
+            if len(detalle) > 15:
+                tipo = clasificar_decision_estatal(detalle)
+                normas.append(
                     {
-                        "Fecha": FECHA_OBJETIVO,
-                        "Seccion": seccion_nombre,
-                        "Organismo": "Ver Detalle",
-                        "Detalle": detalle,
-                        "Link": full_link,
-                        "Alerta": posible_fenomeno,
+                        "fecha": fecha_target,
+                        "seccion": seccion_nombre,
+                        "detalle": detalle,
+                        "link": f"https://www.boletinoficial.gob.ar{href}"
+                        if not href.startswith("http")
+                        else href,
+                        "tipo_decision": tipo,
                     }
                 )
-            except:
-                continue
-
-    return normas_list
+    return normas
 
 
-if __name__ == "__main__":
-    datos_totales = []
+def generar_datos_prueba():
+    ejemplos = [
+        (
+            "Resolución 45/2026: Autorízase nuevo cuadro tarifario de Edenor",
+            "Tarifas Servicios Públicos",
+        ),
+        (
+            "Decreto 102/2026: Modificación fórmula de movilidad jubilatoria",
+            "Jubilaciones / Pensiones",
+        ),
+        (
+            "Disposición 99: Redeterminación de precios obra Ruta 5",
+            "Obra Pública / Contratos",
+        ),
+        ("Aviso: Venta de pliegos concesión Hidrovía", "Privatización / Concesión"),
+        (
+            "Resolución: Aumento autorizado cuotas medicina prepaga Marzo",
+            "Servicios Privados (Salud/Educación)",
+        ),
+        (
+            "Decreto: Compensación a distribuidoras por devaluación",
+            "Compensación por Devaluación",
+        ),
+    ]
+    datos = []
+    for _ in range(15):
+        texto, tipo = random.choice(ejemplos)
+        datos.append(
+            {
+                "fecha": datetime.now().strftime("%Y%m%d"),
+                "seccion": "Simulación Teórica",
+                "detalle": texto,
+                "link": "#",
+                "tipo_decision": tipo,
+            }
+        )
+    return datos
 
-    # --- BUCLE PRINCIPAL POR SECCIONES ---
-    for seccion in SECCIONES_INTERES:
-        url_seccion = f"https://www.boletinoficial.gob.ar/seccion/{seccion}/{FECHA_OBJETIVO}"
 
-        html = obtener_boletin(url_seccion)
+# ===============================
+# INTERFAZ STREAMLIT
+# ===============================
+st.title("⚖️ Gran Corrupción: Teoría de Fenómenos Corruptivos")
+st.markdown("""
+> *"No son actos de corrupción ilegales, sino fenómenos de distribución de ingresos basados en decisiones discrecionales legales."*
+""")
 
-        if html:
-            nuevos_datos = parsear_normas(html, seccion)
-            datos_totales.extend(nuevos_datos)
-            logging.info(f"   -> Extraídos {len(nuevos_datos)} registros de {seccion}.")
-        else:
-            logging.error(f"Fallo al obtener sección: {seccion}")
+col1, col2 = st.columns([3, 1])
+fecha_analisis = col1.date_input("Fecha de Análisis", datetime.now())
 
-        # Pausa de cortesía entre secciones
-        time.sleep(2)
+if col2.button("Ejecutar Análisis"):
+    fecha_str = fecha_analisis.strftime("%Y%m%d")
+    registros = []
 
-    # --- GUARDADO Y ANÁLISIS ---
-    if datos_totales:
-        df = pd.DataFrame(datos_totales)
-        filename = f"bora_{FECHA_OBJETIVO}.csv"
-        filepath = os.path.join(DATA_DIR, filename)
+    with st.spinner("Analizando decisiones estatales..."):
+        urls = [
+            (
+                "primera",
+                f"https://www.boletinoficial.gob.ar/seccion/primera/{fecha_str}",
+            ),
+            (
+                "tercera",
+                f"https://www.boletinoficial.gob.ar/seccion/tercera/{fecha_str}",
+            ),
+        ]
 
-        # Guardamos utf-8-sig para que Excel abra bien los acentos
-        df.to_csv(filepath, index=False, encoding="utf-8-sig")
+        progress = st.progress(0)
+        for i, (sec, url) in enumerate(urls):
+            html = obtener_boletin(url)
+            if html:
+                registros.extend(parsear_normas(html, sec, fecha_str))
+            progress.progress((i + 1) / len(urls))
+            time.sleep(1)
 
-        logging.info(f"✅ CSV TOTAL generado correctamente con {len(df)} filas: {filepath}")
+    if not registros:
+        st.warning(
+            "No se detectaron normas hoy (o bloqueo activo). Usando simulación basada en el Paper."
+        )
+        registros = generar_datos_prueba()
 
-        # --- EL PUENTE MÁGICO ---
-        logging.info("🚀 Ejecutando análisis automático...")
-        try:
-            analisis.analizar_boletin()
-        except Exception as e:
-            logging.error(f"Error durante el análisis: {e}")
-    else:
-        logging.warning("⚠️ No se encontraron datos en ninguna sección.")
+    df_raw = pd.DataFrame(registros)
+    df_procesado, path_excel, df_glosario = analisis.analizar_boletin(df_raw)
+
+    df_teoria = df_procesado[df_procesado["tipo_decision"] != "No identificado"]
+
+    # VISUALIZACIÓN
+    st.divider()
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Fenómenos Detectados", len(df_teoria))
+    promedio = int(df_teoria["indice_total"].mean()) if not df_teoria.empty else 0
+    m2.metric("Certeza Teórica Promedio", f"{promedio}%")
+    m3.metric("Legalidad", "100% (Estado de Derecho)")
+
+    st.subheader("🔁 Matriz de Transferencia de Ingresos")
+    st.info(
+        "Muestra quién financia (Origen) y quién recibe la renta (Destino) según la decisión."
+    )
+
+    if not df_teoria.empty:
+        st.dataframe(
+            df_teoria[
+                ["tipo_decision", "origen", "destino", "mecanismo"]
+            ].drop_duplicates(),
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    if not df_teoria.empty:
+        st.subheader("Distribución de la Renta Discrecional")
+        st.bar_chart(df_teoria["destino"].value_counts())
+
+    with st.expander("Ver detalle normativo y desglose de cálculo", expanded=True):
+        cols_mostrar = [
+            "fecha",
+            "tipo_decision",
+            "indice_total",
+            "elaboracion_indice",
+            "detalle",
+        ]
+        cols_validas = [c for c in cols_mostrar if c in df_procesado.columns]
+        st.dataframe(df_procesado[cols_validas])
+
+    # GLOSARIO CON REFERENCIA AL FINAL
+    with st.expander("📖 Ver Glosario y Definiciones de Columnas"):
+        st.markdown("**Definiciones basadas en el Marco Teórico**")
+        st.table(df_glosario)
+
+        st.markdown("---")
+        st.markdown("#### Referencia Académica")
+        st.markdown("""
+        **Fuente:** Monteverde, V. H. (2021). *Great corruption: theory of corrupt phenomena*. Journal of Financial Crime.
+
+        🔗 [Leer artículo completo en Emerald Insight](https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext)
+        """)
+
+    with open(path_excel, "rb") as f:
+        st.download_button(
+            label="📥 Descargar Reporte Completo (Excel)",
+            data=f,
+            file_name=f"GC_Reporte_{fecha_str}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )

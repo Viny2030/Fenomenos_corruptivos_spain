@@ -3,3 +3,6 @@ services:
     build: .
     volumes:
       - .:/app
+    ports:
+      - "8501:8501"
+    command: streamlit run main.py --server.address=0.0.0.0

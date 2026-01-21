@@ -1,96 +1,202 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
 from datetime import datetime
 
-# --- CONFIGURACIÓN ---
-# Busca automáticamente el archivo del día (o cambia el nombre si quieres analizar otro)
-FECHA_HOY = datetime.now().strftime('%Y%m%d')
-ARCHIVO_CSV = f"data/bora_{FECHA_HOY}.csv"  # Ruta donde lo guarda Docker
-# Si lo corres en Windows directo sin Docker, la ruta sería:
-# ARCHIVO_CSV = f"bora_{FECHA_HOY}.csv"
+# ===============================
+# CONFIGURACIÓN DE ENTORNO
+# ===============================
+if os.path.exists("/app"):
+    DATA_DIR = "/app/data"
+else:
+    DATA_DIR = os.path.join(os.getcwd(), "data")
 
-# --- CATEGORIZACIÓN TEÓRICA ---
-# Diccionario para clasificar el tipo de fenómeno corruptivo
-MECANISMOS_TEORIA = {
-    'Tarifas/Precios': ['tarifas', 'cuadro tarifario', 'aumento', 'precio', 'ajuste'],
-    'Privatizaciones/Concesiones': ['concesión', 'privatización', 'prórroga', 'licitación'],
-    'Deuda/Fideicomisos': ['deuda', 'fideicomiso', 'letras', 'bonos', 'emisión'],
-    'Subsidios/Exenciones': ['subsidio', 'exención', 'beneficio fiscal', 'condonación'],
-    'Obra Pública': ['obra pública', 'redeterminación', 'contratación directa']
+# ===============================
+# MATRIZ DE TRANSFERENCIAS (TEORÍA)
+# ===============================
+MATRIZ_TEORICA = {
+    "Privatización / Concesión": {
+        "origen": "Patrimonio Estatal",
+        "destino": "Empresas Privadas (Rent Seeking)",
+        "mecanismo": "Subvaluación de activos o canon bajo",
+        "certeza_nivel": "Alta",
+        "puntos_certeza": 30,
+    },
+    "Obra Pública / Contratos": {
+        "origen": "Contribuyentes (Impuestos Futuros)",
+        "destino": "Empresas Contratistas",
+        "mecanismo": "Sobreprecios o continuación ineficiente",
+        "certeza_nivel": "Media-Alta",
+        "puntos_certeza": 25,
+    },
+    "Tarifas Servicios Públicos": {
+        "origen": "Usuarios / Población",
+        "destino": "Empresas Concesionarias",
+        "mecanismo": "Aumento de tarifa o subsidio cruzado",
+        "certeza_nivel": "Muy Alta",
+        "puntos_certeza": 40,
+    },
+    "Compensación por Devaluación": {
+        "origen": "Tesoro Nacional (Población)",
+        "destino": "Empresas Endeudadas",
+        "mecanismo": "Licuación de pasivos privados",
+        "certeza_nivel": "Alta",
+        "puntos_certeza": 30,
+    },
+    "Servicios Privados (Salud/Educación)": {
+        "origen": "Salario de los Trabajadores",
+        "destino": "Empresas de Salud/Educación",
+        "mecanismo": "Autorización de aumento por encima de inflación",
+        "certeza_nivel": "Alta",
+        "puntos_certeza": 30,
+    },
+    "Jubilaciones / Pensiones": {
+        "origen": "Jubilados (Ingreso Diferido)",
+        "destino": "Estado (Tesoro)",
+        "mecanismo": "Fórmula de movilidad a la baja / Inflación",
+        "certeza_nivel": "Muy Alta",
+        "puntos_certeza": 40,
+    },
+    "Traslado Impositivo": {
+        "origen": "Consumidor Final",
+        "destino": "Estado / Empresas",
+        "mecanismo": "Traslado de carga fiscal (Doble imposición)",
+        "certeza_nivel": "Muy Alta",
+        "puntos_certeza": 40,
+    },
 }
 
-def clasificar_fenomeno(texto):
-    """Etiqueta la norma según qué mecanismo de transferencia utiliza."""
-    texto = str(texto).lower()
-    etiquetas = []
-    for categoria, palabras in MECANISMOS_TEORIA.items():
-        if any(p in texto for p in palabras):
-            etiquetas.append(categoria)
 
-    return ", ".join(etiquetas) if etiquetas else "Otros/General"
+def aplicar_matriz_teorica(tipo_decision):
+    return MATRIZ_TEORICA.get(
+        tipo_decision,
+        {
+            "origen": "Indeterminado",
+            "destino": "Indeterminado",
+            "mecanismo": "No detectado",
+            "certeza_nivel": "Nula",
+            "puntos_certeza": 0,
+        },
+    )
 
-def analizar_boletin():
-    print(f"📂 Cargando archivo: {ARCHIVO_CSV}...")
 
-    if not os.path.exists(ARCHIVO_CSV):
-        print("❌ Error: No se encuentra el archivo CSV. Asegúrate de haber corrido el scraper primero.")
-        return
+def desglosar_indice(row):
+    if row["tipo_decision"] == "No identificado":
+        return pd.Series(
+            {
+                "idx_legalidad": 0,
+                "idx_discrecionalidad": 0,
+                "idx_certeza": 0,
+                "indice_total": 0,
+                "elaboracion_indice": "No aplica",
+            }
+        )
 
-    df = pd.read_csv(ARCHIVO_CSV)
+    p_legal = 30
+    p_discrecional = 30
+    datos_teoricos = MATRIZ_TEORICA.get(row["tipo_decision"])
+    p_certeza = datos_teoricos["puntos_certeza"] if datos_teoricos else 0
+    certeza_txt = datos_teoricos["certeza_nivel"] if datos_teoricos else "Nula"
 
-    # 1. FILTRADO: Nos quedamos solo con las filas que dieron "Alerta: True"
-    df_sospechosos = df[df['Alerta'] == True].copy()
+    total = p_legal + p_discrecional + p_certeza
+    explicacion = f"Legal({p_legal}) + Discrec({p_discrecional}) + Certeza {certeza_txt}({p_certeza}) = {total}%"
 
-    if df_sospechosos.empty:
-        print("✅ Buenas noticias: No se detectaron fenómenos corruptivos hoy (según las keywords).")
-        return
+    return pd.Series(
+        {
+            "idx_legalidad": p_legal,
+            "idx_discrecionalidad": p_discrecional,
+            "idx_certeza": p_certeza,
+            "indice_total": total,
+            "elaboracion_indice": explicacion,
+        }
+    )
 
-    # 2. PROCESAMIENTO: Aplicamos la clasificación teórica
-    print(f"🚨 Analizando {len(df_sospechosos)} normas sospechosas...")
-    df_sospechosos['Tipo_Fenomeno'] = df_sospechosos['Detalle'].apply(clasificar_fenomeno)
 
-    # 3. ESTADÍSTICAS
-    top_organismos = df_sospechosos['Organismo'].value_counts().head(5)
-    top_mecanismos = df_sospechosos['Tipo_Fenomeno'].value_counts()
+# ===============================
+# PROCESAMIENTO PRINCIPAL
+# ===============================
 
-    # 4. REPORTE EN CONSOLA
-    print("\n" + "="*50)
-    print(f"📊 REPORTE DE FENÓMENOS CORRUPTIVOS - {FECHA_HOY}")
-    print("="*50)
 
-    print("\n🏆 Top 5 Organismos que más publicaron normas de alerta:")
-    print(top_organismos)
+def analizar_boletin(df):
+    # 1. Aplicar lógica
+    detalles = df["tipo_decision"].apply(aplicar_matriz_teorica)
+    df_detalles = pd.json_normalize(detalles)
+    df = pd.concat(
+        [df.reset_index(drop=True), df_detalles.reset_index(drop=True)], axis=1
+    )
 
-    print("\n⚙️ Mecanismos de Transferencia Detectados:")
-    print(top_mecanismos)
+    desglose = df.apply(desglosar_indice, axis=1)
+    df = pd.concat([df, desglose], axis=1)
 
-    print("\n👁️ Muestra de casos detectados:")
-    pd.set_option('display.max_colwidth', 100)
-    print(df_sospechosos[['Organismo', 'Tipo_Fenomeno', 'Detalle']].head(5))
+    # 2. Glosario con Referencias Académicas (ACTUALIZADO CON DETALLE DE DECISIONES)
+    glosario_data = [
+        {
+            "Columna": "fecha",
+            "Descripción": "Fecha de publicación del Boletín Oficial analizado.",
+        },
+        {
+            "Columna": "seccion",
+            "Descripción": "Sección del BORA (1ra = Legislación, 3ra = Contrataciones).",
+        },
+        {
+            "Columna": "tipo_decision",
+            "Descripción": "Clasificación teórica según las 7 decisiones de 'Great Corruption': 1. Privatización/Concesión, 2. Obra Pública, 3. Tarifas, 4. Devaluación, 5. Servicios Privados, 6. Jubilaciones, 7. Traslado Impositivo.",
+        },
+        {
+            "Columna": "indice_total",
+            "Descripción": "Intensidad del fenómeno (0-100%). Suma de Legalidad + Discrecionalidad + Certeza.",
+        },
+        {
+            "Columna": "elaboracion_indice",
+            "Descripción": "Fórmula desglosada del cálculo del índice. Ver artículo: https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext",
+        },
+        {
+            "Columna": "origen",
+            "Descripción": "Sector que financia o pierde ingresos en la transferencia (Víctima económica).",
+        },
+        {
+            "Columna": "destino",
+            "Descripción": "Sector que recibe la renta o beneficio (Beneficiario / Rent Seeking).",
+        },
+        {
+            "Columna": "mecanismo",
+            "Descripción": "Herramienta técnica/legal usada para la transferencia (ej. Subsidio, Tarifa).",
+        },
+        {
+            "Columna": "detalle",
+            "Descripción": "Resumen extraído de la norma en el Boletín Oficial.",
+        },
+        {"Columna": "link", "Descripción": "Enlace a la fuente oficial."},
+    ]
+    df_glosario = pd.DataFrame(glosario_data)
 
-    # 5. GUARDAR RESULTADO PROCESADO
-    output_file = f"data/reporte_procesado_{FECHA_HOY}.xlsx"
-    try:
-        df_sospechosos.to_excel(output_file, index=False)
-        print(f"\n💾 Reporte detallado guardado en Excel: {output_file}")
-    except:
-        # Si falla Excel (por falta de librería openpyxl), guardar CSV
-        output_file = f"data/reporte_procesado_{FECHA_HOY}.csv"
-        df_sospechosos.to_csv(output_file, index=False)
-        print(f"\n💾 Reporte detallado guardado en CSV: {output_file}")
+    # 3. Guardar Excel con Múltiples Hojas
+    columnas_ordenadas = [
+        "fecha",
+        "seccion",
+        "tipo_decision",
+        "indice_total",
+        "elaboracion_indice",
+        "origen",
+        "destino",
+        "mecanismo",
+        "detalle",
+        "link",
+    ]
+    cols_final = [c for c in columnas_ordenadas if c in df.columns]
+    df_final = df[cols_final]
 
-    # 6. GRÁFICO (Opcional)
-    try:
-        plt.figure(figsize=(10, 6))
-        top_mecanismos.plot(kind='barh', color='darkred')
-        plt.title(f'Fenómenos Corruptivos por Tipo ({FECHA_HOY})')
-        plt.xlabel('Cantidad de Normas')
-        plt.tight_layout()
-        plt.savefig(f"data/grafico_{FECHA_HOY}.png")
-        print("📈 Gráfico generado.")
-    except Exception as e:
-        print(f"No se pudo generar gráfico: {e}")
+    fecha = datetime.now().strftime("%Y%m%d")
+    output_path = os.path.join(DATA_DIR, f"reporte_fenomenos_{fecha}.xlsx")
 
-if __name__ == "__main__":
-    analizar_boletin()
+    with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
+        df_final.to_excel(writer, index=False, sheet_name="Analisis")
+        ws_analisis = writer.sheets["Analisis"]
+        ws_analisis.column_dimensions["E"].width = 45
+        ws_analisis.column_dimensions["I"].width = 60
+
+        df_glosario.to_excel(writer, index=False, sheet_name="Glosario")
+        ws_glosario = writer.sheets["Glosario"]
+        ws_glosario.column_dimensions["A"].width = 25
+        ws_glosario.column_dimensions['B'].width = 120 # Más ancho para que entren las definiciones largas
+
+    return df, output_path, df_glosario
