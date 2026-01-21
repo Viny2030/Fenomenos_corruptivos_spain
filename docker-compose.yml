@@ -1,0 +1,5 @@
+services:
+  analisis:
+    build: .
+    volumes:
+      - .:/app
