@@ -1,8 +1,4 @@
-
-requests
-beautifulsoup4
+streamlit
 pandas
 matplotlib
-streamlit
 openpyxl
-pytest

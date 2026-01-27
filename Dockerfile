@@ -1,14 +1,21 @@
-FROM python:3.9-slim
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-# Copiamos el archivo de requerimientos primero
-COPY requirements.txt .
+# Requerimientos del sistema para pandas y manejo de datos
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalamos las librerías DENTRO de la imagen
+# Copiar e instalar dependencias
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiamos el resto del código
+# Copiar el proyecto
 COPY . .
 
-CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Comando por defecto para iniciar el Dashboard
+CMD ["streamlit", "run", "dashboard.py", "--server.address=0.0.0.0"]

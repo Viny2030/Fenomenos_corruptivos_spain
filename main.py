@@ -1,267 +1,159 @@
 import streamlit as st
-import requests
-from bs4 import BeautifulSoup
 import pandas as pd
-from datetime import datetime
+import matplotlib.pyplot as plt
 import os
-import time
-import random
-import analisis
+from datetime import datetime
+import analisis  # Importa tu motor de lógica ajustado a la teoría
 
 # ===============================
 # CONFIGURACIÓN UI
 # ===============================
-st.set_page_config(page_title="Gran Corrupción - Monitor Teórico", layout="wide")
+st.set_page_config(page_title="Monitor de Gran Corrupción", layout="wide")
 
-if os.path.exists("/app"):
-    DATA_DIR = "/app/data"
-else:
-    DATA_DIR = os.path.join(os.getcwd(), "data")
-os.makedirs(DATA_DIR, exist_ok=True)
-
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "es-419,es;q=0.9",
-    "Connection": "keep-alive",
-}
+DATA_DIR = "/app/data" if os.path.exists("/app/data") else "data"
 
 # ===============================
-# CLASIFICACIÓN BASADA EN PAPER
+# HEADER
 # ===============================
-TIPO_DECISION_ESTATAL = {
-    "Privatización / Concesión": [
-        "concesión",
-        "privatización",
-        "venta de pliegos",
-        "adjudicación",
-        "licitación pública nacional e internacional",
-    ],
-    "Obra Pública / Contratos": [
-        "obra pública",
-        "redeterminación de precios",
-        "contratación directa",
-        "ajuste de contrato",
-        "continuidad de obra",
-    ],
-    "Tarifas Servicios Públicos": [
-        "cuadro tarifario",
-        "aumento de tarifa",
-        "revisión tarifaria",
-        "ente regulador",
-        "precio mayorista",
-        "peaje",
-    ],
-    "Compensación por Devaluación": [
-        "compensación cambiaria",
-        "diferencia de cambio",
-        "bono fiscal",
-        "subsidio extraordinario",
-    ],
-    "Servicios Privados (Salud/Educación)": [
-        "medicina prepaga",
-        "cuota colegio",
-        "arancel educativo",
-        "superintendencia de servicios de salud",
-        "autorízase aumento",
-    ],
-    "Jubilaciones / Pensiones": [
-        "movilidad jubilatoria",
-        "haber mínimo",
-        "anses",
-        "índice de actualización",
-        "bono previsional",
-    ],
-    "Traslado Impositivo": [
-        "traslado a precios",
-        "incidencia impositiva",
-        "impuesto al consumo",
-        "tasas y contribuciones",
-    ],
-}
+st.title("⚖️ Fenómenos Corruptivos Legales")
+st.subheader("Implementación computacional de *The Great Corruption*")
 
-
-def clasificar_decision_estatal(texto: str) -> str:
-    texto = texto.lower()
-    for tipo, palabras in TIPO_DECISION_ESTATAL.items():
-        if any(p in texto for p in palabras):
-            return tipo
-    return "No identificado"
-
-
-# ===============================
-# SCRAPING
-# ===============================
-def obtener_boletin(url):
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=20)
-        return response.text if response.status_code == 200 else None
-    except:
-        return None
-
-
-def parsear_normas(html, seccion_nombre, fecha_target):
-    soup = BeautifulSoup(html, "html.parser")
-    normas = []
-    for link in soup.find_all("a", href=True):
-        href = link.get("href", "")
-        if any(x in href for x in ["DetalleNorma", "idNorma", "detalleAviso"]):
-            detalle = link.get_text(strip=True)
-            if len(detalle) > 15:
-                tipo = clasificar_decision_estatal(detalle)
-                normas.append(
-                    {
-                        "fecha": fecha_target,
-                        "seccion": seccion_nombre,
-                        "detalle": detalle,
-                        "link": f"https://www.boletinoficial.gob.ar{href}"
-                        if not href.startswith("http")
-                        else href,
-                        "tipo_decision": tipo,
-                    }
-                )
-    return normas
-
-
-def generar_datos_prueba():
-    ejemplos = [
-        (
-            "Resolución 45/2026: Autorízase nuevo cuadro tarifario de Edenor",
-            "Tarifas Servicios Públicos",
-        ),
-        (
-            "Decreto 102/2026: Modificación fórmula de movilidad jubilatoria",
-            "Jubilaciones / Pensiones",
-        ),
-        (
-            "Disposición 99: Redeterminación de precios obra Ruta 5",
-            "Obra Pública / Contratos",
-        ),
-        ("Aviso: Venta de pliegos concesión Hidrovía", "Privatización / Concesión"),
-        (
-            "Resolución: Aumento autorizado cuotas medicina prepaga Marzo",
-            "Servicios Privados (Salud/Educación)",
-        ),
-        (
-            "Decreto: Compensación a distribuidoras por devaluación",
-            "Compensación por Devaluación",
-        ),
-    ]
-    datos = []
-    for _ in range(15):
-        texto, tipo = random.choice(ejemplos)
-        datos.append(
-            {
-                "fecha": datetime.now().strftime("%Y%m%d"),
-                "seccion": "Simulación Teórica",
-                "detalle": texto,
-                "link": "#",
-                "tipo_decision": tipo,
-            }
-        )
-    return datos
-
-
-# ===============================
-# INTERFAZ STREAMLIT
-# ===============================
-st.title("⚖️ Gran Corrupción: Teoría de Fenómenos Corruptivos")
-st.markdown("""
-> *"No son actos de corrupción ilegales, sino fenómenos de distribución de ingresos basados en decisiones discrecionales legales."*
+st.markdown(f"""
+Este sistema analiza **decisiones estatales legales** que, según la teoría económica del 
+**Ph.D. Vicente Humberto Monteverde**, pueden generar **transferencias regresivas de ingresos**. 
+No detecta delitos penales, sino la intensidad de fenómenos discrecionales.
 """)
 
-col1, col2 = st.columns([3, 1])
-fecha_analisis = col1.date_input("Fecha de Análisis", datetime.now())
+# ===============================
+# CARGA DE DATOS
+# ===============================
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
 
-if col2.button("Ejecutar Análisis"):
-    fecha_str = fecha_analisis.strftime("%Y%m%d")
-    registros = []
+ARCHIVOS = [
+    f for f in os.listdir(DATA_DIR) if f.endswith(".xlsx") or f.endswith(".csv")
+]
 
-    with st.spinner("Analizando decisiones estatales..."):
-        urls = [
-            (
-                "primera",
-                f"https://www.boletinoficial.gob.ar/seccion/primera/{fecha_str}",
-            ),
-            (
-                "tercera",
-                f"https://www.boletinoficial.gob.ar/seccion/tercera/{fecha_str}",
-            ),
-        ]
+if not ARCHIVOS:
+    st.error(f"No se encontraron reportes en la carpeta: {DATA_DIR}")
+    st.stop()
 
-        progress = st.progress(0)
-        for i, (sec, url) in enumerate(urls):
-            html = obtener_boletin(url)
-            if html:
-                registros.extend(parsear_normas(html, sec, fecha_str))
-            progress.progress((i + 1) / len(urls))
-            time.sleep(1)
+archivo_selec = st.selectbox(
+    "Seleccioná el reporte a analizar:", sorted(ARCHIVOS, reverse=True)
+)
+ruta_completa = os.path.join(DATA_DIR, archivo_selec)
 
-    if not registros:
-        st.warning(
-            "No se detectaron normas hoy (o bloqueo activo). Usando simulación basada en el Paper."
-        )
-        registros = generar_datos_prueba()
+try:
+    df = (
+        pd.read_excel(ruta_completa)
+        if archivo_selec.endswith(".xlsx")
+        else pd.read_csv(ruta_completa)
+    )
+except Exception as e:
+    st.error(f"Error al leer el archivo: {e}")
+    st.stop()
 
-    df_raw = pd.DataFrame(registros)
-    df_procesado, path_excel, df_glosario = analisis.analizar_boletin(df_raw)
+# ===============================
+# MÉTRICAS Y GRÁFICOS
+# ===============================
+df_teoria = df[df["tipo_decision"] != "No identificado"]
 
-    df_teoria = df_procesado[df_procesado["tipo_decision"] != "No identificado"]
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("Normas Analizadas", len(df))
 
-    # VISUALIZACIÓN
-    st.divider()
-    m1, m2, m3 = st.columns(3)
-    m1.metric("Fenómenos Detectados", len(df_teoria))
-    promedio = int(df_teoria["indice_total"].mean()) if not df_teoria.empty else 0
-    m2.metric("Certeza Teórica Promedio", f"{promedio}%")
-    m3.metric("Legalidad", "100% (Estado de Derecho)")
-
-    st.subheader("🔁 Matriz de Transferencia de Ingresos")
-    st.info(
-        "Muestra quién financia (Origen) y quién recibe la renta (Destino) según la decisión."
+if not df_teoria.empty:
+    m2.metric("Fenómenos Detectados", len(df_teoria))
+    m3.metric("Índice Promedio", f"{int(df_teoria['indice_total'].mean())}%")
+    m4.metric(
+        "Riesgo Alto", len(df_teoria[df_teoria["nivel_riesgo_teorico"] == "Alto"])
     )
 
-    if not df_teoria.empty:
-        st.dataframe(
-            df_teoria[
-                ["tipo_decision", "origen", "destino", "mecanismo"]
-            ].drop_duplicates(),
-            use_container_width=True,
-            hide_index=True,
+    st.divider()
+
+    # Gráfico de Dispersión de Intensidad
+    st.subheader("📊 Mapa de Intensidad de Fenómenos Corruptivos")
+    fig, ax = plt.subplots(figsize=(10, 4))
+    colores = {"Alto": "red", "Medio": "orange", "Bajo": "blue"}
+
+    for nivel, color in colores.items():
+        subset = df_teoria[df_teoria["nivel_riesgo_teorico"] == nivel]
+        ax.scatter(
+            subset["tipo_decision"],
+            subset["indice_total"],
+            c=color,
+            label=nivel,
+            s=100,
+            edgecolors="black",
         )
 
-    if not df_teoria.empty:
-        st.subheader("Distribución de la Renta Discrecional")
-        st.bar_chart(df_teoria["destino"].value_counts())
+    plt.xticks(rotation=45, ha="right")
+    ax.set_ylabel("Índice de Intensidad (%)")
+    ax.legend(title="Riesgo Teórico")
+    st.pyplot(fig)
+else:
+    st.warning(
+        "El reporte seleccionado no contiene fenómenos identificados bajo la matriz teórica."
+    )
 
-    with st.expander("Ver detalle normativo y desglose de cálculo", expanded=True):
-        cols_mostrar = [
-            "fecha",
-            "tipo_decision",
-            "indice_total",
-            "elaboracion_indice",
-            "detalle",
-        ]
-        cols_validas = [c for c in cols_mostrar if c in df_procesado.columns]
-        st.dataframe(df_procesado[cols_validas])
+st.divider()
 
-    # GLOSARIO CON REFERENCIA AL FINAL
-    with st.expander("📖 Ver Glosario y Definiciones de Columnas"):
-        st.markdown("**Definiciones basadas en el Marco Teórico**")
-        st.table(df_glosario)
+# ===============================
+# EXPLORADOR DE DATOS
+# ===============================
+st.header("🔍 Exploración de Normas")
+cols_vista = [
+    "fecha",
+    "tipo_decision",
+    "indice_total",
+    "nivel_riesgo_teorico",
+    "origen",
+    "mecanismo",
+    "link",
+]
+st.dataframe(df[[c for c in cols_vista if c in df.columns]], use_container_width=True)
 
-        st.markdown("---")
-        st.markdown("#### Referencia Académica")
-        st.markdown("""
-        **Fuente:** Monteverde, V. H. (2021). *Great corruption: theory of corrupt phenomena*. Journal of Financial Crime.
+# ===============================
+# GLOSARIO TEÓRICO
+# ===============================
+st.divider()
+with st.expander("📖 Glosario: Los 7 Escenarios de la Gran Corrupción", expanded=False):
+    st.markdown("### Matriz de Transferencia de Ingresos")
+    st.write("""
+    Según la teoría expuesta en el artículo, estos escenarios representan decisiones estatales 
+    discrecionales que redistribuyen la riqueza de forma regresiva:
+    """)
 
-        🔗 [Leer artículo completo en Emerald Insight](https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext)
-        """)
+    glosario_teorico = {
+        "Escenario": [
+            "1. Privatizaciones / Concesiones",
+            "2. Contratos Públicos",
+            "3. Tarifas de Servicios Públicos",
+            "4. Autorizaciones de Precios",
+            "5. Precios de Salud y Educación",
+            "6. Jubilaciones y Pensiones",
+            "7. Traslado de Impuestos",
+        ],
+        "Descripción Teórica": [
+            "Transferencia de patrimonio estatal a privados por debajo del valor real.",
+            "Sobreprecios o continuación de obras ineficientes basándose en la legalidad.",
+            "Aumentos que compensan devaluaciones beneficiando a concesionarias.",
+            "Validación discrecional de aumentos en sectores regulados.",
+            "Aumentos autorizados por encima de la capacidad de ajuste del salario.",
+            "Ajustes de movilidad que transfieren ingresos del jubilado al Estado.",
+            "Doble imposición trasladada directamente al consumidor (Fenómeno Desastroso).",
+        ],
+    }
+    st.table(pd.DataFrame(glosario_teorico))
 
-    with open(path_excel, "rb") as f:
-        st.download_button(
-            label="📥 Descargar Reporte Completo (Excel)",
-            data=f,
-            file_name=f"GC_Reporte_{fecha_str}.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        )
+# ==========================================
+# REFERENCIA ACADÉMICA (Final de página)
+# ==========================================
+st.divider()
+st.markdown("### 📄 Referencia Académica del Marco Teórico")
+st.info(f"""
+Este desarrollo implementa la metodología de análisis de **transferencia de ingresos** detallada en el artículo científico del **Ph.D. Vicente Humberto Monteverde**:
+
+**"Great corruption - theory of corrupt phenomena"** Publicado en: *Journal of Financial Crime, Vol. 28 No. 2, pp. 580-596.*
+
+🔗 [**Acceder al artículo original en Emerald Insight**](https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext)
+""")

@@ -1,8 +1,12 @@
 services:
-  analisis:
+  app:
     build: .
+    container_name: fenomenos_corruptivos_app
     volumes:
       - .:/app
     ports:
-      - "8501:8501"
-    command: streamlit run main.py --server.address=0.0.0.0
+      - "8501:8501" # Puerto estándar de Streamlit
+    stdin_open: true
+    tty: true
+    # Forzamos a que use 'streamlit run' para evitar el error de ScriptRunContext
+    command: streamlit run dashboard.py --server.address=0.0.0.0
