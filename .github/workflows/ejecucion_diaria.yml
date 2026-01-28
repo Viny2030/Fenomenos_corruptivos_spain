@@ -2,9 +2,11 @@ name: Monitor Corrupción España (Multi-Fuente)
 
 on:
   schedule:
-    # 07:00 UTC = 04:00 AM Argentina (Sincronizado con publicación BOE)
+    # 07:00 UTC equivale a:
+    # - 04:00 AM en Argentina (UTC-3)
+    # - 08:00 AM en España (UTC+1)
     - cron: '0 7 * * *'
-  workflow_dispatch: 
+  workflow_dispatch: # Permite la ejecución manual desde la pestaña Actions
 
 permissions:
   contents: write
@@ -12,8 +14,9 @@ permissions:
 jobs:
   run-monitor:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Descargar repositorio
+      - name: Descargar repositorio (Checkout)
         uses: actions/checkout@v3
 
       - name: Configurar Python
@@ -25,11 +28,16 @@ jobs:
         run: pip install pandas requests
 
       - name: Ejecutar Monitor BOE y BORME
+        # Este comando ejecuta el script que consulta las listas de normas y actos mercantiles
         run: python monitor_completo_es.py
 
-      - name: Actualizar Datos en GitHub
+      - name: Actualizar Datos en GitHub (Commit & Push)
         run: |
-          git config --global user.name 'Robot Monitor'
-          git config --global user.email 'robot@noreply.github.com'
+          git config --global user.name 'Robot Monitor España'
+          git config --global user.email 'robot-spain@noreply.github.com'
+          
+          # Agregamos los archivos CSV generados en la carpeta data
           git add data/*.csv
+          
+          # Solo realiza el commit si Git detecta cambios reales en los datos obtenidos
           git diff --staged --quiet || (git commit -m "Cruce diario BOE/BORME: $(date +'%Y-%m-%d')" && git push)
