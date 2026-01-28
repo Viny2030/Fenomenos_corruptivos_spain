@@ -1,51 +1,68 @@
 import requests
-from lxml import etree
 import pandas as pd
 import os
-import time
 
-def procesar_espana():
+def procesar_espana_api():
+    # Asegurar que la carpeta 'data' exista
     if not os.path.exists("data"):
         os.makedirs("data")
 
-    url = "https://contrataciondelestado.es/sindicacion/sindicacion_1044/adjudicaciones.atom"
+    # Endpoint oficial de la API del BOE para lista de normas
+    # Documentación: apartado 2.1 del manual técnico
+    url = "https://boe.es/datosabiertos/api/legislacion-consolidada"
 
-    # Usamos una sesión para manejar cookies automáticamente
-    session = requests.Session()
-    
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-        "Accept": "application/atom+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3",
-        "Referer": "https://contrataciondelestado.es/",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1"
+    # Definimos la búsqueda según el manual (ejemplo: buscar 'crisis' en el título)
+    # Se pueden añadir más filtros como 'materia@codigo' o 'rango@codigo'
+    params = {
+        "limit": 50,          # Máximo de resultados por defecto [cite: 51]
+        "offset": 0,         # Desde el primer resultado [cite: 51]
+        "query": '{"query":{"query_string":{"query":"titulo:crisis"}}}' # Sintaxis JSON [cite: 72, 101]
     }
 
-    print("Iniciando descarga con sesión camuflada...")
+    headers = {
+        "Accept": "application/json", # Solicitamos formato JSON [cite: 20, 61]
+        "User-Agent": "RobotMonitorViny/1.0"
+    }
+
+    print("Consultando la API oficial del BOE...")
     
     try:
-        # Simulamos una pequeña espera para no parecer un bot instantáneo
-        time.sleep(2)
-        r = session.get(url, headers=headers, timeout=45)
+        # Petición GET según indica el manual [cite: 18]
+        response = requests.get(url, params=params, headers=headers, timeout=30)
         
-        if r.status_code == 200 and "<html" not in r.text.lower()[:100]:
-            print("¡Éxito! XML recibido correctamente.")
-            # ... (aquí sigue tu lógica de lxml y pandas que ya tienes) ...
+        if response.status_code == 200:
+            data = response.json()
+            # La respuesta contiene un nodo 'status' y un nodo 'data' [cite: 163, 167]
+            items = data.get("data", [])
             
-            # (Asegúrate de guardar el CSV al final del try)
-            # df.to_csv("data/adjudicaciones_espana.csv", index=False)
+            if not items:
+                print("No se encontraron resultados para los criterios de búsqueda.")
+                # Creamos archivo vacío para que Git no de error
+                pd.DataFrame().to_csv("data/adjudicaciones_espana.csv", index=False)
+                return
+
+            # Procesamos los items recibidos (campos definidos en apartado 2.1) [cite: 118]
+            resultados = []
+            for item in items:
+                resultados.append({
+                    "id": item.get("identificador"),
+                    "titulo": item.get("titulo"),
+                    "departamento": item.get("departamento", {}).get("texto") if isinstance(item.get("departamento"), dict) else item.get("departamento"),
+                    "fecha_publicacion": item.get("fecha_publicacion"),
+                    "url_boe": item.get("url_html_consolidada")
+                })
+
+            df = pd.DataFrame(resultados)
+            df.to_csv("data/adjudicaciones_espana.csv", index=False, encoding="utf-8-sig")
+            print(f"Éxito: Se guardaron {len(resultados)} registros en data/adjudicaciones_espana.csv")
             
         else:
-            print(f"Bloqueo detectado. Código: {r.status_code}")
-            # Guardamos el HTML de error para inspeccionarlo después
-            with open("data/error_debug.html", "w", encoding="utf-8") as f:
-                f.write(r.text)
-            print("Se guardó 'error_debug.html' para análisis.")
+            print(f"Error de API: {response.status_code} - {response.text}")
+            with open("data/api_error.log", "w") as f:
+                f.write(f"Status: {response.status_code}\nContent: {response.text}")
 
     except Exception as e:
-        print(f"Error técnico: {e}")
+        print(f"Error técnico al conectar con la API: {e}")
 
 if __name__ == "__main__":
-    procesar_espana()
+    procesar_espana_api()
