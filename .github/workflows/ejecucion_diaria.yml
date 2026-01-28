@@ -33,7 +33,7 @@ jobs:
       - name: Listar archivos (Debug)
         run: ls -R
 
-      - name: Guardar Reporte (Commit & Push)
+      
       - name: Guardar Reporte (Commit & Push)
         run: |
           git config --global user.name 'Robot Monitor España'
