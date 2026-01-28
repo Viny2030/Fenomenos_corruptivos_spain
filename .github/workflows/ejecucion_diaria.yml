@@ -1,8 +1,8 @@
-name: Monitor BOE España (API Oficial)
+name: Monitor Corrupción España (Multi-Fuente)
 
 on:
   schedule:
-    # 07:00 UTC = 04:00 AM Argentina
+    # 07:00 UTC = 04:00 AM Argentina (Sincronizado con publicación BOE)
     - cron: '0 7 * * *'
   workflow_dispatch: 
 
@@ -10,11 +10,10 @@ permissions:
   contents: write
 
 jobs:
-  run-analysis:
+  run-monitor:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Descargar código
+      - name: Descargar repositorio
         uses: actions/checkout@v3
 
       - name: Configurar Python
@@ -22,16 +21,15 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Instalar librerías
+      - name: Instalar dependencias
         run: pip install pandas requests
 
-      - name: Ejecutar Robot API BOE
-        run: python diario_es.py
+      - name: Ejecutar Monitor BOE y BORME
+        run: python monitor_completo_es.py
 
-      - name: Guardar y Subir Reporte
+      - name: Actualizar Datos en GitHub
         run: |
-          git config --global user.name 'Robot Monitor España'
-          git config --global user.email 'robot-spain@noreply.github.com'
-          git add .
-          # Sube los cambios solo si hay archivos nuevos para evitar errores en verde/azul
-          git diff --staged --quiet || (git commit -m "Actualización API BOE: $(date +'%Y-%m-%d')" && git push)
+          git config --global user.name 'Robot Monitor'
+          git config --global user.email 'robot@noreply.github.com'
+          git add data/*.csv
+          git diff --staged --quiet || (git commit -m "Cruce diario BOE/BORME: $(date +'%Y-%m-%d')" && git push)
