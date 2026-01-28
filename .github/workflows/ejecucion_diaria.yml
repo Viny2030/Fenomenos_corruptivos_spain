@@ -2,14 +2,12 @@ name: Monitor Corrupción España (Multi-Fuente)
 
 on:
   schedule:
-    # 07:00 UTC equivale a:
-    # - 04:00 AM en Argentina (UTC-3)
-    # - 08:00 AM en España (UTC+1)
+    # Se ejecuta a las 07:00 UTC (04:00 AM Argentina)
     - cron: '0 7 * * *'
-  workflow_dispatch: # Permite la ejecución manual desde la pestaña Actions
+  workflow_dispatch: # Permite ejecución manual para probar ahora mismo
 
 permissions:
-  contents: write
+  contents: write # CRÍTICO: Permite que el robot guarde los archivos CSV
 
 jobs:
   run-monitor:
@@ -18,6 +16,8 @@ jobs:
     steps:
       - name: Descargar repositorio (Checkout)
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Necesario para realizar el push correctamente
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -27,8 +27,8 @@ jobs:
       - name: Instalar dependencias
         run: pip install pandas requests
 
-      - name: Ejecutar Monitor BOE y BORME
-        # Este comando ejecuta el script que consulta las listas de normas y actos mercantiles
+      - name: Ejecutar Monitor y Generar Matriz
+        # Aquí se ejecuta el algoritmo que crea matriz_alertas_monteverde.csv
         run: python monitor_completo_es.py
 
       - name: Actualizar Datos en GitHub (Commit & Push)
@@ -36,8 +36,13 @@ jobs:
           git config --global user.name 'Robot Monitor España'
           git config --global user.email 'robot-spain@noreply.github.com'
           
-          # Agregamos los archivos CSV generados en la carpeta data
+          # Aseguramos que los archivos CSV existan antes de agregarlos
           git add data/*.csv
           
-          # Solo realiza el commit si Git detecta cambios reales en los datos obtenidos
-          git diff --staged --quiet || (git commit -m "Cruce diario BOE/BORME: $(date +'%Y-%m-%d')" && git push)
+          # Solo hacemos commit si hay cambios reales para evitar errores de ejecución
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Cruce diario y Matriz Monteverde: $(date +'%Y-%m-%d')"
+            git push
+          else
+            echo "No se detectaron cambios ni nuevas alertas en el ciclo de hoy."
+          fi
