@@ -7,49 +7,58 @@ import os
 def procesar_espana():
     url = "https://contrataciondelestado.es/sindicacion/sindicacion_1044/adjudicaciones.atom"
 
-    # IMPORTANTE: Esto hace que parezca que entramos desde un navegador
+    # Headers muy completos para parecer un navegador real
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/atom+xml,application/xml;q=0.9",
+        "Accept-Language": "es-ES,es;q=0.9",
     }
 
     print("Descargando datos de la Plataforma de Contratación...")
-    r = requests.get(url, headers=headers)
+    r = requests.get(url, headers=headers, timeout=30)
 
-    # Usamos un parser que ignora errores menores de etiquetas
-    parser = etree.XMLParser(recover=True)
-    root = etree.fromstring(r.content, parser=parser)
+    # Verificación: ¿Nos han bloqueado?
+    if "<html" in r.text.lower():
+        print("ERROR: El servidor devolvió HTML (posible bloqueo).")
+        # Intentamos extraer algo aunque sea texto plano
+        return
 
-    # El resto del código sigue igual...
+    try:
+        # Usamos el parser con recuperación de errores
+        parser = etree.XMLParser(recover=True, encoding="utf-8")
+        root = etree.fromstring(r.content, parser=parser)
 
-    print("Descargando datos de la Plataforma de Contratación...")
-    r = requests.get(url)
-    root = etree.fromstring(r.content)
-    entries = root.xpath("//atom:entry", namespaces=ns)
+        ns = {
+            "atom": "http://www.w3.org/2005/Atom",
+            "cbc": "urn:dgpe:names:draft:codice-localization:schema:xsd:AbstractBasicComponents-1",
+            "cac": "urn:dgpe:names:draft:codice-localization:schema:xsd:AbstractAggregateComponents-1",
+        }
 
-    resultados = []
-    for entry in entries:
-        titulo = entry.xpath("./atom:title/text()", namespaces=ns)[0]
-        importe = entry.xpath(".//cbc:TotalAmount/text()", namespaces=ns)
-        organo = entry.xpath(".//cac:PartyName/cbc:Name/text()", namespaces=ns)
+        entries = root.xpath("//atom:entry", namespaces=ns)
+        print(f"Se encontraron {len(entries)} entradas.")
 
-        resultados.append(
-            {
-                "titulo": titulo,
-                "organo": organo[0] if organo else "N/A",
-                "importe": float(importe[0]) if importe else 0.0,
-            }
-        )
+        resultados = []
+        for entry in entries:
+            titulo = entry.xpath("./atom:title/text()", namespaces=ns)[0]
+            importe = entry.xpath(".//cbc:TotalAmount/text()", namespaces=ns)
+            organo = entry.xpath(".//cac:PartyName/cbc:Name/text()", namespaces=ns)
 
-    # Crear carpeta data si no existe
-    if not os.path.exists("data"):
-        os.makedirs("data")
+            resultados.append(
+                {
+                    "titulo": titulo,
+                    "organo": organo[0] if organo else "N/A",
+                    "importe": float(importe[0]) if importe else 0.0,
+                }
+            )
 
-    df = pd.DataFrame(resultados)
-    df.to_csv("data/adjudicaciones_espana.csv", index=False)
-    print(
-        f"Proceso finalizado. Se guardaron {len(df)} registros en data/adjudicaciones_espana.csv"
-    )
+        if not os.path.exists("data"):
+            os.makedirs("data")
+        df = pd.DataFrame(resultados)
+        df.to_csv("data/adjudicaciones_espana.csv", index=False)
+        print("Archivo guardado con éxito.")
 
+    except Exception as e:
+        print(f"Error al procesar el XML: {e}")
 
 if __name__ == "__main__":
     procesar_espana()
