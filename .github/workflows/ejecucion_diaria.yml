@@ -33,11 +33,17 @@ jobs:
       - name: Listar archivos (Debug)
         run: ls -R
 
-      
-      - name: Guardar Reporte (Commit & Push)
+       - name: Guardar Reporte (Commit & Push)
         run: |
           git config --global user.name 'Robot Monitor España'
           git config --global user.email 'robot-spain@noreply.github.com'
-          git add data/  # <--- Esto asegura que incluya la carpeta data
-          git commit -m "Reporte Automático España: $(date +'%Y-%m-%d')" || exit 0
+          
+          # Crear la carpeta si no existe para evitar el error 'pathspec'
+          mkdir -p data/
+          
+          # El punto (.) agrega todos los cambios, incluyendo la carpeta data
+          git add .  
+          
+          git commit -m "Reporte Automático España: $(date +'%Y-%m-%d')" || echo "No hay cambios para subir"
           git push
+    
