@@ -5,15 +5,21 @@ import os
 
 
 def procesar_espana():
-    # URL de Adjudicaciones (España)
     url = "https://contrataciondelestado.es/sindicacion/sindicacion_1044/adjudicaciones.atom"
 
-    # Namespaces necesarios para leer el XML de España
-    ns = {
-        "atom": "http://www.w3.org/2005/Atom",
-        "cbc": "urn:dgpe:names:draft:codice-localization:schema:xsd:AbstractBasicComponents-1",
-        "cac": "urn:dgpe:names:draft:codice-localization:schema:xsd:AbstractAggregateComponents-1",
+    # IMPORTANTE: Esto hace que parezca que entramos desde un navegador
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
+
+    print("Descargando datos de la Plataforma de Contratación...")
+    r = requests.get(url, headers=headers)
+
+    # Usamos un parser que ignora errores menores de etiquetas
+    parser = etree.XMLParser(recover=True)
+    root = etree.fromstring(r.content, parser=parser)
+
+    # El resto del código sigue igual...
 
     print("Descargando datos de la Plataforma de Contratación...")
     r = requests.get(url)
