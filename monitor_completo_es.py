@@ -7,21 +7,20 @@ def ejecutar_monitor():
     if not os.path.exists("data"):
         os.makedirs("data")
 
-    # Definir fecha de búsqueda (ayer) para el BORME [cite: 13]
+    # Definir fecha de búsqueda (ayer) para el BORME
     ayer = (datetime.now() - timedelta(days=1)).strftime('%Y%m%d')
     headers = {"Accept": "application/json", "User-Agent": "MonitorTransparencia/1.0"}
 
     # --- 1. CONSULTA BOE (Legislación) ---
-    # Buscamos normas sobre contratos o adjudicaciones usando 'query_string' [cite: 72, 85]
     url_boe = "https://boe.es/datosabiertos/api/legislacion-consolidada"
     query_json = '{"query":{"query_string":{"query":"titulo:contrato OR titulo:adjudicacion"}}}'
-    params_boe = {"limit": 50, "query": query_json} [cite: 51]
+    params_boe = {"limit": 50, "query": query_json}
 
     try:
         r_boe = requests.get(url_boe, params=params_boe, headers=headers, timeout=30)
-        if r_boe.status_code == 200: [cite: 24]
+        # El código 200 indica éxito según el manual técnico
+        if r_boe.status_code == 200:
             items = r_boe.json().get("data", [])
-            # Extraemos identificador, título y URL [cite: 115, 118]
             df_boe = pd.DataFrame([{
                 "id": i.get("identificador"),
                 "titulo": i.get("titulo"),
@@ -33,7 +32,6 @@ def ejecutar_monitor():
         print(f"Error en BOE: {e}")
 
     # --- 2. CONSULTA BORME (Registro Mercantil) ---
-    # El BORME utiliza la misma estructura de API del BOE [cite: 17, 43]
     url_borme = f"https://boe.es/datosabiertos/api/borme/sumario/{ayer}"
     
     try:
