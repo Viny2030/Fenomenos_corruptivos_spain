@@ -3,22 +3,48 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from datetime import datetime
-import analisis  # Importa tu motor de lógica ajustado a la teoría
 
 # ===============================
-# CONFIGURACIÓN UI
+# CONFIGURACIÓN GENERAL
 # ===============================
-st.set_page_config(page_title="Monitor de Gran Corrupción", layout="wide")
+st.set_page_config(
+    page_title="Fenómenos Corruptivos España – Dashboard Teórico",
+    layout="wide"
+)
 
 DATA_DIR = "/app/data" if os.path.exists("/app/data") else "data"
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
+
+# ===============================
+# BÚSQUEDA RECURSIVA DE ARCHIVOS
+# ===============================
+def buscar_todos_los_csv_xlsx(base_dir):
+    """Busca CSV y XLSX en el directorio base y todas sus subcarpetas."""
+    archivos = []
+    for root, dirs, files in os.walk(base_dir):
+        for f in files:
+            if f.endswith(".csv") or f.endswith(".xlsx"):
+                # Excluir archivos auxiliares
+                if "adjudicaciones" not in f and "boe_legislacion" not in f:
+                    archivos.append(os.path.join(root, f))
+    archivos.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    return archivos
+
+def etiqueta_archivo(ruta):
+    partes = ruta.replace("\\", "/").split("/")
+    if len(partes) >= 3:
+        return f"{partes[-2]} / {partes[-1]}"
+    return partes[-1]
+
+ARCHIVOS = buscar_todos_los_csv_xlsx(DATA_DIR)
 
 # ===============================
 # HEADER
 # ===============================
-st.title("⚖️ Fenómenos Corruptivos Legales")
+st.title("📉 Monitor de Fenómenos Corruptivos – España")
 st.subheader("Implementación computacional de *The Great Corruption*")
-
-st.markdown(f"""
+st.markdown("""
 Este sistema analiza **decisiones estatales legales** que, según la teoría económica del 
 **Ph.D. Vicente Humberto Monteverde**, pueden generar **transferencias regresivas de ingresos**. 
 No detecta delitos penales, sino la intensidad de fenómenos discrecionales.
@@ -27,133 +53,170 @@ No detecta delitos penales, sino la intensidad de fenómenos discrecionales.
 # ===============================
 # CARGA DE DATOS
 # ===============================
-if not os.path.exists(DATA_DIR):
-    os.makedirs(DATA_DIR)
-
-ARCHIVOS = [
-    f for f in os.listdir(DATA_DIR) if f.endswith(".xlsx") or f.endswith(".csv")
-]
-
 if not ARCHIVOS:
-    st.error(f"No se encontraron reportes en la carpeta: {DATA_DIR}")
+    st.error(f"No se encontraron reportes en: {DATA_DIR}")
     st.stop()
 
-archivo_selec = st.selectbox(
-    "Seleccioná el reporte a analizar:", sorted(ARCHIVOS, reverse=True)
+st.caption(f"📁 {len(ARCHIVOS)} reportes encontrados en total")
+
+etiquetas = [etiqueta_archivo(r) for r in ARCHIVOS]
+idx = st.selectbox(
+    "Seleccioná el reporte a visualizar:",
+    range(len(etiquetas)),
+    format_func=lambda i: etiquetas[i]
 )
-ruta_completa = os.path.join(DATA_DIR, archivo_selec)
+ruta_completa = ARCHIVOS[idx]
 
 try:
-    df = (
-        pd.read_excel(ruta_completa)
-        if archivo_selec.endswith(".xlsx")
-        else pd.read_csv(ruta_completa)
-    )
+    df = (pd.read_excel(ruta_completa)
+          if ruta_completa.endswith(".xlsx")
+          else pd.read_csv(ruta_completa))
 except Exception as e:
     st.error(f"Error al leer el archivo: {e}")
     st.stop()
 
+# Mapeo de compatibilidad de columnas
+mapeo = {
+    "origen":       "transferencia",
+    "indice_total": "indice_fenomeno_corruptivo",
+    "nivel_riesgo": "nivel_riesgo_teorico",
+    "Contrato_Sospechoso": "detalle",
+    "Organismo":    "departamento",
+    "Indicador_Riesgo": "tipo_decision",
+    "Fecha_Deteccion": "fecha",
+}
+df = df.rename(columns=mapeo)
+
+# Normalización escala 0-10
+if ("indice_fenomeno_corruptivo" in df.columns
+        and df["indice_fenomeno_corruptivo"].max() > 10):
+    df["indice_fenomeno_corruptivo"] = (
+        df["indice_fenomeno_corruptivo"] / 10
+    ).round(1)
+
 # ===============================
-# MÉTRICAS Y GRÁFICOS
+# MÉTRICAS PRINCIPALES
 # ===============================
-df_teoria = df[df["tipo_decision"] != "No identificado"]
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("Total Registros", len(df))
+c2.metric(
+    "Fenómenos Detectados",
+    len(df[df["tipo_decision"] != "Sin riesgo detectado"])
+    if "tipo_decision" in df.columns else 0,
+)
+c3.metric(
+    "Índice Promedio",
+    f"{df['indice_fenomeno_corruptivo'].mean():.1f}/10"
+    if "indice_fenomeno_corruptivo" in df.columns else "N/D",
+)
+c4.metric(
+    "Casos Riesgo Alto",
+    len(df[df["nivel_riesgo_teorico"] == "Alto"])
+    if "nivel_riesgo_teorico" in df.columns else 0,
+)
 
-m1, m2, m3, m4 = st.columns(4)
-m1.metric("Normas Analizadas", len(df))
-
-if not df_teoria.empty:
-    m2.metric("Fenómenos Detectados", len(df_teoria))
-    m3.metric("Índice Promedio", f"{int(df_teoria['indice_total'].mean())}%")
-    m4.metric(
-        "Riesgo Alto", len(df_teoria[df_teoria["nivel_riesgo_teorico"] == "Alto"])
-    )
-
-    st.divider()
-
-    # Gráfico de Dispersión de Intensidad
-    st.subheader("📊 Mapa de Intensidad de Fenómenos Corruptivos")
-    fig, ax = plt.subplots(figsize=(10, 4))
-    colores = {"Alto": "red", "Medio": "orange", "Bajo": "blue"}
-
-    for nivel, color in colores.items():
-        subset = df_teoria[df_teoria["nivel_riesgo_teorico"] == nivel]
-        ax.scatter(
-            subset["tipo_decision"],
-            subset["indice_total"],
-            c=color,
-            label=nivel,
-            s=100,
-            edgecolors="black",
-        )
-
-    plt.xticks(rotation=45, ha="right")
-    ax.set_ylabel("Índice de Intensidad (%)")
-    ax.legend(title="Riesgo Teórico")
-    st.pyplot(fig)
-else:
-    st.warning(
-        "El reporte seleccionado no contiene fenómenos identificados bajo la matriz teórica."
-    )
-
+# ===============================
+# VISUALIZACIONES
+# ===============================
 st.divider()
+col_g1, col_g2 = st.columns(2)
+
+with col_g1:
+    if "tipo_decision" in df.columns:
+        st.write("### Distribución por Escenario Teórico")
+        fig, ax = plt.subplots()
+        df["tipo_decision"].value_counts().plot(kind="barh", ax=ax, color="skyblue")
+        st.pyplot(fig)
+
+with col_g2:
+    if "nivel_riesgo_teorico" in df.columns:
+        st.write("### Intensidad de Riesgo")
+        fig, ax = plt.subplots()
+        df["nivel_riesgo_teorico"].value_counts().plot(
+            kind="pie", autopct="%1.1f%%", ax=ax,
+            colors=["red", "orange", "green"]
+        )
+        ax.set_ylabel("")
+        st.pyplot(fig)
 
 # ===============================
 # EXPLORADOR DE DATOS
 # ===============================
-st.header("🔍 Exploración de Normas")
-cols_vista = [
-    "fecha",
-    "tipo_decision",
-    "indice_total",
-    "nivel_riesgo_teorico",
-    "origen",
-    "mecanismo",
-    "link",
+st.divider()
+st.header("🔍 Exploración de Decisiones Estatales")
+
+# Mostrar columnas disponibles
+cols_preferidas = [
+    "fecha", "detalle", "tipo_decision", "departamento",
+    "transferencia", "indice_fenomeno_corruptivo",
+    "nivel_riesgo_teorico", "Evidencia_Legal_BOE", "link"
 ]
-st.dataframe(df[[c for c in cols_vista if c in df.columns]], use_container_width=True)
+cols_finales = [c for c in cols_preferidas if c in df.columns]
+if not cols_finales:
+    cols_finales = df.columns.tolist()
+
+col_config = {}
+if "link" in cols_finales:
+    col_config["link"] = st.column_config.LinkColumn("Enlace")
+if "indice_fenomeno_corruptivo" in cols_finales:
+    col_config["indice_fenomeno_corruptivo"] = st.column_config.ProgressColumn(
+        "Intensidad", min_value=0, max_value=10
+    )
+
+st.dataframe(df[cols_finales], use_container_width=True,
+             column_config=col_config)
 
 # ===============================
-# GLOSARIO TEÓRICO
+# GLOSARIO
 # ===============================
 st.divider()
-with st.expander("📖 Glosario: Los 7 Escenarios de la Gran Corrupción", expanded=False):
-    st.markdown("### Matriz de Transferencia de Ingresos")
-    st.write("""
-    Según la teoría expuesta en el artículo, estos escenarios representan decisiones estatales 
-    discrecionales que redistribuyen la riqueza de forma regresiva:
+with st.expander("📖 Glosario y Explicación de Variables"):
+    st.markdown("""
+    | Variable | Significado Teórico |
+    | :--- | :--- |
+    | **Tipo de Decisión** | Mapeo hacia los 7 escenarios de la teoría. |
+    | **Transferencia** | Sector que soporta el costo económico. |
+    | **Índice Fenómeno** | Puntuación 0-10 de discrecionalidad. |
+    | **Nivel de Riesgo** | Evaluación cualitativa de opacidad e impacto social. |
+    | **Evidencia Legal BOE** | Norma del BOE que ampara la decisión analizada. |
     """)
 
-    glosario_teorico = {
-        "Escenario": [
-            "1. Privatizaciones / Concesiones",
-            "2. Contratos Públicos",
-            "3. Tarifas de Servicios Públicos",
-            "4. Autorizaciones de Precios",
-            "5. Precios de Salud y Educación",
-            "6. Jubilaciones y Pensiones",
-            "7. Traslado de Impuestos",
-        ],
-        "Descripción Teórica": [
-            "Transferencia de patrimonio estatal a privados por debajo del valor real.",
-            "Sobreprecios o continuación de obras ineficientes basándose en la legalidad.",
-            "Aumentos que compensan devaluaciones beneficiando a concesionarias.",
-            "Validación discrecional de aumentos en sectores regulados.",
-            "Aumentos autorizados por encima de la capacidad de ajuste del salario.",
-            "Ajustes de movilidad que transfieren ingresos del jubilado al Estado.",
-            "Doble imposición trasladada directamente al consumidor (Fenómeno Desastroso).",
-        ],
-    }
-    st.table(pd.DataFrame(glosario_teorico))
+# ===============================
+# FUNDAMENTO TEÓRICO
+# ===============================
+st.header("🔬 Fundamentación Científica")
+tabs = st.tabs(["Núcleo de la Teoría", "Escenarios Analizados", "Impacto Social"])
 
-# ==========================================
-# REFERENCIA ACADÉMICA (Final de página)
-# ==========================================
-st.divider()
-st.markdown("### 📄 Referencia Académica del Marco Teórico")
-st.info(f"""
-Este desarrollo implementa la metodología de análisis de **transferencia de ingresos** detallada en el artículo científico del **Ph.D. Vicente Humberto Monteverde**:
+with tabs[0]:
+    st.markdown("""
+    **Gran Corrupción - Teoría de los Fenómenos Corruptivos**
+    
+    Formulada por el **Ph.D. Vicente Humberto Monteverde**, propone que la corrupción no 
+    solo son delitos penales, sino decisiones **discrecionales y legales** que producen 
+    distribuciones inequitativas de ingresos.
+    
+    * **Búsqueda de Rentas:** El ingreso se obtiene por subsidios o privilegios del Estado.
+    * **Legalidad como Escudo:** Ocurre dentro de la estructura normativa vigente.
+    """)
 
-**"Great corruption - theory of corrupt phenomena"** Publicado en: *Journal of Financial Crime, Vol. 28 No. 2, pp. 580-596.*
+with tabs[1]:
+    st.markdown("""
+    Los **7 escenarios críticos** de la obra original:
+    1. **Privatizaciones Subvaluadas**
+    2. **Contratos Públicos Ineficientes**
+    3. **Compensación por Devaluación**
+    4. **Aumentos Tarifarios Discrecionales**
+    5. **Servicios Privados de Necesidad**
+    6. **Cálculo Previsional**
+    7. **Traslación Impositiva**
+    """)
 
-🔗 [**Acceder al artículo original en Emerald Insight**](https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext)
+with tabs[2]:
+    st.info("""
+    **Referencia Académica:** Monteverde, V. H. (2020). *Great corruption – theory of corrupt phenomena*. 
+    Journal of Financial Crime.  
+    🔗 [Acceder al artículo original](https://www.emerald.com/jfc/article-abstract/28/2/580/224032/Great-corruption-theory-of-corrupt-phenomena?redirectedFrom=fulltext)
+    """)
+
+st.caption(f"Última actualización: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
 """)
