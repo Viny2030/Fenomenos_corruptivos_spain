@@ -20,29 +20,28 @@ if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
 # ===============================
-# LÓGICA DE BÚSQUEDA DE ARCHIVOS
+# BÚSQUEDA DE ARCHIVOS (VERSIÓN ROBUSTA)
 # ===============================
 def buscar_archivos(base_dir):
-    """Busca reportes en data/ y subcarpetas."""
     archivos_encontrados = []
+    # Verificamos si la carpeta existe antes de entrar
+    if not os.path.exists(base_dir):
+        return []
+        
     for root, dirs, files in os.walk(base_dir):
         for f in files:
-            if f.endswith((".csv", ".xlsx")):
-                # Evitar cargar archivos de respaldo o vigilancia base
-                if "adjudicaciones" not in f and "boe_legislacion" not in f:
+            # Solo archivos de datos, ignorando temporales de sistema
+            if f.endswith((".csv", ".xlsx")) and not f.startswith("~"):
+                # Filtro específico para tus reportes de Monteverde
+                if "matriz" in f.lower() or "reporte" in f.lower():
                     archivos_encontrados.append(os.path.join(root, f))
     
-    # Ordenar por fecha de creación (más nuevos primero)
-    if archivos_encontrados:
+    # Intentamos ordenar, si falla por permisos de fecha, devolvemos lista simple
+    try:
         archivos_encontrados.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    except:
+        pass
     return archivos_encontrados
-
-def limpiar_nombre(ruta):
-    """Formatea la ruta para el selector (ej: 2026-02 / reporte.csv)"""
-    partes = ruta.replace("\\", "/").split("/")
-    return " / ".join(partes[-2:]) if len(partes) >= 2 else ruta
-
-ARCHIVOS = buscar_archivos(DATA_DIR)
 
 # ===============================
 # DISEÑO DEL DASHBOARD
