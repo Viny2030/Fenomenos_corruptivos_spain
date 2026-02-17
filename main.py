@@ -219,4 +219,3 @@ with tabs[2]:
     """)
 
 st.caption(f"Última actualización: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
-""")
