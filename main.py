@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-DATA_DIR = "/app/data" if os.path.exists("/app/data") else "data"
+DATA_DIR = "data" # Render monta el repo en el directorio actual
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
