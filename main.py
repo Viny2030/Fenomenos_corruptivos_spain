@@ -20,11 +20,11 @@ if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 
 # ===============================
-# BÚSQUEDA DE ARCHIVOS (VERSIÓN ROBUSTA)
+# FUNCIONES DE APOYO (DEBEN IR ANTES DE USARSE)
 # ===============================
 def buscar_archivos(base_dir):
+    """Busca reportes en data/ y subcarpetas."""
     archivos_encontrados = []
-    # Verificamos si la carpeta existe antes de entrar
     if not os.path.exists(base_dir):
         return []
         
@@ -33,15 +33,23 @@ def buscar_archivos(base_dir):
             # Solo archivos de datos, ignorando temporales de sistema
             if f.endswith((".csv", ".xlsx")) and not f.startswith("~"):
                 # Filtro específico para tus reportes de Monteverde
-                if "matriz" in f.lower() or "reporte" in f.lower():
+                if "matriz" in f.lower() or "reporte" in f.lower() or "alerta" in f.lower():
                     archivos_encontrados.append(os.path.join(root, f))
     
-    # Intentamos ordenar, si falla por permisos de fecha, devolvemos lista simple
+    # Intentamos ordenar por fecha (más nuevos primero)
     try:
         archivos_encontrados.sort(key=lambda x: os.path.getmtime(x), reverse=True)
     except:
         pass
     return archivos_encontrados
+
+def limpiar_nombre(ruta):
+    """Formatea la ruta para el selector (ej: 2026-02 / reporte.csv)"""
+    partes = ruta.replace("\\", "/").split("/")
+    return " / ".join(partes[-2:]) if len(partes) >= 2 else ruta
+
+# LLAMADA A LA FUNCIÓN
+ARCHIVOS = buscar_archivos(DATA_DIR)
 
 # ===============================
 # DISEÑO DEL DASHBOARD
@@ -49,11 +57,11 @@ def buscar_archivos(base_dir):
 st.title("🛡️ Dashboard de Vigilancia: Fenómenos Corruptivos")
 st.subheader("Análisis basado en la teoría del Ph.D. Vicente Humberto Monteverde")
 
-# MANEJO DE CARGA SIN ARCHIVOS (Evita Error 502)
+# MANEJO DE CARGA SIN ARCHIVOS
 if not ARCHIVOS:
     st.warning(f"🔎 Buscando reportes en la carpeta: `{DATA_DIR}`...")
-    st.info("Si acabas de subir archivos a GitHub, espera un minuto y refresca la página.")
-    st.image("https://via.placeholder.com/800x200.png?text=Esperando+Datos+en+Carpeta+Data")
+    st.info("Asegúrate de que tus archivos CSV/XLSX estén dentro de la carpeta `data/` en GitHub.")
+    # No usamos st.stop() para evitar el error 502 de Render
 else:
     st.sidebar.success(f"✅ {len(ARCHIVOS)} reportes encontrados")
     
@@ -73,7 +81,7 @@ else:
         else:
             df = pd.read_csv(ruta_final)
 
-        # Mapeo de columnas para compatibilidad con main.py original
+        # Mapeo de columnas para compatibilidad
         mapeo = {
             "origen": "transferencia",
             "indice_total": "indice_fenomeno_corruptivo",
