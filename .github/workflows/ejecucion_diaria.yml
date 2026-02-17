@@ -1,14 +1,10 @@
 name: Monitor Corrupción España (Multi-Fuente)
-
 on:
   schedule:
-    # Se ejecuta a las 07:00 UTC (04:00 AM Argentina)
     - cron: '0 7 * * *'
-  workflow_dispatch: # Permite ejecución manual para probar ahora mismo
-
+  workflow_dispatch:
 permissions:
-  contents: write # CRÍTICO: Permite que el robot guarde los archivos CSV
-
+  contents: write
 jobs:
   run-monitor:
     runs-on: ubuntu-latest
@@ -17,29 +13,28 @@ jobs:
       - name: Descargar repositorio (Checkout)
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Necesario para realizar el push correctamente
-
+          fetch-depth: 0
+      
       - name: Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
+      
       - name: Instalar dependencias
         run: pip install pandas requests
-
+      
       - name: Ejecutar Monitor y Generar Matriz
-        # Aquí se ejecuta el algoritmo que crea matriz_alertas_monteverde.csv
         run: python monitor_completo_es.py
-
+      
       - name: Actualizar Datos en GitHub (Commit & Push)
-  run: |
-    git config --global user.name 'Robot Monitor España'
-    git config --global user.email 'robot-spain@noreply.github.com'
-    git add data/
-    if [ -n "$(git status --porcelain)" ]; then
-      git commit -m "Cruce diario y Matriz Monteverde: $(date +'%Y-%m-%d')"
-      git pull --rebase origin main
-      git push
-    else
-      echo "No se detectaron cambios."
-    fi
+        run: |
+          git config --global user.name 'Robot Monitor España'
+          git config --global user.email 'robot-spain@noreply.github.com'
+          git add data/
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Cruce diario y Matriz Monteverde: $(date +'%Y-%m-%d')"
+            git pull --rebase origin main
+            git push
+          else
+            echo "No se detectaron cambios."
+          fi
