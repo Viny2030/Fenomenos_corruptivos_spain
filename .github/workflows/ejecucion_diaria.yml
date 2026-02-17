@@ -37,7 +37,7 @@ jobs:
           git config --global user.email 'robot-spain@noreply.github.com'
           
           # Aseguramos que los archivos CSV existan antes de agregarlos
-          git add data/*.csv
+          git add data/
           
           # Solo hacemos commit si hay cambios reales para evitar errores de ejecución
           if [ -n "$(git status --porcelain)" ]; then
