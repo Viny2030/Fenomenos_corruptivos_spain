@@ -62,3 +62,82 @@ if not ARCHIVOS:
     st.info("Asegúrate de que tus archivos CSV/XLSX estén dentro de la carpeta `data/` en GitHub.")
     # No usamos st.stop() para que Render mantenga la app viva y el puerto abierto
 else:
+    st.success(f"✅ {len(ARCHIVOS)} reportes detectados correctamente.")
+    
+    etiquetas = [etiqueta_archivo(r) for r in ARCHIVOS]
+    idx = st.selectbox(
+        "Seleccioná el reporte a visualizar:",
+        range(len(etiquetas)),
+        format_func=lambda i: etiquetas[i]
+    )
+    ruta_completa = ARCHIVOS[idx]
+
+    try:
+        if ruta_completa.endswith(".xlsx"):
+            df = pd.read_excel(ruta_completa, engine='openpyxl')
+        else:
+            df = pd.read_csv(ruta_completa)
+            
+        # --- Lógica de procesamiento de datos ---
+        mapeo = {
+            "origen":       "transferencia",
+            "indice_total": "indice_fenomeno_corruptivo",
+            "nivel_riesgo": "nivel_riesgo_teorico",
+            "Contrato_Sospechoso": "detalle",
+            "Organismo":    "departamento",
+            "Indicador_Riesgo": "tipo_decision",
+            "Fecha_Deteccion": "fecha",
+        }
+        df = df.rename(columns=mapeo)
+
+        # Normalización escala 0-10
+        if "indice_fenomeno_corruptivo" in df.columns:
+            if df["indice_fenomeno_corruptivo"].max() > 10:
+                df["indice_fenomeno_corruptivo"] = (df["indice_fenomeno_corruptivo"] / 10).round(1)
+
+        # MÉTRICAS PRINCIPALES
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Total Registros", len(df))
+        c2.metric("Fenómenos Detectados", len(df[df["tipo_decision"] != "Sin riesgo detectado"]) if "tipo_decision" in df.columns else 0)
+        c3.metric("Índice Promedio", f"{df['indice_fenomeno_corruptivo'].mean():.1f}/10" if "indice_fenomeno_corruptivo" in df.columns else "N/D")
+        c4.metric("Casos Riesgo Alto", len(df[df["nivel_riesgo_teorico"] == "Alto"]) if "nivel_riesgo_teorico" in df.columns else 0)
+
+        # VISUALIZACIONES
+        st.divider()
+        col_g1, col_g2 = st.columns(2)
+
+        with col_g1:
+            if "tipo_decision" in df.columns:
+                st.write("### Distribución por Escenario Teórico")
+                fig, ax = plt.subplots()
+                df["tipo_decision"].value_counts().plot(kind="barh", ax=ax, color="skyblue")
+                st.pyplot(fig)
+
+        with col_g2:
+            if "nivel_riesgo_teorico" in df.columns:
+                st.write("### Intensidad de Riesgo")
+                fig, ax = plt.subplots()
+                df["nivel_riesgo_teorico"].value_counts().plot(kind="pie", autopct="%1.1f%%", ax=ax, colors=["red", "orange", "green"])
+                ax.set_ylabel("")
+                st.pyplot(fig)
+
+        # EXPLORADOR DE DATOS
+        st.divider()
+        st.header("🔍 Exploración de Decisiones Estatales")
+        st.dataframe(df, use_container_width=True)
+
+    except Exception as e:
+        st.error(f"Error al procesar el archivo: {e}")
+
+# ===============================
+# FUNDAMENTO TEÓRICO
+# ===============================
+st.divider()
+with st.expander("📖 Glosario y Fundamentación"):
+    st.markdown("""
+    **Gran Corrupción - Teoría de los Fenómenos Corruptivos**
+    Formulada por el **Ph.D. Vicente Humberto Monteverde**. 
+    Este dashboard automatiza la detección de acuerdos colusorios y discrecionalidad técnica.
+    """)
+
+st.caption(f"Última actualización: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
