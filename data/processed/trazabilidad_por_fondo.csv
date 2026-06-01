@@ -1,0 +1,9 @@
+﻿id,titulo,entidad,importe_eur,pais_region,sectores_crs,fecha,fuente,url_recurso,codigo_crs,ambito,region_ocde,score_cruce,en_place,eslabon_corte,nombre_eslabon,score_trazabilidad,ruptura_r1,ruptura_r2,ruptura_r3,es_ooii
+A1,Programa Agua y Saneamiento Bolivia,PNUD,4500000,Bolivia,14030,2023-01-15,seed,,14030,Agua y Saneamiento,América Latina y Caribe,42.69662921348315,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A2,Fondo Adaptación Climática África,PNUD,15000000,No Especificado,41010,2023-03-20,seed,,41010,Medio Ambiente y Cambio Climático,No Especificado,43.01075268817204,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A3,Educación Guatemala UNICEF,UNICEF,2800000,Guatemala,11220,2023-05-10,seed,,11220,Educación,América Latina y Caribe,35.71428571428571,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A4,Seguridad Alimentaria Sahel FAO,FAO,7200000,Mali,31161,2023-06-01,seed,,31161,Desarrollo Rural y Seguridad Alimentaria,África Subsahariana,36.36363636363637,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A5,Gobernabilidad Honduras consultoría,Consultoría XYZ S.L.,890000,Honduras,15110,2023-07-22,seed,,15110,Gobernabilidad Democrática,América Latina y Caribe,44.705882352941174,False,4,Destino geográfico declarado,56,False,True,True,False
+A6,Salud Mozambique OMS,OMS,3100000,Mozambique,12110,2023-08-14,seed,,12110,Salud,África Subsahariana,29.411764705882348,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A7,Refugiados Siria ACNUR,ACNUR,6400000,Siria,72010,2023-09-05,seed,,72010,Acción Humanitaria,Norte de África y Oriente Medio,34.61538461538461,False,3,Registro en OOII / BDNS,42,True,True,True,True
+A8,Microfinanzas Ecuador PNUD,PNUD,1500000,Ecuador,25010,2023-10-18,seed,,25010,Crecimiento Económico,América Latina y Caribe,35.71428571428571,False,3,Registro en OOII / BDNS,42,True,True,True,True

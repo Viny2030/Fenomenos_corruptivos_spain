@@ -1,4 +1,27 @@
+# === API ===
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.7.0
+
+# === Frontend ===
 streamlit>=1.32.0
-pandas
-matplotlib
-openpyxl
+
+# === Data ===
+pandas>=2.2.0
+numpy>=1.26.0
+openpyxl>=3.1.0
+matplotlib>=3.8.0
+
+# === Scraping ===
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+rapidfuzz>=3.0.0
+
+# === Config ===
+pyyaml>=6.0.0
+python-dotenv>=1.0.0
+
+# === Tests ===
+pytest>=7.4.0
+httpx>=0.27.0

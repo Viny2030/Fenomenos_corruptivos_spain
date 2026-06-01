@@ -1,0 +1,130 @@
+# config/params.yaml
+# Parámetros del análisis de fondos AECID
+
+# === Cobertura temporal ===
+years:
+  start: 2018
+  end: 2024
+  long_series_start: 2000  # Para OCDE
+
+# === Umbrales de riesgo ===
+risk_thresholds:
+  # Concentración: HHI > 0.25 = alta concentración (escala 0-1)
+  hhi_high: 0.25
+  hhi_medium: 0.15
+
+  # Opacidad geográfica: % fondos a "No Especificado"
+  opacity_high: 0.30   # >30% = alta opacidad
+  opacity_medium: 0.15
+
+  # Variación interanual anómala: cambio % en importe por entidad
+  annual_variation_threshold: 2.0  # >200% = anómalo
+
+  # Entidad dominante de sector: >60% = captura de sector
+  sector_capture_threshold: 0.60
+
+# === Fuentes de datos ===
+sources:
+  aecid_portal:
+    base_url: "https://datos.aecid.es/lista-de-intervenciones"
+    page_size: 60
+    total_pages: 14  # ~835 intervenciones / 60
+
+  ocde_crs:
+    url: "https://stats.oecd.org/DownloadFiles.aspx?DatasetCode=CRS"
+    donor_code: 20   # España = código 20 en OCDE
+    years: [2018, 2019, 2020, 2021, 2022, 2023]
+
+  transparencia:
+    url: "https://transparencia.gob.es"
+    entity: "AECID"
+
+  iati:
+    reporting_org: "ES-1"  # Código IATI de España
+
+# === Análisis de red ===
+network:
+  min_edge_weight: 100000  # Relaciones con al menos 100k€
+  top_n_actors: 50          # Mostrar top 50 actores en grafo
+
+# === Sectores AECID (para agrupación) ===
+sectors:
+  humanitarian: "Acción Humanitaria"
+  water: "Agua y Saneamiento"
+  governance: "Gobernabilidad Democrática"
+  gender: "Género"
+  health: "Salud"
+  education: "Educación"
+  environment: "Medio Ambiente y Cambio Climático"
+  economy: "Crecimiento Económico"
+  agriculture: "Desarrollo Rural, Agricultura y Seguridad Alimentaria Nutricional"
+  culture: "Cultura y Ciencia"
+
+# === Regiones prioritarias AECID ===
+regions:
+  latam: "América Latina y Caribe"
+  africa: "África"
+  north_africa: "Norte de África y Oriente Medio"
+  asia: "Asia"
+  europe: "Europa Central y Occidental"
+
+# === Entidades de referencia para benchmarking ===
+benchmark_donors:
+  - name: "Francia"
+    ocde_code: 4
+  - name: "Alemania"
+    ocde_code: 5
+  - name: "Reino Unido"
+    ocde_code: 12
+  - name: "Suecia"
+    ocde_code: 18
+  - name: "Países Bajos"
+    ocde_code: 7
+
+# === Modelo de trazabilidad: 7 eslabones ===
+trazabilidad:
+  eslabon_a_score:
+    1: 10   # PGE → AECID
+    2: 25   # AECID sede
+    3: 40   # Canal (OOII / ONGD / Coop.Fin.)  ← R1 corta aquí
+    4: 55   # OTC país
+    5: 65   # Sub-ejecutor                      ← R2 corta aquí
+    6: 80   # Actividad concreta                ← R3 corta aquí
+    7: 100  # Beneficiario final
+
+  # Pesos del score integrado (riesgo + trazabilidad)
+  peso_riesgo_corruptivo: 0.60
+  peso_trazabilidad_inv:  0.40
+
+  # R1: organismos internacionales sin desglose IATI
+  ooii_caja_negra:
+    - PNUD
+    - UNICEF
+    - ONU Mujeres
+    - OIM
+    - ACNUR
+    - PMA
+    - FAO
+    - OIT
+    - OPS
+    - OMS
+    - UNESCO
+    - UNFPA
+    - Fondo de Adaptación
+    - Banco Mundial
+    - BID
+    - FIDA
+    - Fondo Verde para el Clima
+
+  # R3: importe mínimo para exigir justificante público
+  r3_umbral_importe: 500000
+
+# === Fuentes por eslabón ===
+fuentes_eslabon:
+  eslabon_1: ["igae.hacienda.gob.es", "boe.es"]
+  eslabon_2: ["datos.aecid.es"]
+  eslabon_3: ["infosubvenciones.es", "iatistandard.org"]
+  eslabon_4: ["datos.aecid.es/lista-de-intervenciones"]
+  eslabon_5: ["contrataciondelestado.es"]
+  eslabon_6: ["tribunal_de_cuentas", "igae"]
+  eslabon_7: ["evaluaciones_aecid", "ltaibg"]

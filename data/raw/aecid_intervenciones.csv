@@ -1,0 +1,9 @@
+﻿id,titulo,entidad,importe_eur,pais_region,sectores_crs,fecha,fuente,url_recurso
+A1,Programa Agua y Saneamiento Bolivia,PNUD,4500000,Bolivia,14030,2023-01-15,seed,
+A2,Fondo Adaptación Climática África,PNUD,15000000,No Especificado,41010,2023-03-20,seed,
+A3,Educación Guatemala UNICEF,UNICEF,2800000,Guatemala,11220,2023-05-10,seed,
+A4,Seguridad Alimentaria Sahel FAO,FAO,7200000,Mali,31161,2023-06-01,seed,
+A5,Gobernabilidad Honduras consultoría,Consultoría XYZ S.L.,890000,Honduras,15110,2023-07-22,seed,
+A6,Salud Mozambique OMS,OMS,3100000,Mozambique,12110,2023-08-14,seed,
+A7,Refugiados Siria ACNUR,ACNUR,6400000,Siria,72010,2023-09-05,seed,
+A8,Microfinanzas Ecuador PNUD,PNUD,1500000,Ecuador,25010,2023-10-18,seed,

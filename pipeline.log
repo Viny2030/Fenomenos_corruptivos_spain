@@ -1,0 +1,89 @@
+17:33:56 [INFO] ════════════════════════════════════════════════════════════
+17:33:56 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+17:33:56 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+17:33:56 [INFO] ════════════════════════════════════════════════════════════
+17:33:56 [INFO] ── Descargando datos.aecid.es...
+17:33:56 [INFO] Scraper AECID iniciando...
+17:33:57 [WARNING]   intento 1/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+17:33:59 [WARNING]   intento 2/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+17:34:02 [WARNING]   intento 3/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+17:34:09 [INFO]   Fallback HTML: 0 enlaces
+17:34:09 [WARNING]   Usando datos seed (sin conexión a AECID)
+17:34:09 [INFO]   Guardado: C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\data\raw\aecid_intervenciones.csv
+17:34:09 [INFO]    8 intervenciones → aecid_intervenciones.csv
+17:34:09 [INFO] ── Descargando BDNS...
+17:34:09 [INFO] Scraper BDNS iniciando...
+17:34:10 [WARNING]   BDNS convocatorias: Expecting value: line 1 column 1 (char 0)
+17:34:10 [WARNING]   BDNS sin datos — usando seed
+17:34:10 [INFO]   BDNS: 3 convocatorias
+17:34:10 [INFO]    3 convocatorias → bdns_subvenciones.csv
+17:34:10 [INFO] ── Descargando PLACE / OCDS...
+17:34:10 [INFO] Scraper PLACE/OCDS iniciando...
+17:34:28 [INFO]   PLACE: 200 contratos
+17:34:28 [INFO]   R2 detectado: 4 contratos con adjudicación directa/sin publicidad
+17:34:28 [INFO]    200 contratos → place_contratos.csv
+17:34:28 [INFO]    Creado template LTAIBG → ltaibg_respuestas.csv (completar manualmente)
+17:34:28 [INFO] Ingesta completada. Saliendo (--solo-ingesta).
+17:34:58 [INFO] ════════════════════════════════════════════════════════════
+17:34:58 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+17:34:58 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+17:34:58 [INFO] ════════════════════════════════════════════════════════════
+17:34:58 [INFO] ── Limpieza y normalización...
+17:34:58 [INFO]    8/8 registros limpios → intervenciones_clean.csv
+17:34:58 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+17:34:58 [INFO]   Cruce AECID↔PLACE: 0/8 proyectos encontrados en PLACE
+17:34:58 [INFO]    Score medio de trazabilidad: 43.8
+17:34:58 [INFO]    R1 (7 fondos): 97.8% del total
+17:34:58 [INFO]    R2 (8 fondos): 100.0% del total
+17:34:58 [INFO]    R3 (8 fondos): 100.0% del total
+17:34:58 [INFO]    → trazabilidad_por_fondo.csv
+17:34:58 [INFO] ── Indicadores de riesgo corruptivo...
+17:34:58 [INFO]   ICR global: 18.7 (HHI=0.3222, n=6 entidades)
+17:34:58 [INFO]   Scores calculados: 6 entidades
+17:34:58 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+17:34:58 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+17:34:58 [INFO] ── Generando informe ejecutivo...
+17:36:19 [INFO] ════════════════════════════════════════════════════════════
+17:36:19 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+17:36:19 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+17:36:19 [INFO] ════════════════════════════════════════════════════════════
+17:36:19 [INFO] ── Limpieza y normalización...
+17:36:19 [INFO]    8/8 registros limpios → intervenciones_clean.csv
+17:36:19 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+17:36:19 [INFO]   Cruce AECID↔PLACE: 0/8 proyectos encontrados en PLACE
+17:36:19 [INFO]    Score medio de trazabilidad: 43.8
+17:36:19 [INFO]    R1 (7 fondos): 97.8% del total
+17:36:19 [INFO]    R2 (8 fondos): 100.0% del total
+17:36:19 [INFO]    R3 (8 fondos): 100.0% del total
+17:36:19 [INFO]    → trazabilidad_por_fondo.csv
+17:36:19 [INFO] ── Indicadores de riesgo corruptivo...
+17:36:19 [INFO]   ICR global: 18.7 (HHI=0.3222, n=6 entidades)
+17:36:19 [INFO]   Scores calculados: 6 entidades
+17:36:19 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+17:36:19 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+17:36:19 [INFO] ── Generando informe ejecutivo...
+17:37:14 [INFO] ════════════════════════════════════════════════════════════
+17:37:14 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+17:37:14 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+17:37:14 [INFO] ════════════════════════════════════════════════════════════
+17:37:14 [INFO] ── Limpieza y normalización...
+17:37:14 [INFO]    8/8 registros limpios → intervenciones_clean.csv
+17:37:14 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+17:37:14 [INFO]   Cruce AECID↔PLACE: 0/8 proyectos encontrados en PLACE
+17:37:14 [INFO]    Score medio de trazabilidad: 43.8
+17:37:14 [INFO]    R1 (7 fondos): 97.8% del total
+17:37:14 [INFO]    R2 (8 fondos): 100.0% del total
+17:37:14 [INFO]    R3 (8 fondos): 100.0% del total
+17:37:14 [INFO]    → trazabilidad_por_fondo.csv
+17:37:14 [INFO] ── Indicadores de riesgo corruptivo...
+17:37:14 [INFO]   ICR global: 18.7 (HHI=0.3222, n=6 entidades)
+17:37:14 [INFO]   Scores calculados: 6 entidades
+17:37:14 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+17:37:14 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+17:37:14 [INFO] ── Generando informe ejecutivo...
+17:37:14 [INFO]    → informe_ejecutivo.md
+17:37:14 [INFO] ════════════════════════════════════════════════════════════
+17:37:14 [INFO] PIPELINE COMPLETADO
+17:37:14 [INFO]   Análisis completo: C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\data\processed\analisis_completo.csv
+17:37:14 [INFO]   Informe:           C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\reports\informe_ejecutivo.md
+17:37:14 [INFO] ════════════════════════════════════════════════════════════

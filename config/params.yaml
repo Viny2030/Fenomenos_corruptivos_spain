@@ -1,0 +1,20 @@
+umbrales:
+  riesgo_alto: 75
+  riesgo_medio: 50
+  riesgo_bajo: 25
+
+umbral_r3_eur: 500000
+
+donantes_ocde:
+  - ES
+  - DAC
+
+sectores_crs:
+  "72": Acción Humanitaria
+  "14": Agua y Saneamiento
+  "15": Gobernabilidad
+  "11": Educación
+  "12": Salud
+  "31": Desarrollo Rural
+  "41": Medio Ambiente
+  "25": Crecimiento Económico

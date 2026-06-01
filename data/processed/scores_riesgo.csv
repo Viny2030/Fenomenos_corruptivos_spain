@@ -1,0 +1,7 @@
+﻿entidad,n_fondos,importe_total,sog_medio,res_medio,via_medio,score_medio,icr,score_riesgo,nivel_riesgo
+ACNUR,1,6400000,75.0,58.0,90.0,61.65,18.7,55.2,Alto
+Consultoría XYZ S.L.,1,890000,45.0,44.0,62.0,41.349999999999994,18.7,38.0,Medio
+FAO,1,7200000,75.0,58.0,78.0,59.25,18.7,53.2,Alto
+OMS,1,3100000,75.0,58.0,68.0,57.25,18.7,51.5,Alto
+PNUD,3,21000000,80.0,58.0,56.666666666666664,56.73333333333333,18.7,51.0,Alto
+UNICEF,1,2800000,75.0,58.0,60.0,55.65,18.7,50.1,Alto
