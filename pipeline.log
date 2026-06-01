@@ -87,3 +87,28 @@
 17:37:14 [INFO]   Análisis completo: C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\data\processed\analisis_completo.csv
 17:37:14 [INFO]   Informe:           C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\reports\informe_ejecutivo.md
 17:37:14 [INFO] ════════════════════════════════════════════════════════════
+18:00:33 [INFO] ════════════════════════════════════════════════════════════
+18:00:33 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+18:00:33 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+18:00:33 [INFO] ════════════════════════════════════════════════════════════
+18:00:33 [INFO] ── Limpieza y normalización...
+18:00:33 [INFO]    148/148 registros limpios → intervenciones_clean.csv
+18:00:33 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+18:00:33 [INFO]   Cruce AECID↔PLACE: 0/148 proyectos encontrados en PLACE
+18:00:34 [INFO]    Score medio de trazabilidad: 47.8
+18:00:34 [INFO]    R1 (78 fondos): 80.2% del total
+18:00:34 [INFO]    R2 (148 fondos): 100.0% del total
+18:00:34 [INFO]    R3 (141 fondos): 99.8% del total
+18:00:34 [INFO]    → trazabilidad_por_fondo.csv
+18:00:34 [INFO] ── Indicadores de riesgo corruptivo...
+18:00:34 [INFO]   ICR global: 6.7 (HHI=0.0914, n=38 entidades)
+18:00:34 [INFO]   Scores calculados: 38 entidades
+18:00:34 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+18:00:34 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+18:00:34 [INFO] ── Generando informe ejecutivo...
+18:00:34 [INFO]    → informe_ejecutivo.md
+18:00:34 [INFO] ════════════════════════════════════════════════════════════
+18:00:34 [INFO] PIPELINE COMPLETADO
+18:00:34 [INFO]   Análisis completo: C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\data\processed\analisis_completo.csv
+18:00:34 [INFO]   Informe:           C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\reports\informe_ejecutivo.md
+18:00:34 [INFO] ════════════════════════════════════════════════════════════

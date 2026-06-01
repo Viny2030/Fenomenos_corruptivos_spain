@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 01/06/2026 17:37*
+*Generado: 01/06/2026 18:00*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total fondos analizados | 41.4 M€ |
-| Intervenciones | 8 |
-| Entidades receptoras | 6 |
-| Score medio de trazabilidad | 44/100 |
+| Total fondos analizados | 1158.8 M€ |
+| Intervenciones | 148 |
+| Entidades receptoras | 38 |
+| Score medio de trazabilidad | 48/100 |
 
 ---
 
@@ -18,8 +18,9 @@
 
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
-| 3 | OOII sin desglose (R1) | 7 | 40.5 | 97.8% |
-| 4 | Destino geográfico opaco | 1 | 0.9 | 2.2% |
+| 2 | Eslabón 2 | 7 | 103.3 | 8.9% |
+| 3 | OOII sin desglose (R1) | 73 | 860.6 | 74.3% |
+| 4 | Destino geográfico opaco | 68 | 194.8 | 16.8% |
 
 ---
 
@@ -27,8 +28,8 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 1 | 0.9 | 2.2% |
-| NARANJA | 7 | 40.5 | 97.8% |
+| AMARILLO | 68 | 194.8 | 16.8% |
+| NARANJA | 80 | 963.9 | 83.2% |
 
 ---
 
@@ -36,20 +37,22 @@
 
 | Título | Entidad | Importe | Eslabón | Score | Clasificación |
 |--------|---------|---------|---------|-------|---------------|
-| Refugiados Siria ACNUR | ACNUR | 6.4M€ | E3 | 56 | NARANJA |
-| Seguridad Alimentaria Sahel FAO | FAO | 7.2M€ | E3 | 55 | NARANJA |
-| Salud Mozambique OMS | OMS | 3.1M€ | E3 | 54 | NARANJA |
-| Programa Agua y Saneamiento Bolivia | PNUD | 4.5M€ | E3 | 54 | NARANJA |
-| Fondo Adaptación Climática África | PNUD | 15.0M€ | E3 | 54 | NARANJA |
-| Microfinanzas Ecuador PNUD | PNUD | 1.5M€ | E3 | 54 | NARANJA |
-| Educación Guatemala UNICEF | UNICEF | 2.8M€ | E3 | 53 | NARANJA |
-| Gobernabilidad Honduras consultoría | Consultoría XYZ S.L. | 0.9M€ | E4 | 40 | AMARILLO |
+| Programa biodiversidad y ecosistemas No Especifica… | OMS | 14.5M€ | E2 | 59 | NARANJA |
+| Proyecto salud maternoinfantil No Especificado | OIM | 5.3M€ | E2 | 59 | NARANJA |
+| Fortalecimiento sistema judicial No Especificado | FAO | 19.7M€ | E2 | 58 | NARANJA |
+| Asistencia técnica desarrollo rural No Especificad… | PNUD | 23.8M€ | E2 | 58 | NARANJA |
+| Programa género e igualdad No Especificado | ACNUR | 5.0M€ | E2 | 58 | NARANJA |
+| Fondo de adaptación climática Venezuela | PMA | 15.3M€ | E3 | 53 | NARANJA |
+| Fortalecimiento sistema judicial Haití | OIT | 3.2M€ | E3 | 53 | NARANJA |
+| Fondo de adaptación climática Haití | PMA | 6.8M€ | E3 | 53 | NARANJA |
+| Iniciativa derechos humanos África Subsahariana | PMA | 4.5M€ | E3 | 53 | NARANJA |
+| Programa género e igualdad Siria | OIT | 6.5M€ | E3 | 53 | NARANJA |
 
 ---
 
 ## Fuentes utilizadas
 
-- **aecid**: 8 registros (`aecid_intervenciones.csv`)
+- **aecid**: 148 registros (`aecid_intervenciones.csv`)
 - **bdns**: 3 registros (`bdns_subvenciones.csv`)
 - **place**: 200 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)
