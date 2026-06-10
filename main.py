@@ -204,6 +204,19 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
   </div>
   <span class="badge" id="ts">Cargando...</span>
 </header>
+
+<!-- Banner Ley de Transparencia -->
+<div style="background:#1e3a5f;border-bottom:1px solid #2d5f8f;padding:9px 28px;display:flex;align-items:center;gap:10px;font-size:0.78rem;color:#93c5fd">
+  <span style="font-size:1rem">⚖️</span>
+  <span>
+    Este análisis se ejerce bajo la <strong style="color:#7eb8f7">Ley 19/2013 de Transparencia, Acceso a la Información Pública y Buen Gobierno</strong>.
+    Cualquier ciudadano puede solicitar información a la AECID en
+    <a href="https://transparencia.gob.es/transparencia/transparencia_Home/index/Solicitar-Informacion.html" target="_blank" style="color:#60a5fa;font-weight:600">transparencia.gob.es</a>
+    o a través del <a href="https://www.aecid.es/ES/la-aecid/transparencia" target="_blank" style="color:#60a5fa;font-weight:600">portal de transparencia AECID</a>.
+  </span>
+  <a href="/manual#ltaibg" style="margin-left:auto;white-space:nowrap;background:#2d5f8f;color:#93c5fd;padding:4px 12px;border-radius:6px;font-size:0.75rem">¿Cómo solicitar? →</a>
+</div>
+
 <main>
 
   <!-- KPIs -->
@@ -249,7 +262,30 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- Fila 4: Entidades -->
+  <!-- Fila 4: Gráficos trazabilidad adicionales -->
+  <div class="grid3" style="margin-bottom:20px">
+    <div class="card">
+      <h3>📊 Clasificación de riesgo</h3>
+      <div class="chart-wrap"><canvas id="chartClasif"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>🎯 Score trazabilidad por eslabón</h3>
+      <div class="chart-wrap"><canvas id="chartScoreEslabon"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>🔬 Sector CRS — distribución</h3>
+      <div class="chart-wrap"><canvas id="chartSector"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Fila 5: Cards de fondos con rendición de cuentas -->
+  <div class="card" style="margin-bottom:20px">
+    <h3>📋 Rendición de cuentas por fondo — Top riesgo</h3>
+    <p style="font-size:0.78rem;color:#7c8db5;margin-bottom:14px">Fondos clasificados ROJO u ORANGE con detalle de trazabilidad y fuentes de verificación</p>
+    <div id="cards-fondos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px"></div>
+  </div>
+
+  <!-- Fila 6: Entidades -->
   <div class="card" style="margin-bottom:18px">
     <h3>🏢 Ranking entidades por riesgo</h3>
     <div class="filters">
@@ -519,6 +555,89 @@ function filtrarFondos() {
   ));
 }
 
+
+  // ── Clasificación ROJO/NARANJA/etc ────────────────────────────────────────
+  const clasifCount = {ROJO:0, NARANJA:0, AMARILLO:0, VERDE:0};
+  (fond.data||[]).forEach(f=>{ if(clasifCount[f.clasificacion]!==undefined) clasifCount[f.clasificacion]++; });
+  mkChart('chartClasif','doughnut',
+    ['ROJO','NARANJA','AMARILLO','VERDE'],
+    [{data:[clasifCount.ROJO,clasifCount.NARANJA,clasifCount.AMARILLO,clasifCount.VERDE],
+      backgroundColor:['#ef4444','#f97316','#eab308','#22c55e'],borderWidth:0}],
+    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}}
+  );
+
+  // ── Score medio de trazabilidad por eslabón ───────────────────────────────
+  const byEslabon = {};
+  (fond.data||[]).forEach(f=>{
+    const e = 'E'+(f.eslabon_corte||'?');
+    if(!byEslabon[e]) byEslabon[e]={sum:0,n:0};
+    byEslabon[e].sum += (f.score_trazabilidad||0);
+    byEslabon[e].n++;
+  });
+  const eslKeys = Object.keys(byEslabon).sort();
+  mkChart('chartScoreEslabon','bar', eslKeys,
+    [{label:'Score medio',data:eslKeys.map(k=>+(byEslabon[k].sum/byEslabon[k].n).toFixed(1)),
+      backgroundColor:eslKeys.map(k=>{ const s=byEslabon[k].sum/byEslabon[k].n; return s<40?'#ef4444':s<60?'#f97316':s<80?'#eab308':'#22c55e'; }),
+      borderRadius:4}],
+    {plugins:{legend:{display:false}},
+     scales:{y:{min:0,max:100,ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}},
+             x:{ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}}}}
+  );
+
+  // ── Sector CRS ────────────────────────────────────────────────────────────
+  const sectorMap = {};
+  (fond.data||[]).forEach(f=>{
+    const s = f.ambito||'Sin sector';
+    sectorMap[s] = (sectorMap[s]||0) + (f.importe_eur||0);
+  });
+  const sectorSort = Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  mkChart('chartSector','doughnut',
+    sectorSort.map(s=>s[0]),
+    [{data:sectorSort.map(s=>+(s[1]/1e6).toFixed(1)),
+      backgroundColor:['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6'],borderWidth:0}],
+    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:9}}}}}
+  );
+
+  // ── Cards de rendición de cuentas ─────────────────────────────────────────
+  const fondosRiesgo = (fond.data||[])
+    .filter(f=>f.clasificacion==='ROJO'||f.clasificacion==='NARANJA')
+    .sort((a,b)=>(b.score_integrado||0)-(a.score_integrado||0))
+    .slice(0,12);
+
+  document.getElementById('cards-fondos').innerHTML = fondosRiesgo.map(f=>{
+    const sc = f.score_trazabilidad||0;
+    const scColor = sc<40?'#ef4444':sc<60?'#f97316':sc<80?'#eab308':'#22c55e';
+    const r1 = f.ruptura_r1?'<span style="background:#7f1d1d;color:#fca5a5;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R1 OOII</span>':'';
+    const r2 = f.ruptura_r2?'<span style="background:#78350f;color:#fcd34d;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R2 Sin PLACE</span>':'';
+    const r3 = f.ruptura_r3?'<span style="background:#78350f;color:#fb923c;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R3 Sin justif.</span>':'';
+    const tca = f.url_recurso
+      ? '<a href="'+f.url_recurso+'" target="_blank" style="color:#60a5fa;font-size:0.75rem">🔗 Fuente AECID</a>'
+      : '<span style="color:#4a5568;font-size:0.75rem">Sin fuente directa</span>';
+    const tribunal = '<a href="https://www.tcu.es/tribunal-de-cuentas/es/buscador/?texto=AECID" target="_blank" style="color:#a78bfa;font-size:0.75rem">⚖️ Tribunal de Cuentas</a>';
+    const bdns = '<a href="https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias?descripcion=AECID" target="_blank" style="color:#34d399;font-size:0.75rem">📋 BDNS</a>';
+    return '<div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'
+      +'<strong style="font-size:0.82rem;color:#e0e0e0;flex:1;margin-right:8px">'+(f.titulo||'').substring(0,55)+'…</strong>'
+      +'<span class="pill '+f.clasificacion+'">'+f.clasificacion+'</span>'
+      +'</div>'
+      +'<div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px">'
+      +'<span>🏢 '+f.entidad+'</span>'
+      +' · <span>🌍 '+f.pais_region+'</span>'
+      +' · <span>📅 '+(f.año||f.fecha?.substring(0,4))+'</span>'
+      +' · <span>💶 '+((f.importe_eur||0)/1e6).toFixed(2)+'M€</span>'
+      +'</div>'
+      +'<div style="margin-bottom:8px">'
+      +'<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#a0aec0;margin-bottom:3px">'
+      +'<span>Trazabilidad · E'+f.eslabon_corte+' — '+(f.nombre_eslabon||'')+'</span>'
+      +'<span style="color:'+scColor+'">'+sc+'/100</span></div>'
+      +'<div style="background:#2d3561;border-radius:4px;height:6px">'
+      +'<div style="height:6px;border-radius:4px;background:'+scColor+';width:'+sc+'%"></div>'
+      +'</div></div>'
+      +'<div style="margin-bottom:10px">'+r1+r2+r3+'</div>'
+      +'<div style="display:flex;gap:12px;flex-wrap:wrap">'+tca+' '+tribunal+' '+bdns+'</div>'
+      +'</div>';
+  }).join('');
+
 cargar();
 </script>
 </body>
@@ -547,11 +666,11 @@ MANUAL_HTML = """<!DOCTYPE html>
   header h1{font-size:1.3rem;color:#fff}
   a{color:#7eb8f7;text-decoration:none}
   a:hover{text-decoration:underline}
-  main{padding:32px 28px;max-width:900px;margin:0 auto}
-  h2{font-size:1.2rem;color:#7eb8f7;margin:32px 0 12px;border-bottom:1px solid #2d3561;padding-bottom:6px}
-  h3{font-size:1rem;color:#a0aec0;margin:20px 0 8px}
+  main{padding:32px 28px;max-width:960px;margin:0 auto}
+  h2{font-size:1.15rem;color:#7eb8f7;margin:36px 0 12px;border-bottom:1px solid #2d3561;padding-bottom:6px}
+  h3{font-size:0.95rem;color:#a0aec0;margin:18px 0 7px}
   p{margin-bottom:10px;color:#c0c8d8}
-  ul,ol{padding-left:20px;margin-bottom:12px;color:#c0c8d8}
+  ul,ol{padding-left:22px;margin-bottom:12px;color:#c0c8d8}
   li{margin-bottom:6px}
   .card{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:20px;margin-bottom:18px}
   .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;margin-right:6px}
@@ -560,137 +679,262 @@ MANUAL_HTML = """<!DOCTYPE html>
   .r3{background:#78350f;color:#fb923c}
   .ok{background:#14532d;color:#86efac}
   .info{background:#1e3a5f;color:#7eb8f7}
-  table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0}
+  .warn{background:#713f12;color:#fde68a}
+  table{width:100%;border-collapse:collapse;font-size:0.84rem;margin:12px 0}
   th{text-align:left;padding:8px 10px;color:#7c8db5;border-bottom:1px solid #2d3561;font-weight:600}
   td{padding:8px 10px;border-bottom:1px solid #1e2235;color:#c0c8d8}
+  tr:hover td{background:#1e2235}
   code{background:#1e2235;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:0.85rem;color:#7eb8f7}
-  .endpoint{background:#1e2235;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-family:monospace;font-size:0.85rem}
+  .endpoint{background:#1e2235;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-family:monospace;font-size:0.84rem;color:#93c5fd}
+  .step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+  .step-num{background:#2d3561;color:#7eb8f7;border-radius:50%;width:28px;height:28px;min-width:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem}
+  .ltaibg-box{background:#1e3a5f;border:1px solid #2d5f8f;border-radius:10px;padding:20px;margin-bottom:18px}
+  .ltaibg-box h3{color:#7eb8f7}
+  .toc{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:16px 20px;margin-bottom:28px}
+  .toc ul{list-style:none;padding:0}
+  .toc li{margin-bottom:4px}
+  .toc a{color:#a0aec0;font-size:0.85rem}
+  .toc a:hover{color:#7eb8f7}
   footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:32px}
+  @media(max-width:700px){main{padding:20px 14px}}
 </style>
 </head>
 <body>
 <header>
   <div>
     <h1>📖 Manual de Uso — Monitor Trazabilidad AECID</h1>
+    <span style="font-size:0.8rem;color:#7c8db5">Ph.D. Vicente Humberto Monteverde — Algoritmos contra la Corrupción</span>
   </div>
   <a href="/" style="background:#2d3561;color:#7eb8f7;padding:6px 16px;border-radius:6px;font-size:0.85rem">← Dashboard</a>
 </header>
 <main>
 
-  <div class="card">
-    <h2 style="margin-top:0">¿Qué es este sistema?</h2>
-    <p>El <strong>Monitor de Trazabilidad AECID</strong> es una herramienta de auditoría algorítmica que analiza los fondos de cooperación internacional gestionados por la Agencia Española de Cooperación Internacional para el Desarrollo (AECID), aplicando la metodología de <em>Fenómenos Corruptivos</em> del Ph.D. Vicente Humberto Monteverde.</p>
-    <p>El sistema detecta automáticamente las <strong>rupturas en la cadena de trazabilidad</strong> de cada fondo — desde el presupuesto aprobado en España hasta el beneficiario final — e identifica patrones de riesgo corruptivo.</p>
-  </div>
-
-  <h2>📊 El Modelo de 7 Eslabones</h2>
-  <div class="card">
-    <p>Cada fondo es evaluado según el último eslabón de trazabilidad alcanzado:</p>
-    <table>
-      <thead><tr><th>Eslabón</th><th>Etapa</th><th>Descripción</th></tr></thead>
-      <tbody>
-        <tr><td><code>E1</code></td><td>Presupuesto España</td><td>El fondo aparece en el Presupuesto General del Estado aprobado.</td></tr>
-        <tr><td><code>E2</code></td><td>Transferencia AECID</td><td>La entidad receptora está identificada (OOII, ONGD o consultora).</td></tr>
-        <tr><td><code>E3</code></td><td>Registro OOII/BDNS</td><td>El fondo está registrado en BDNS o en organismos internacionales.</td></tr>
-        <tr><td><code>E4</code></td><td>Destino geográfico</td><td>El país o región de destino está declarado públicamente.</td></tr>
-        <tr><td><code>E5</code></td><td>Contratos PLACE/OCDS</td><td>Los contratos derivados están publicados en el portal de contratación.</td></tr>
-        <tr><td><code>E6</code></td><td>Justificantes públicos</td><td>Existen evaluaciones finales o respuestas positivas a solicitudes LTAIBG.</td></tr>
-        <tr><td><code>E7</code></td><td>Beneficiario final</td><td>El beneficiario final está identificado con NIF/CIF o nombre.</td></tr>
-      </tbody>
-    </table>
-    <p>El <strong>score de trazabilidad</strong> va de 14/100 (eslabón 1) a 100/100 (eslabón 7). Un score &lt;50 indica ruptura significativa.</p>
-  </div>
-
-  <h2>🚨 Las Tres Rupturas Principales</h2>
-  <div class="card">
-    <h3><span class="badge r1">R1</span> OOII — Caja negra</h3>
-    <p>Fondos transferidos a Organismos Internacionales (PNUD, UNICEF, FAO, ACNUR…) que agregan contribuciones multi-donante sin desglosar la aportación española en el estándar IATI. La trazabilidad se corta en el eslabón 3.</p>
-    <p><strong>Indicador:</strong> % de fondos cuyo receptor es una OOII de la lista de caja negra.</p>
-
-    <h3><span class="badge r2">R2</span> Sub-contratación sin OCDS</h3>
-    <p>Contratos adjudicados directamente o sin publicación en el Portal de la Contratación del Estado (PLACE) bajo el estándar Open Contracting Data Standard. Incluye contratos menores, negociados sin publicidad y urgencias.</p>
-    <p><strong>Indicador:</strong> % de fondos sin correspondencia en PLACE o con adjudicación directa.</p>
-
-    <h3><span class="badge r3">R3</span> Sin justificante auditable</h3>
-    <p>Proyectos con importe superior a 500.000€ que no tienen evaluación final publicada ni respuesta favorable a solicitud de información via Ley de Transparencia (LTAIBG 19/2013).</p>
-    <p><strong>Indicador:</strong> % de fondos &gt;500K€ sin justificante registrado en el sistema.</p>
-  </div>
-
-  <h2>📈 Indicadores de Riesgo</h2>
-  <div class="card">
-    <table>
-      <thead><tr><th>Indicador</th><th>Peso</th><th>Descripción</th></tr></thead>
-      <tbody>
-        <tr><td><strong>ICR</strong></td><td>15%</td><td>Índice de Concentración de Receptores (HHI normalizado). Detecta si unos pocos actores concentran la mayoría de los fondos.</td></tr>
-        <tr><td><strong>SOG</strong></td><td>35%</td><td>Score de Opacidad en la Gestión. Suma ponderada de indicadores binarios: es OOII, tiene R2, tiene R3, adjudicación directa, sin país declarado.</td></tr>
-        <tr><td><strong>RES</strong></td><td>30%</td><td>Riesgo por Eslabón de Corte. Inverso del score de trazabilidad — cuanto más bajo el eslabón, mayor el riesgo.</td></tr>
-        <tr><td><strong>VIA</strong></td><td>20%</td><td>Vulnerabilidad Institucional del país receptor, basado en proxy del Índice de Gobernanza del Banco Mundial (WGI 0-100).</td></tr>
-      </tbody>
-    </table>
-    <p><strong>Score integrado</strong> = 60% riesgo (ICR+SOG+RES+VIA) + 40% trazabilidad invertida.</p>
-    <table>
-      <thead><tr><th>Clasificación</th><th>Score</th><th>Significado</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge ok">VERDE</span></td><td>0-25</td><td>Trazabilidad aceptable, bajo riesgo</td></tr>
-        <tr><td><span class="badge" style="background:#713f12;color:#fde68a">AMARILLO</span></td><td>25-50</td><td>Trazabilidad parcial, riesgo moderado</td></tr>
-        <tr><td><span class="badge r2">NARANJA</span></td><td>50-75</td><td>Rupturas detectadas, riesgo alto</td></tr>
-        <tr><td><span class="badge r1">ROJO</span></td><td>75-100</td><td>Múltiples rupturas, riesgo crítico</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>🔌 Endpoints de la API</h2>
-  <div class="card">
-    <div class="endpoint">GET /api/status — Estado del servicio y total de fondos cargados</div>
-    <div class="endpoint">GET /api/resumen — KPIs ejecutivos, acumulativo anual y top países</div>
-    <div class="endpoint">GET /api/fondos?entidad=X&amp;clasificacion=ROJO&amp;eslabon=3&amp;pais=Bolivia&amp;limit=100 — Tabla de fondos con filtros</div>
-    <div class="endpoint">GET /api/trazabilidad — Análisis completo por eslabón</div>
-    <div class="endpoint">GET /api/entidades?top=30&amp;nivel=Alto — Ranking de entidades por riesgo</div>
-    <div class="endpoint">GET /api/riesgo — Scores ICR/SOG/RES/VIA por entidad</div>
-    <div class="endpoint">GET /api/mensual — Evolución mensual por región y sector</div>
-    <div class="endpoint">GET /api/informe — Informe ejecutivo completo en Markdown</div>
-    <div class="endpoint">POST /api/refresh (Header: X-Refresh-Token) — Ejecuta el pipeline</div>
-  </div>
-
-  <h2>🔄 Actualización de datos</h2>
-  <div class="card">
-    <p>El pipeline corre automáticamente cada día hábil a las 07:00 UTC via GitHub Actions, descargando:</p>
+  <!-- Índice -->
+  <div class="toc">
+    <p style="font-size:0.8rem;color:#7c8db5;margin-bottom:8px;font-weight:600">CONTENIDO</p>
     <ul>
-      <li><strong>AECID</strong> — Portal datos.aecid.es (intervenciones activas)</li>
-      <li><strong>BDNS</strong> — Base de Datos Nacional de Subvenciones (convocatorias AECID)</li>
-      <li><strong>PLACE</strong> — Portal de Contratación del Estado (contratos adjudicados)</li>
-      <li><strong>LTAIBG</strong> — Registro manual de solicitudes de transparencia (completar en <code>data/raw/ltaibg_respuestas.csv</code>)</li>
+      <li><a href="#que-es">1. ¿Qué es este sistema?</a></li>
+      <li><a href="#eslabones">2. El Modelo de 7 Eslabones</a></li>
+      <li><a href="#rupturas">3. Las tres rupturas estructurales (R1, R2, R3)</a></li>
+      <li><a href="#indicadores">4. Indicadores de riesgo (ICR, SOG, RES, VIA)</a></li>
+      <li><a href="#dashboard">5. Cómo leer el dashboard</a></li>
+      <li><a href="#rendicion">6. Cards de rendición de cuentas</a></li>
+      <li><a href="#ltaibg">7. Ley de Transparencia — Cómo solicitar información</a></li>
+      <li><a href="#api">8. Endpoints de la API</a></li>
+      <li><a href="#actualizacion">9. Actualización de datos y pipeline</a></li>
+      <li><a href="#archivos">10. Archivos generados</a></li>
+      <li><a href="#marco">11. Marco teórico</a></li>
     </ul>
-    <p>Para forzar una actualización manual desde la terminal:</p>
-    <code>python pipeline.py --forzar</code>
   </div>
 
-  <h2>📂 Archivos generados</h2>
+  <!-- 1 -->
+  <div class="card" id="que-es">
+    <h2 style="margin-top:0">1. ¿Qué es este sistema?</h2>
+    <p>El <strong>Monitor de Trazabilidad AECID</strong> es una herramienta de auditoría algorítmica que analiza los fondos de cooperación internacional gestionados por la Agencia Española de Cooperación Internacional para el Desarrollo (AECID), aplicando la metodología de <em>Fenómenos Corruptivos</em> del Ph.D. Vicente Humberto Monteverde.</p>
+    <p>La AECID gestiona aproximadamente <strong>1.000 millones de euros al año</strong> de cooperación internacional. Este sistema detecta automáticamente las <strong>rupturas en la cadena de trazabilidad</strong> de cada fondo — desde el presupuesto aprobado en España hasta el beneficiario final — e identifica patrones de riesgo corruptivo.</p>
+    <p>El análisis se basa exclusivamente en <strong>datos públicos</strong>: AECID, OCDE, Hacienda, transparencia.gob.es, IATI, BDNS y PLACE. No implica acusaciones de ilegalidad. El marco de fenómenos corruptivos analiza <em>inequidades estructurales</em> en la distribución de fondos públicos.</p>
+  </div>
+
+  <!-- 2 -->
+  <h2 id="eslabones">2. El Modelo de 7 Eslabones</h2>
+  <div class="card">
+    <p>Cada fondo es evaluado según el último eslabón de trazabilidad alcanzado. La cadena va del presupuesto hasta el beneficiario final:</p>
+    <table>
+      <thead><tr><th>Eslabón</th><th>Etapa</th><th>Descripción</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td><code>E1</code></td><td>Presupuesto España</td><td>Fondo visible en el Presupuesto General del Estado aprobado por las Cortes.</td><td>14/100</td></tr>
+        <tr><td><code>E2</code></td><td>Transferencia AECID</td><td>La entidad receptora está identificada: OOII, ONGD o consultora.</td><td>28/100</td></tr>
+        <tr><td><code>E3</code></td><td>Registro OOII/BDNS</td><td>El fondo figura en BDNS o en los sistemas de reporte de organismos internacionales.</td><td>42/100</td></tr>
+        <tr><td><code>E4</code></td><td>Destino geográfico</td><td>El país o región de destino está declarado públicamente con código OCDE-CRS.</td><td>57/100</td></tr>
+        <tr><td><code>E5</code></td><td>Contratos PLACE/OCDS</td><td>Los contratos derivados están publicados en el portal de contratación bajo estándar OCDS.</td><td>71/100</td></tr>
+        <tr><td><code>E6</code></td><td>Justificantes públicos</td><td>Existen evaluaciones finales publicadas o respuestas positivas a solicitudes LTAIBG.</td><td>85/100</td></tr>
+        <tr><td><code>E7</code></td><td>Beneficiario final</td><td>El beneficiario final está identificado con NIF/CIF o nombre completo verificable.</td><td>100/100</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px">El <strong>score de trazabilidad</strong> va de 14/100 (eslabón 1) a 100/100 (eslabón 7). Un score &lt;50 indica ruptura significativa en la cadena de rendición de cuentas.</p>
+    <p>Actualmente el <strong>92% de los fondos no supera el eslabón 4</strong> — el destino geográfico es conocido pero los contratos y justificantes son opacOs.</p>
+  </div>
+
+  <!-- 3 -->
+  <h2 id="rupturas">3. Las tres rupturas estructurales</h2>
+  <div class="card">
+    <h3><span class="badge r1">R1</span> OOII — Caja negra multilateral</h3>
+    <p>Fondos transferidos a Organismos Internacionales (PNUD, UNICEF, FAO, ACNUR, OMS…) que agregan contribuciones multi-donante sin desglosar la aportación española en el estándar IATI. La trazabilidad se corta en el <strong>eslabón 3</strong>.</p>
+    <p><strong>Por qué ocurre:</strong> Los OOII reciben fondos de decenas de países donantes en cuentas pooled y rinden cuentas globalmente, no por donante individual. España no exige desagregación en sus convenios de contribución.</p>
+    <p><strong>Solución estructural:</strong> Exigir etiquetado IATI con donor-reference en todos los convenios de contribución firmados por la AECID.</p>
+
+    <h3 style="margin-top:20px"><span class="badge r2">R2</span> Sub-contratación sin OCDS</h3>
+    <p>Contratos adjudicados directamente o sin publicación en el Portal de la Contratación del Estado (PLACE) bajo el estándar Open Contracting Data Standard. Incluye contratos menores, negociados sin publicidad y urgencias declaradas.</p>
+    <p><strong>Por qué ocurre:</strong> Los contratos en el extranjero ejecutados por ONGDs o socios locales no están sujetos a la Ley de Contratos del Sector Público (LCSP) española, sino a la legislación del país receptor, que generalmente no publica en OCDS.</p>
+    <p><strong>Solución estructural:</strong> Inclusión de cláusula de publicación OCDS en todos los convenios de subvención con ONGDs y contratos marco de la AECID.</p>
+
+    <h3 style="margin-top:20px"><span class="badge r3">R3</span> Sin justificante auditable</h3>
+    <p>Proyectos con importe superior a 500.000€ que no tienen evaluación final publicada ni respuesta favorable a solicitud de información via Ley de Transparencia (LTAIBG 19/2013).</p>
+    <p><strong>Por qué ocurre:</strong> Las evaluaciones finales son un requisito formal pero no hay un repositorio público centralizado. El Tribunal de Cuentas fiscaliza una muestra, no la totalidad.</p>
+    <p><strong>Solución estructural:</strong> Repositorio público de evaluaciones finales como condición para el cierre contable de cada proyecto en el sistema de gestión interna de la AECID.</p>
+  </div>
+
+  <!-- 4 -->
+  <h2 id="indicadores">4. Indicadores de riesgo</h2>
+  <div class="card">
+    <p>El <strong>score de riesgo</strong> integra cuatro indicadores, cada uno con peso diferente:</p>
+    <table>
+      <thead><tr><th>Indicador</th><th>Peso</th><th>Fórmula</th><th>Alerta si…</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ICR</strong> — Índice de Concentración de Receptores</td><td>15%</td><td>HHI normalizado por entidad receptora</td><td>&gt; 0,25</td></tr>
+        <tr><td><strong>SOG</strong> — Score de Opacidad en Gestión</td><td>35%</td><td>Suma ponderada de flags: es_ooii, R2, R3, adj. directa, sin país</td><td>&gt; 50</td></tr>
+        <tr><td><strong>RES</strong> — Riesgo por Eslabón de Corte</td><td>30%</td><td>100 − score_trazabilidad</td><td>eslabon &lt; 4</td></tr>
+        <tr><td><strong>VIA</strong> — Vulnerabilidad Institucional del receptor</td><td>20%</td><td>Proxy WGI Banco Mundial (0-100, invertido)</td><td>&gt; 60</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px"><strong>Score integrado</strong> = 60% × (ICR+SOG+RES+VIA) + 40% × (100 − score_trazabilidad)</p>
+    <table style="margin-top:12px">
+      <thead><tr><th>Clasificación</th><th>Score</th><th>Significado operativo</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge ok">VERDE</span></td><td>0–25</td><td>Trazabilidad aceptable, bajo riesgo. Apto para cierre.</td></tr>
+        <tr><td><span class="badge warn">AMARILLO</span></td><td>25–50</td><td>Trazabilidad parcial. Revisar eslabones faltantes.</td></tr>
+        <tr><td><span class="badge r2">NARANJA</span></td><td>50–75</td><td>Rupturas detectadas. Requiere solicitud LTAIBG o auditoría.</td></tr>
+        <tr><td><span class="badge r1">ROJO</span></td><td>75–100</td><td>Múltiples rupturas. Derivar al Tribunal de Cuentas o IGAE.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5 -->
+  <h2 id="dashboard">5. Cómo leer el dashboard</h2>
+  <div class="card">
+    <h3>KPIs superiores</h3>
+    <p>Los 6 indicadores en la franja superior resumen el estado global: total de fondos analizados, importe total en M€, score medio de trazabilidad y porcentaje de fondos con cada ruptura (R1/R2/R3). Un score medio &lt;50 indica que la mayoría del portafolio tiene rupturas significativas.</p>
+
+    <h3>Gráficos de rupturas y eslabones</h3>
+    <p>Las barras de progreso muestran qué porcentaje del total tiene cada ruptura. El gráfico de barras de eslabones muestra cuántos fondos se cortan en cada etapa — idealmente todo debería estar en E5 o superior.</p>
+
+    <h3>Evolución anual y distribución geográfica</h3>
+    <p>El gráfico combinado barra+línea muestra el importe anual y la curva acumulada. El doughnut geográfico agrupa los fondos en 5 regiones principales para detectar concentración.</p>
+
+    <h3>Clasificación de riesgo, Score por eslabón y Sector CRS</h3>
+    <p>Tres gráficos nuevos que muestran: (1) cuántos fondos caen en cada clasificación ROJO/NARANJA/AMARILLO/VERDE, (2) el score medio de trazabilidad por eslabón de corte — permite ver si los E3 son sistemáticamente más opacos, (3) distribución del importe por sector de actividad CRS.</p>
+
+    <h3>Filtros en las tablas</h3>
+    <p>Todas las tablas tienen filtros combinables: podés filtrar por clasificación + eslabón + año simultáneamente. El buscador de texto filtra en tiempo real sobre título y entidad.</p>
+  </div>
+
+  <!-- 6 -->
+  <h2 id="rendicion">6. Cards de rendición de cuentas</h2>
+  <div class="card">
+    <p>Cada card muestra un fondo clasificado ROJO u NARANJA con la siguiente información:</p>
+    <ul>
+      <li><strong>Barra de trazabilidad:</strong> score visual 0-100 con color según nivel</li>
+      <li><strong>Eslabón de corte:</strong> en qué etapa se rompió la cadena</li>
+      <li><strong>Rupturas detectadas:</strong> badges R1/R2/R3 cuando aplican</li>
+      <li><strong>🔗 Fuente AECID:</strong> enlace directo al registro en datos.aecid.es</li>
+      <li><strong>⚖️ Tribunal de Cuentas:</strong> buscador en tcu.es filtrado por AECID</li>
+      <li><strong>📋 BDNS:</strong> buscador en infosubvenciones.es filtrado por AECID</li>
+    </ul>
+    <p>Estos links permiten verificar manualmente si existe información adicional en fuentes oficiales que el sistema automático no capturó. Si encontrás documentación relevante, podés registrarla en <code>data/raw/ltaibg_respuestas.csv</code> para que el próximo pipeline actualice el score.</p>
+  </div>
+
+  <!-- 7 -->
+  <h2 id="ltaibg">7. Ley de Transparencia — Cómo solicitar información</h2>
+  <div class="ltaibg-box">
+    <h3>⚖️ Ley 19/2013 de Transparencia, Acceso a la Información Pública y Buen Gobierno</h3>
+    <p>Todo ciudadano tiene derecho a solicitar información pública a la AECID sin necesidad de justificar el motivo. La Administración tiene <strong>30 días hábiles</strong> para responder (ampliable a 30 días más en casos complejos).</p>
+  </div>
+  <div class="card">
+    <h3>¿Qué podés solicitar sobre fondos AECID?</h3>
+    <ul>
+      <li>Evaluaciones finales de proyectos específicos</li>
+      <li>Contratos y convenios de contribución con OOII</li>
+      <li>Justificantes de gasto de subvenciones a ONGDs</li>
+      <li>Informes de seguimiento de intervenciones</li>
+      <li>Criterios de selección de socios locales</li>
+      <li>Actas de órganos de seguimiento de programas bilaterales</li>
+    </ul>
+
+    <h3 style="margin-top:16px">Pasos para presentar una solicitud</h3>
+    <div class="step"><div class="step-num">1</div><div><strong>Portal de transparencia del Gobierno:</strong><br>Accedé a <a href="https://transparencia.gob.es/transparencia/transparencia_Home/index/Solicitar-Informacion.html" target="_blank">transparencia.gob.es → Solicitar Información</a>. Necesitás certificado electrónico, DNIe o Cl@ve.</div></div>
+    <div class="step"><div class="step-num">2</div><div><strong>Portal AECID directamente:</strong><br><a href="https://www.aecid.es/ES/la-aecid/transparencia" target="_blank">aecid.es/transparencia</a> — Tienen formulario propio y canal de acceso a la información.</div></div>
+    <div class="step"><div class="step-num">3</div><div><strong>Consejo de Transparencia:</strong><br>Si la respuesta es negativa o no llega en plazo, podés reclamar ante el <a href="https://www.consejodetransparencia.es/" target="_blank">Consejo de Transparencia y Buen Gobierno</a> de forma gratuita.</div></div>
+    <div class="step"><div class="step-num">4</div><div><strong>Registrar la respuesta:</strong><br>Una vez recibida, añadí el resultado en <code>data/raw/ltaibg_respuestas.csv</code> con los campos: fecha_solicitud, proyecto, organismo, fecha_respuesta, tipo_respuesta, tiene_justificante. El próximo pipeline actualizará el score R3 del fondo.</div></div>
+
+    <h3 style="margin-top:16px">Plazos y recursos legales</h3>
+    <table>
+      <thead><tr><th>Situación</th><th>Plazo</th><th>Acción</th></tr></thead>
+      <tbody>
+        <tr><td>Sin respuesta</td><td>30 días hábiles</td><td>Silencio negativo — reclamar ante CTBG</td></tr>
+        <tr><td>Respuesta parcial</td><td>—</td><td>Recurso de reposición o reclamación CTBG</td></tr>
+        <tr><td>Denegación</td><td>1 mes</td><td>Reclamación ante CTBG (gratuita, sin abogado)</td></tr>
+        <tr><td>Resolución CTBG desfavorable</td><td>2 meses</td><td>Recurso contencioso-administrativo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8 -->
+  <h2 id="api">8. Endpoints de la API</h2>
+  <div class="card">
+    <div class="endpoint">GET /api/status — Estado del servicio, versión y total de fondos cargados</div>
+    <div class="endpoint">GET /api/resumen — KPIs ejecutivos, acumulativo anual y top países/regiones</div>
+    <div class="endpoint">GET /api/fondos?entidad=X&amp;clasificacion=ROJO&amp;eslabon=3&amp;pais=Bolivia&amp;año=2023&amp;limit=100</div>
+    <div class="endpoint">GET /api/trazabilidad — Análisis completo por eslabón con scores</div>
+    <div class="endpoint">GET /api/entidades?top=30&amp;nivel=Alto — Ranking de entidades por riesgo integrado</div>
+    <div class="endpoint">GET /api/riesgo — Scores ICR/SOG/RES/VIA desagregados por entidad</div>
+    <div class="endpoint">GET /api/mensual — Evolución mensual por región y sector CRS</div>
+    <div class="endpoint">GET /api/informe — Informe ejecutivo completo en formato Markdown</div>
+    <div class="endpoint">POST /api/refresh (Header: X-Refresh-Token: &lt;token&gt;) — Ejecuta el pipeline completo</div>
+    <p style="margin-top:12px;font-size:0.82rem;color:#7c8db5">Todos los endpoints devuelven JSON. No requieren autenticación excepto <code>/api/refresh</code>.</p>
+  </div>
+
+  <!-- 9 -->
+  <h2 id="actualizacion">9. Actualización de datos y pipeline</h2>
+  <div class="card">
+    <p>El pipeline corre automáticamente <strong>cada día a las 07:00 UTC</strong> via GitHub Actions, descargando y procesando:</p>
+    <ul>
+      <li><strong>AECID</strong> — Portal datos.aecid.es (intervenciones activas y finalizadas)</li>
+      <li><strong>BDNS</strong> — Base de Datos Nacional de Subvenciones (convocatorias y convenios AECID)</li>
+      <li><strong>PLACE</strong> — Portal de Contratación del Estado en estándar OCDS</li>
+      <li><strong>LTAIBG</strong> — Registro manual de respuestas a solicitudes de transparencia</li>
+    </ul>
+    <h3>Ejecución manual</h3>
+    <ul>
+      <li><code>python pipeline.py</code> — Pipeline completo</li>
+      <li><code>python pipeline.py --solo-ingesta</code> — Solo descarga datos</li>
+      <li><code>python pipeline.py --solo-analisis</code> — Solo análisis (sin descarga)</li>
+      <li><code>python pipeline.py --forzar</code> — Re-descarga aunque los archivos existan</li>
+      <li><code>python pipeline.py --años 2022 2023 2024</code> — Filtrar por años</li>
+    </ul>
+    <h3>Persistencia entre deploys (Railway)</h3>
+    <p>Los datos procesados se guardan automáticamente en PostgreSQL al terminar cada pipeline. Al arrancar la app en Railway después de un redeploy, los CSVs se restauran desde la base de datos — no se pierde información entre deploys.</p>
+  </div>
+
+  <!-- 10 -->
+  <h2 id="archivos">10. Archivos generados</h2>
   <div class="card">
     <table>
       <thead><tr><th>Archivo</th><th>Descripción</th></tr></thead>
       <tbody>
-        <tr><td><code>data/raw/aecid_intervenciones.csv</code></td><td>Intervenciones descargadas de AECID</td></tr>
-        <tr><td><code>data/raw/bdns_subvenciones.csv</code></td><td>Convocatorias BDNS</td></tr>
-        <tr><td><code>data/raw/place_contratos.csv</code></td><td>Contratos PLACE/OCDS</td></tr>
-        <tr><td><code>data/raw/ltaibg_respuestas.csv</code></td><td>Solicitudes LTAIBG (completar manualmente)</td></tr>
-        <tr><td><code>data/processed/trazabilidad_por_fondo.csv</code></td><td>Score trazabilidad por intervención</td></tr>
+        <tr><td><code>data/raw/aecid_intervenciones.csv</code></td><td>Intervenciones descargadas de datos.aecid.es</td></tr>
+        <tr><td><code>data/raw/bdns_subvenciones.csv</code></td><td>Convocatorias y convenios BDNS</td></tr>
+        <tr><td><code>data/raw/place_contratos.csv</code></td><td>Contratos PLACE/OCDS adjudicados</td></tr>
+        <tr><td><code>data/raw/ltaibg_respuestas.csv</code></td><td>Completar manualmente con respuestas a solicitudes</td></tr>
+        <tr><td><code>data/processed/intervenciones_clean.csv</code></td><td>Datos limpios con campo eslabon_corte calculado</td></tr>
+        <tr><td><code>data/processed/trazabilidad_por_fondo.csv</code></td><td>Score de trazabilidad (0-100) por intervención</td></tr>
         <tr><td><code>data/processed/scores_riesgo.csv</code></td><td>Indicadores ICR/SOG/RES/VIA por entidad</td></tr>
-        <tr><td><code>data/processed/analisis_completo.csv</code></td><td>Dataset completo para el dashboard</td></tr>
-        <tr><td><code>reports/informe_ejecutivo.md</code></td><td>Informe ejecutivo en Markdown</td></tr>
+        <tr><td><code>data/processed/analisis_completo.csv</code></td><td>Dataset completo fusionado para el dashboard</td></tr>
+        <tr><td><code>reports/informe_ejecutivo.md</code></td><td>Informe ejecutivo con top riesgos en Markdown</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h2>📚 Marco teórico</h2>
+  <!-- 11 -->
+  <h2 id="marco">11. Marco teórico</h2>
   <div class="card">
-    <p>El análisis se basa en la teoría de los <em>Fenómenos Corruptivos</em> desarrollada por el Ph.D. Vicente Humberto Monteverde, que conceptualiza la corrupción como <strong>transferencias regresivas de ingresos</strong> facilitadas por la discrecionalidad en las decisiones legales.</p>
-    <p>Los 7 escenarios de transferencia identificados son: Privatización/Concesión, Contratos Públicos, Tarifas de Servicios, Precios Regulados, Salarios/Paritarias, Jubilaciones y Traslado de Impuestos.</p>
-    <p>Referencia: Monteverde, V.H. (2019). <em>Economía Corruptiva</em>. Dialnet.</p>
+    <p>El análisis se basa en la teoría de los <em>Fenómenos Corruptivos</em> desarrollada por el Ph.D. Vicente Humberto Monteverde, que conceptualiza la corrupción como <strong>transferencias regresivas de ingresos</strong> facilitadas por la discrecionalidad en las decisiones legales — no solo actos ilegales, sino distribuciones inequitativas de rentas a grupos de interés con base de legalidad.</p>
+    <p>Los 7 escenarios de transferencia identificados son: Privatización/Concesión, Contratos Públicos, Tarifas de Servicios Públicos, Precios Regulados, Salarios/Negociación Paritaria, Jubilaciones y Traslado de Impuestos.</p>
+    <p>Aplicado a cooperación internacional, el modelo detecta cuándo la opacidad estructural en la cadena AECID→OOII→Socio local→Beneficiario crea condiciones favorables para la captura de rentas, independientemente de la legalidad formal de cada transacción.</p>
+    <p style="margin-top:10px">Referencia: Monteverde, V.H. (2019). <em>Economía Corruptiva</em>. Dialnet. — <a href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">github.com/Viny2030/Fenomenos_corruptivos_spain</a></p>
   </div>
 
 </main>
-<footer>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain</footer>
+<footer>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Ley 19/2013 LTAIBG</footer>
 </body>
 </html>
 """
