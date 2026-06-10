@@ -472,6 +472,88 @@ async function cargar() {
   renderEntidades(_entidades);
   _fondos = fond.data||[];
   renderFondos(_fondos);
+
+  // ── Clasificación ROJO/NARANJA/etc ────────────────────────────────────────
+  const clasifCount = {ROJO:0, NARANJA:0, AMARILLO:0, VERDE:0};
+  (_fondos).forEach(f=>{ if(clasifCount[f.clasificacion]!==undefined) clasifCount[f.clasificacion]++; });
+  mkChart('chartClasif','doughnut',
+    ['ROJO','NARANJA','AMARILLO','VERDE'],
+    [{data:[clasifCount.ROJO,clasifCount.NARANJA,clasifCount.AMARILLO,clasifCount.VERDE],
+      backgroundColor:['#ef4444','#f97316','#eab308','#22c55e'],borderWidth:0}],
+    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}}
+  );
+
+  // ── Score medio de trazabilidad por eslabón ───────────────────────────────
+  const byEslabon = {};
+  (_fondos).forEach(f=>{
+    const e = 'E'+(f.eslabon_corte||'?');
+    if(!byEslabon[e]) byEslabon[e]={sum:0,n:0};
+    byEslabon[e].sum += (f.score_trazabilidad||0);
+    byEslabon[e].n++;
+  });
+  const eslKeys = Object.keys(byEslabon).sort();
+  mkChart('chartScoreEslabon','bar', eslKeys,
+    [{label:'Score medio',data:eslKeys.map(k=>+(byEslabon[k].sum/byEslabon[k].n).toFixed(1)),
+      backgroundColor:eslKeys.map(k=>{ const s=byEslabon[k].sum/byEslabon[k].n; return s<40?'#ef4444':s<60?'#f97316':s<80?'#eab308':'#22c55e'; }),
+      borderRadius:4}],
+    {plugins:{legend:{display:false}},
+     scales:{y:{min:0,max:100,ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}},
+             x:{ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}}}}
+  );
+
+  // ── Sector CRS ────────────────────────────────────────────────────────────
+  const sectorMap = {};
+  (_fondos).forEach(f=>{
+    const s = f.ambito||'Sin sector';
+    sectorMap[s] = (sectorMap[s]||0) + (f.importe_eur||0);
+  });
+  const sectorSort = Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  mkChart('chartSector','doughnut',
+    sectorSort.map(s=>s[0]),
+    [{data:sectorSort.map(s=>+(s[1]/1e6).toFixed(1)),
+      backgroundColor:['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6'],borderWidth:0}],
+    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:9}}}}}
+  );
+
+  // ── Cards de rendición de cuentas ─────────────────────────────────────────
+  const fondosRiesgo = (_fondos)
+    .filter(f=>f.clasificacion==='ROJO'||f.clasificacion==='NARANJA')
+    .sort((a,b)=>(b.score_integrado||0)-(a.score_integrado||0))
+    .slice(0,12);
+
+  document.getElementById('cards-fondos').innerHTML = fondosRiesgo.map(f=>{
+    const sc = f.score_trazabilidad||0;
+    const scColor = sc<40?'#ef4444':sc<60?'#f97316':sc<80?'#eab308':'#22c55e';
+    const r1 = f.ruptura_r1?'<span style="background:#7f1d1d;color:#fca5a5;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R1 OOII</span>':'';
+    const r2 = f.ruptura_r2?'<span style="background:#78350f;color:#fcd34d;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R2 Sin PLACE</span>':'';
+    const r3 = f.ruptura_r3?'<span style="background:#78350f;color:#fb923c;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R3 Sin justif.</span>':'';
+    const tca = f.url_recurso
+      ? '<a href="'+f.url_recurso+'" target="_blank" style="color:#60a5fa;font-size:0.75rem">🔗 Fuente AECID</a>'
+      : '<span style="color:#4a5568;font-size:0.75rem">Sin fuente directa</span>';
+    const tribunal = '<a href="https://www.tcu.es/tribunal-de-cuentas/es/buscador/?texto=AECID" target="_blank" style="color:#a78bfa;font-size:0.75rem">⚖️ Tribunal de Cuentas</a>';
+    const bdns = '<a href="https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias?descripcion=AECID" target="_blank" style="color:#34d399;font-size:0.75rem">📋 BDNS</a>';
+    return '<div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'
+      +'<strong style="font-size:0.82rem;color:#e0e0e0;flex:1;margin-right:8px">'+(f.titulo||'').substring(0,55)+'…</strong>'
+      +'<span class="pill '+f.clasificacion+'">'+f.clasificacion+'</span>'
+      +'</div>'
+      +'<div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px">'
+      +'<span>🏢 '+f.entidad+'</span>'
+      +' · <span>🌍 '+f.pais_region+'</span>'
+      +' · <span>📅 '+(f.año||'')+'</span>'
+      +' · <span>💶 '+((f.importe_eur||0)/1e6).toFixed(2)+'M€</span>'
+      +'</div>'
+      +'<div style="margin-bottom:8px">'
+      +'<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#a0aec0;margin-bottom:3px">'
+      +'<span>Trazabilidad · E'+f.eslabon_corte+' — '+(f.nombre_eslabon||'')+'</span>'
+      +'<span style="color:'+scColor+'">'+sc+'/100</span></div>'
+      +'<div style="background:#2d3561;border-radius:4px;height:6px">'
+      +'<div style="height:6px;border-radius:4px;background:'+scColor+';width:'+sc+'%"></div>'
+      +'</div></div>'
+      +'<div style="margin-bottom:10px">'+r1+r2+r3+'</div>'
+      +'<div style="display:flex;gap:12px;flex-wrap:wrap">'+tca+' '+tribunal+' '+bdns+'</div>'
+      +'</div>';
+  }).join('');
 }
 
 function renderMensual(region) {
@@ -554,89 +636,6 @@ function filtrarFondos() {
     (!año   ||String(f.año||f.fecha?.substring(0,4))===año)
   ));
 }
-
-
-  // ── Clasificación ROJO/NARANJA/etc ────────────────────────────────────────
-  const clasifCount = {ROJO:0, NARANJA:0, AMARILLO:0, VERDE:0};
-  (fond.data||[]).forEach(f=>{ if(clasifCount[f.clasificacion]!==undefined) clasifCount[f.clasificacion]++; });
-  mkChart('chartClasif','doughnut',
-    ['ROJO','NARANJA','AMARILLO','VERDE'],
-    [{data:[clasifCount.ROJO,clasifCount.NARANJA,clasifCount.AMARILLO,clasifCount.VERDE],
-      backgroundColor:['#ef4444','#f97316','#eab308','#22c55e'],borderWidth:0}],
-    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}}
-  );
-
-  // ── Score medio de trazabilidad por eslabón ───────────────────────────────
-  const byEslabon = {};
-  (fond.data||[]).forEach(f=>{
-    const e = 'E'+(f.eslabon_corte||'?');
-    if(!byEslabon[e]) byEslabon[e]={sum:0,n:0};
-    byEslabon[e].sum += (f.score_trazabilidad||0);
-    byEslabon[e].n++;
-  });
-  const eslKeys = Object.keys(byEslabon).sort();
-  mkChart('chartScoreEslabon','bar', eslKeys,
-    [{label:'Score medio',data:eslKeys.map(k=>+(byEslabon[k].sum/byEslabon[k].n).toFixed(1)),
-      backgroundColor:eslKeys.map(k=>{ const s=byEslabon[k].sum/byEslabon[k].n; return s<40?'#ef4444':s<60?'#f97316':s<80?'#eab308':'#22c55e'; }),
-      borderRadius:4}],
-    {plugins:{legend:{display:false}},
-     scales:{y:{min:0,max:100,ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}},
-             x:{ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}}}}
-  );
-
-  // ── Sector CRS ────────────────────────────────────────────────────────────
-  const sectorMap = {};
-  (fond.data||[]).forEach(f=>{
-    const s = f.ambito||'Sin sector';
-    sectorMap[s] = (sectorMap[s]||0) + (f.importe_eur||0);
-  });
-  const sectorSort = Object.entries(sectorMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  mkChart('chartSector','doughnut',
-    sectorSort.map(s=>s[0]),
-    [{data:sectorSort.map(s=>+(s[1]/1e6).toFixed(1)),
-      backgroundColor:['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6'],borderWidth:0}],
-    {plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:9}}}}}
-  );
-
-  // ── Cards de rendición de cuentas ─────────────────────────────────────────
-  const fondosRiesgo = (fond.data||[])
-    .filter(f=>f.clasificacion==='ROJO'||f.clasificacion==='NARANJA')
-    .sort((a,b)=>(b.score_integrado||0)-(a.score_integrado||0))
-    .slice(0,12);
-
-  document.getElementById('cards-fondos').innerHTML = fondosRiesgo.map(f=>{
-    const sc = f.score_trazabilidad||0;
-    const scColor = sc<40?'#ef4444':sc<60?'#f97316':sc<80?'#eab308':'#22c55e';
-    const r1 = f.ruptura_r1?'<span style="background:#7f1d1d;color:#fca5a5;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R1 OOII</span>':'';
-    const r2 = f.ruptura_r2?'<span style="background:#78350f;color:#fcd34d;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R2 Sin PLACE</span>':'';
-    const r3 = f.ruptura_r3?'<span style="background:#78350f;color:#fb923c;padding:2px 7px;border-radius:8px;font-size:0.7rem;margin-right:4px">R3 Sin justif.</span>':'';
-    const tca = f.url_recurso
-      ? '<a href="'+f.url_recurso+'" target="_blank" style="color:#60a5fa;font-size:0.75rem">🔗 Fuente AECID</a>'
-      : '<span style="color:#4a5568;font-size:0.75rem">Sin fuente directa</span>';
-    const tribunal = '<a href="https://www.tcu.es/tribunal-de-cuentas/es/buscador/?texto=AECID" target="_blank" style="color:#a78bfa;font-size:0.75rem">⚖️ Tribunal de Cuentas</a>';
-    const bdns = '<a href="https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias?descripcion=AECID" target="_blank" style="color:#34d399;font-size:0.75rem">📋 BDNS</a>';
-    return '<div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">'
-      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'
-      +'<strong style="font-size:0.82rem;color:#e0e0e0;flex:1;margin-right:8px">'+(f.titulo||'').substring(0,55)+'…</strong>'
-      +'<span class="pill '+f.clasificacion+'">'+f.clasificacion+'</span>'
-      +'</div>'
-      +'<div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px">'
-      +'<span>🏢 '+f.entidad+'</span>'
-      +' · <span>🌍 '+f.pais_region+'</span>'
-      +' · <span>📅 '+(f.año||f.fecha?.substring(0,4))+'</span>'
-      +' · <span>💶 '+((f.importe_eur||0)/1e6).toFixed(2)+'M€</span>'
-      +'</div>'
-      +'<div style="margin-bottom:8px">'
-      +'<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#a0aec0;margin-bottom:3px">'
-      +'<span>Trazabilidad · E'+f.eslabon_corte+' — '+(f.nombre_eslabon||'')+'</span>'
-      +'<span style="color:'+scColor+'">'+sc+'/100</span></div>'
-      +'<div style="background:#2d3561;border-radius:4px;height:6px">'
-      +'<div style="height:6px;border-radius:4px;background:'+scColor+';width:'+sc+'%"></div>'
-      +'</div></div>'
-      +'<div style="margin-bottom:10px">'+r1+r2+r3+'</div>'
-      +'<div style="display:flex;gap:12px;flex-wrap:wrap">'+tca+' '+tribunal+' '+bdns+'</div>'
-      +'</div>';
-  }).join('');
 
 cargar();
 </script>
