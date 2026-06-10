@@ -12,6 +12,10 @@ numpy>=1.26.0
 openpyxl>=3.1.0
 matplotlib>=3.8.0
 
+# === Base de datos (Railway PostgreSQL) ===
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.9
+
 # === Scraping ===
 requests>=2.31.0
 beautifulsoup4>=4.12.0

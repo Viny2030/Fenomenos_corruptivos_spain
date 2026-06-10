@@ -47,6 +47,18 @@ REFRESH_TOKEN = os.getenv("REFRESH_TOKEN", "dev-token")
 async def lifespan(app: FastAPI):
     DATA_PRO.mkdir(parents=True, exist_ok=True)
     REPORTS.mkdir(parents=True, exist_ok=True)
+    # Railway resetea el filesystem en cada deploy: si hay PostgreSQL
+    # configurada, restauramos los CSVs procesados desde la DB.
+    try:
+        sys.path.insert(0, str(ROOT / "src"))
+        from db import restaurar_procesados, db_disponible
+        if db_disponible():
+            n = restaurar_procesados(solo_si_faltan=True)
+            print(f"✅ DB PostgreSQL conectada — {n} archivos restaurados")
+        else:
+            print("ℹ️ Sin DATABASE_URL — usando solo CSVs locales")
+    except Exception as e:
+        print(f"⚠️ Restauración desde DB falló (no fatal): {e}")
     print("✅ Monitor AECID arrancando")
     yield
 

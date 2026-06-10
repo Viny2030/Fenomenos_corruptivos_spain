@@ -476,6 +476,17 @@ Ejemplos:
     if not args.sin_informe:
         paso_informe(analisis_path, archivos)
 
+    # ── Paso 6: persistencia en PostgreSQL (Railway) ───────────
+    try:
+        from db import subir_procesados
+        n = subir_procesados()
+        if n:
+            log.info(f"  Persistencia DB: {n} tablas subidas a PostgreSQL")
+    except ImportError:
+        log.info("  Persistencia DB: módulo db no disponible — omitido")
+    except Exception as e:
+        log.warning(f"  Persistencia DB falló (no fatal): {e}")
+
     log.info("═" * 60)
     log.info("PIPELINE COMPLETADO")
     log.info(f"  Análisis completo: {analisis_path}")
