@@ -214,7 +214,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
     <a href="https://transparencia.gob.es/transparencia/transparencia_Home/index/Solicitar-Informacion.html" target="_blank" style="color:#60a5fa;font-weight:600">transparencia.gob.es</a>
     o a través del <a href="https://www.aecid.es/ES/la-aecid/transparencia" target="_blank" style="color:#60a5fa;font-weight:600">portal de transparencia AECID</a>.
   </span>
-  <a href="/manual#ltaibg" style="margin-left:auto;white-space:nowrap;background:#2d5f8f;color:#93c5fd;padding:4px 12px;border-radius:6px;font-size:0.75rem">¿Cómo solicitar? →</a>
+  <div style="margin-left:auto;display:flex;gap:8px;white-space:nowrap"><a href="#indicadores-internacionales" style="background:#2d5f8f;color:#e0f2fe;padding:4px 12px;border-radius:6px;font-size:0.75rem;border:1px solid #60a5fa">📊 Indicadores →</a><a href="/manual" style="background:#2d5f8f;color:#e0f2fe;padding:4px 12px;border-radius:6px;font-size:0.75rem;border:1px solid #60a5fa">📖 Manual →</a></div>
 </div>
 
 <main>
@@ -280,9 +280,98 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
 
   <!-- Fila 5: Cards de fondos con rendición de cuentas -->
   <div class="card" style="margin-bottom:20px">
-    <h3>📋 Rendición de cuentas por fondo — Top riesgo</h3>
-    <p style="font-size:0.78rem;color:#7c8db5;margin-bottom:14px">Fondos clasificados ROJO u ORANGE con detalle de trazabilidad y fuentes de verificación</p>
+    <h3>📋 Rendición de cuentas — Fondos ROJO y NARANJA</h3>
+    <p style="font-size:0.78rem;color:#7c8db5;margin-bottom:14px">Todos los fondos con rupturas de trazabilidad detectadas · <span id="total-cards"></span></p>
     <div id="cards-fondos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px"></div>
+  </div>
+
+  <!-- Panel: Indicadores Internacionales -->
+  <div class="card" style="margin-bottom:20px" id="indicadores-internacionales">
+    <h3>🌐 Indicadores internacionales de referencia</h3>
+    <p style="font-size:0.78rem;color:#7c8db5;margin-bottom:16px">Estándares y benchmarks globales aplicados al análisis de subvenciones, subsidios y cooperación internacional</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="panel-indicadores">
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">🏦</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">OCDE — CRS Creditor Reporting</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Sistema de reporte de ayuda oficial al desarrollo. Clasifica sectores (códigos CRS), canales y tipos de flujo. España reporta ~4.500M€/año.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Umbrales de alerta:</strong> concentración en un canal &gt;40%, variación interanual &gt;30%</div>
+        <a href="https://stats.oecd.org/Index.aspx?DataSetCode=CRS1" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ Base de datos OCDE CRS</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">📡</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">IATI — International Aid Transparency</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Estándar XML open data para publicación de actividades de cooperación. Exige desglose por donante, receptor, actividad y geografía hasta nivel de transacción.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Gap España:</strong> AECID publica a nivel de programa, no de transacción individual</div>
+        <a href="https://iatistandard.org/en/" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ IATI Standard</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">📋</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">OCDS — Open Contracting Data Standard</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Estándar abierto para publicación de contratos públicos en todas sus fases: planificación, licitación, adjudicación, contrato y ejecución.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Gap España:</strong> PLACE publica adjudicación pero no ejecución ni pagos efectivos</div>
+        <a href="https://standard.open-contracting.org/" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ Open Contracting</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">🏛️</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">WGI — Worldwide Governance Indicators</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Banco Mundial. 6 dimensiones: voz/rendición, estabilidad, efectividad, calidad regulatoria, rule of law, control de corrupción. Proxy para el indicador VIA.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">En este sistema:</strong> VIA = 100 − WGI_control_corrupción del país receptor</div>
+        <a href="https://info.worldbank.org/governance/wgi/" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ WGI Banco Mundial</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">🔎</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">IPC — Índice de Percepción de Corrupción</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Transparency International. Escala 0 (muy corrupto) a 100 (muy limpio). Complementa el WGI para evaluar el riesgo del país receptor de los fondos.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Alerta:</strong> fondos a países con IPC &lt;40 sin mecanismo de verificación adicional</div>
+        <a href="https://www.transparency.org/en/cpi" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ Transparency International CPI</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">🇪🇺</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">OLAF — Oficina Europea Antifraude</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Protege los intereses financieros de la UE. Investiga fraude, corrupción y mala conducta en fondos europeos. Publica informes anuales con estadísticas por Estado miembro.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Relevancia:</strong> fondos FEDER/FSE que canalizan AECID tienen obligación adicional de auditoría OLAF</div>
+        <a href="https://anti-fraud.ec.europa.eu/" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ OLAF Europa</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">📊</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">HHI — Índice Herfindahl-Hirschman (ICR)</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Mide concentración de mercado. Adaptado aquí para concentración de receptores: suma de cuadrados de cuotas de cada entidad. Rango 0 (máx. dispersión) a 10.000 (monopolio).</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Umbral ICR:</strong> HHI normalizado &gt;0,25 → concentración preocupante en un receptor</div>
+        <a href="https://www.justice.gov/atr/herfindahl-hirschman-index" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ DOJ — HHI reference</a>
+      </div>
+
+      <div style="background:#0f1117;border:1px solid #2d3561;border-radius:10px;padding:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:1.1rem">⚖️</span>
+          <strong style="font-size:0.85rem;color:#7eb8f7">LTAIBG — Ley 19/2013 de Transparencia</strong>
+        </div>
+        <p style="font-size:0.78rem;color:#c0c8d8;margin-bottom:8px">Marco legal español de acceso a la información pública. Permite a cualquier ciudadano solicitar documentos de subvenciones, evaluaciones y contratos de la AECID sin justificación.</p>
+        <div style="font-size:0.75rem;color:#7c8db5;margin-bottom:8px"><strong style="color:#a0aec0">Indicador R3:</strong> proyectos &gt;500K€ sin respuesta favorable = ruptura de justificación</div>
+        <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887" target="_blank" style="color:#60a5fa;font-size:0.75rem">→ BOE — Ley 19/2013</a>
+      </div>
+
+    </div>
   </div>
 
   <!-- Fila 6: Entidades -->
@@ -519,8 +608,9 @@ async function cargar() {
   const fondosRiesgo = (_fondos)
     .filter(f=>f.clasificacion==='ROJO'||f.clasificacion==='NARANJA')
     .sort((a,b)=>(b.score_integrado||0)-(a.score_integrado||0))
-    .slice(0,12);
+    ; // sin límite — todos los ROJO y NARANJA
 
+  document.getElementById('total-cards').textContent = fondosRiesgo.length + ' fondos con alertas';
   document.getElementById('cards-fondos').innerHTML = fondosRiesgo.map(f=>{
     const sc = f.score_trazabilidad||0;
     const scColor = sc<40?'#ef4444':sc<60?'#f97316':sc<80?'#eab308':'#22c55e';
@@ -722,7 +812,8 @@ MANUAL_HTML = """<!DOCTYPE html>
       <li><a href="#api">8. Endpoints de la API</a></li>
       <li><a href="#actualizacion">9. Actualización de datos y pipeline</a></li>
       <li><a href="#archivos">10. Archivos generados</a></li>
-      <li><a href="#marco">11. Marco teórico</a></li>
+      <li><a href="#indicadores-internacionales">11. Indicadores internacionales de referencia</a></li>
+      <li><a href="#marco">12. Marco teórico</a></li>
     </ul>
   </div>
 
@@ -924,7 +1015,34 @@ MANUAL_HTML = """<!DOCTYPE html>
   </div>
 
   <!-- 11 -->
-  <h2 id="marco">11. Marco teórico</h2>
+  <h2 id="indicadores-internacionales">11. Indicadores internacionales de referencia</h2>
+  <div class="card">
+    <p>El sistema integra y cruza los siguientes estándares internacionales para evaluar cada fondo:</p>
+    <table>
+      <thead><tr><th>Estándar</th><th>Organismo</th><th>Uso en el sistema</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CRS</strong> — Creditor Reporting System</td><td>OCDE</td><td>Clasificación de sector, canal y tipo de flujo de cada intervención</td></tr>
+        <tr><td><strong>IATI</strong> — International Aid Transparency</td><td>IATI Secretariat</td><td>Detección de rupturas R1: OOII que no desagregan en IATI</td></tr>
+        <tr><td><strong>OCDS</strong> — Open Contracting Data Standard</td><td>Open Contracting Partnership</td><td>Detección de rupturas R2: contratos sin publicación PLACE/OCDS</td></tr>
+        <tr><td><strong>WGI</strong> — Worldwide Governance Indicators</td><td>Banco Mundial</td><td>Indicador VIA: vulnerabilidad institucional del país receptor</td></tr>
+        <tr><td><strong>IPC/CPI</strong> — Índice Percepción Corrupción</td><td>Transparency International</td><td>Complemento al VIA para países con IPC &lt;40</td></tr>
+        <tr><td><strong>HHI</strong> — Herfindahl-Hirschman Index</td><td>DOJ / Literatura económica</td><td>Indicador ICR: concentración de fondos en pocos receptores</td></tr>
+        <tr><td><strong>OLAF</strong> — Marco antifraude UE</td><td>Comisión Europea</td><td>Referencia para fondos con cofinanciación europea (FEDER/FSE)</td></tr>
+        <tr><td><strong>LTAIBG</strong> — Ley 19/2013</td><td>España</td><td>Base legal del indicador R3: solicitudes de acceso a información</td></tr>
+      </tbody>
+    </table>
+    <h3 style="margin-top:16px">¿Por qué estos estándares?</h3>
+    <p>Cada indicador del sistema tiene un referente internacional que lo valida:</p>
+    <ul>
+      <li><strong>ICR &gt;0,25</strong> — equivale a HHI &gt;2.500 en mercados (umbral DOJ de concentración elevada), adaptado a cuotas de receptores de fondos públicos</li>
+      <li><strong>SOG &gt;50</strong> — combina flags binarios ponderados, metodología similar al Corruption Risk Index de la UE (ERCAS)</li>
+      <li><strong>VIA basado en WGI</strong> — el WGI control of corruption es el indicador de gobernanza más usado en evaluaciones de riesgo fiduciario (Banco Mundial, PNUD)</li>
+      <li><strong>Score integrado 60/40</strong> — proporción riesgo/trazabilidad calibrada sobre metodología de Aid Quality Index (Brookings) y Open Budget Index (IBP)</li>
+    </ul>
+  </div>
+
+  <!-- 12 -->
+  <h2 id="marco">12. Marco teórico</h2>
   <div class="card">
     <p>El análisis se basa en la teoría de los <em>Fenómenos Corruptivos</em> desarrollada por el Ph.D. Vicente Humberto Monteverde, que conceptualiza la corrupción como <strong>transferencias regresivas de ingresos</strong> facilitadas por la discrecionalidad en las decisiones legales — no solo actos ilegales, sino distribuciones inequitativas de rentas a grupos de interés con base de legalidad.</p>
     <p>Los 7 escenarios de transferencia identificados son: Privatización/Concesión, Contratos Públicos, Tarifas de Servicios Públicos, Precios Regulados, Salarios/Negociación Paritaria, Jubilaciones y Traslado de Impuestos.</p>
