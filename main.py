@@ -44,6 +44,9 @@ REFRESH_TOKEN = os.getenv("REFRESH_TOKEN", "dev-token")
 # ─────────────────────────────────────────────────────────────────────────────
 # LIFESPAN
 # ─────────────────────────────────────────────────────────────────────────────
+@app.get("/landing", response_class=HTMLResponse)
+def landing():
+    return HTMLResponse(LANDING_HTML)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     DATA_PRO.mkdir(parents=True, exist_ok=True)
