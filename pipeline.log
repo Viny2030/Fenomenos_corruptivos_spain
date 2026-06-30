@@ -141,3 +141,49 @@
 19:19:09 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
 19:19:09 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
 19:19:09 [INFO] ════════════════════════════════════════════════════════════
+19:29:41 [INFO] ════════════════════════════════════════════════════════════
+19:29:41 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+19:29:41 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+19:29:41 [INFO] ════════════════════════════════════════════════════════════
+19:29:41 [INFO] ── Descargando datos.aecid.es...
+19:29:41 [INFO] Scraper AECID iniciando...
+19:29:42 [WARNING]   intento 1/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+19:29:44 [WARNING]   intento 2/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+19:29:46 [WARNING]   intento 3/3 fallido: 404 Client Error:  for url: https://datos.aecid.es/api/action/package_search?q=cooperacion&rows=50
+19:29:52 [INFO]   Fallback HTML: 0 enlaces
+19:29:52 [WARNING]   Usando datos seed (sin conexión a AECID)
+19:29:52 [INFO]   Guardado: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/raw/aecid_intervenciones.csv
+19:29:52 [INFO]    8 intervenciones → aecid_intervenciones.csv
+19:29:52 [INFO] ── Descargando BDNS...
+19:29:52 [INFO] Scraper BDNS iniciando...
+19:29:52 [WARNING]   BDNS convocatorias: Expecting value: line 1 column 1 (char 0)
+19:29:52 [WARNING]   BDNS sin datos — usando seed
+19:29:52 [INFO]   BDNS: 3 convocatorias
+19:29:52 [INFO]    3 convocatorias → bdns_subvenciones.csv
+19:29:52 [INFO] ── Descargando PLACE / OCDS...
+19:29:52 [INFO] Scraper PLACE/OCDS iniciando...
+19:30:05 [INFO]   PLACE: 200 contratos
+19:30:05 [INFO]   R2 detectado: 10 contratos con adjudicación directa/sin publicidad
+19:30:05 [INFO]    200 contratos → place_contratos.csv
+19:30:05 [INFO] ── Limpieza y normalización...
+19:30:05 [INFO]    8/8 registros limpios → intervenciones_clean.csv
+19:30:05 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+19:30:05 [INFO]   Cruce AECID↔PLACE: 0/8 proyectos encontrados en PLACE
+19:30:05 [INFO]    Score medio de trazabilidad: 43.8
+19:30:05 [INFO]    R1 (7 fondos): 97.8% del total
+19:30:05 [INFO]    R2 (8 fondos): 100.0% del total
+19:30:05 [INFO]    R3 (8 fondos): 100.0% del total
+19:30:05 [INFO]    → trazabilidad_por_fondo.csv
+19:30:05 [INFO] ── Indicadores de riesgo corruptivo...
+19:30:05 [INFO]   ICR global: 18.7 (HHI=0.3222, n=6 entidades)
+19:30:05 [INFO]   Scores calculados: 6 entidades
+19:30:05 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+19:30:05 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+19:30:05 [INFO] ── Generando informe ejecutivo...
+19:30:06 [INFO]    → informe_ejecutivo.md
+19:30:06 [INFO] DB: DATABASE_URL no definida — se omite persistencia
+19:30:06 [INFO] ════════════════════════════════════════════════════════════
+19:30:06 [INFO] PIPELINE COMPLETADO
+19:30:06 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
+19:30:06 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
+19:30:06 [INFO] ════════════════════════════════════════════════════════════
