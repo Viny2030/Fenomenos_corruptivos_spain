@@ -112,3 +112,32 @@
 18:00:34 [INFO]   Análisis completo: C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\data\processed\analisis_completo.csv
 18:00:34 [INFO]   Informe:           C:\Users\ASUS\PycharmProjects\Fenomenos_corruptivos_spain1\reports\informe_ejecutivo.md
 18:00:34 [INFO] ════════════════════════════════════════════════════════════
+19:19:09 [INFO] ════════════════════════════════════════════════════════════
+19:19:09 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+19:19:09 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+19:19:09 [INFO] ════════════════════════════════════════════════════════════
+19:19:09 [INFO]    datos.aecid.es ya existe (aecid_intervenciones.csv) — omitido
+19:19:09 [INFO]    BDNS ya existe — omitido
+19:19:09 [INFO]    PLACE ya existe — omitido
+19:19:09 [INFO] ── Limpieza y normalización...
+19:19:09 [INFO]    148/148 registros limpios → intervenciones_clean.csv
+19:19:09 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+19:19:09 [INFO]   Cruce AECID↔PLACE: 0/148 proyectos encontrados en PLACE
+19:19:09 [INFO]    Score medio de trazabilidad: 47.8
+19:19:09 [INFO]    R1 (78 fondos): 80.2% del total
+19:19:09 [INFO]    R2 (148 fondos): 100.0% del total
+19:19:09 [INFO]    R3 (141 fondos): 99.8% del total
+19:19:09 [INFO]    → trazabilidad_por_fondo.csv
+19:19:09 [INFO] ── Indicadores de riesgo corruptivo...
+19:19:09 [INFO]   ICR global: 6.7 (HHI=0.0914, n=38 entidades)
+19:19:09 [INFO]   Scores calculados: 38 entidades
+19:19:09 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+19:19:09 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+19:19:09 [INFO] ── Generando informe ejecutivo...
+19:19:09 [INFO]    → informe_ejecutivo.md
+19:19:09 [INFO] DB: DATABASE_URL no definida — se omite persistencia
+19:19:09 [INFO] ════════════════════════════════════════════════════════════
+19:19:09 [INFO] PIPELINE COMPLETADO
+19:19:09 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
+19:19:09 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
+19:19:09 [INFO] ════════════════════════════════════════════════════════════
