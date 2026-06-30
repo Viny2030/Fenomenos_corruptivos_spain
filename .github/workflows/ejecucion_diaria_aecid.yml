@@ -28,6 +28,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Ejecutar pipeline AECID (ingesta + análisis)
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
         run: python pipeline.py
 
       - name: Commit datos procesados AECID
