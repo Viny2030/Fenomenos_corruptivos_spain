@@ -30,7 +30,7 @@ jobs:
       - name: Ejecutar pipeline AECID (ingesta + análisis)
         env:
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python pipeline.py
+        run: python pipeline.py --forzar
 
       - name: Commit datos procesados AECID
         run: |
