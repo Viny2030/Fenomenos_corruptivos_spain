@@ -1,8 +1,23 @@
 """
 src/scraper_bdns.py
 ===================
-Descarga subvenciones y convenios AECID desde la Base de Datos Nacional de Subvenciones.
+Descarga convocatorias de subvenciones AECID desde la Base de Datos
+Nacional de Subvenciones (BDNS / SNPSAP).
 Cubre eslabones 2-3 del modelo de trazabilidad.
+
+NOTA (2026-06): la URL vieja (.../bdnstrans/GE/es/convocatorias) es la ruta
+del frontend Angular (SPA) -- devuelve el HTML de la app, no JSON, por eso
+fallaba con "Expecting value: line 1 column 1". El backend real está en
+/bdnstrans/api/convocatorias/busqueda. Ese endpoint no filtra por código de
+órgano (el parámetro "organo" se ignora), así que se busca por texto libre
+"AECID" y se filtra el resultado por nivel3 (organismo convocante real) para
+quedarse solo con las convocatorias que de verdad emite AECID.
+
+LIMITACIÓN CONOCIDA: no se confirmó el parámetro correcto del endpoint
+/api/concesiones/busqueda para filtrar por convocatoria (idConvocatoria,
+numeroConvocatoria y numConv devolvieron resultados sin filtrar). Por eso
+importe_total_eur y n_beneficiarios quedan en 0 por ahora -- requiere
+investigar ese endpoint más a fondo antes de poder traer montos reales.
 """
 import logging
 import requests
@@ -10,66 +25,60 @@ import pandas as pd
 from datetime import datetime
 
 log = logging.getLogger(__name__)
-HEADERS = {"Accept": "application/json", "User-Agent": "MonitorMonteverde/1.0"}
-BASE    = "https://www.pap.hacienda.gob.es/bdnstrans/GE/es"
+HEADERS = {"Accept": "application/json", "User-Agent": "Mozilla/5.0 (compatible; MonitorMonteverde/2.0)"}
+BASE = "https://www.infosubvenciones.es/bdnstrans/api"
+
+# Texto que debe aparecer en el organismo convocante (nivel3) para
+# confirmar que la convocatoria la emite AECID de verdad, y no que
+# "AECID" solo aparece mencionada en la descripción de otro organismo.
+FILTRO_ORGANISMO = ("COOPERACI", "INTERNACIONAL")
 
 
-def _buscar_convocatorias(organo="EA0029714", pagina=0, tam=50) -> list:
-    """EA0029714 = código AECID en BDNS"""
-    url = f"{BASE}/convocatorias"
-    params = {
-        "organo":   organo,
-        "pagina":   pagina,
-        "tamPagina": tam,
-        "tipoBusqueda": "C",
-    }
+def _buscar_convocatorias(texto="AECID", pagina=0, tam=50) -> dict:
+    url = f"{BASE}/convocatorias/busqueda"
+    params = {"descripcion": texto, "pageSize": tam, "page": pagina}
     try:
         r = requests.get(url, params=params, headers=HEADERS, timeout=30)
-        if r.status_code == 200:
-            return r.json().get("content", [])
+        r.raise_for_status()
+        return r.json()
     except Exception as e:
         log.warning(f"  BDNS convocatorias: {e}")
-    return []
+        return {}
 
 
-def _buscar_concesiones(id_conv: str) -> list:
-    url = f"{BASE}/concesiones"
-    try:
-        r = requests.get(url, params={"idConv": id_conv}, headers=HEADERS, timeout=20)
-        if r.status_code == 200:
-            return r.json().get("content", [])
-    except Exception:
-        pass
-    return []
-
-
-def scrape_bdns(organo="EA0029714", max_paginas=5) -> pd.DataFrame:
+def scrape_bdns(texto_busqueda="AECID", max_paginas=10) -> pd.DataFrame:
     log.info("Scraper BDNS iniciando...")
     rows = []
 
     for p in range(max_paginas):
-        convs = _buscar_convocatorias(organo=organo, pagina=p)
-        if not convs:
+        data = _buscar_convocatorias(texto=texto_busqueda, pagina=p)
+        content = data.get("content", [])
+        if not content:
             break
-        for c in convs:
-            id_conv = c.get("id") or c.get("idConvocatoria", "")
-            concesiones = _buscar_concesiones(str(id_conv)) if id_conv else []
-            n_benef = len(concesiones)
-            importe_total = sum(
-                float(x.get("importe", 0) or 0) for x in concesiones
-            )
+
+        for c in content:
+            nivel3 = (c.get("nivel3") or "").upper()
+            if not all(palabra in nivel3 for palabra in FILTRO_ORGANISMO):
+                continue  # mención de paso, no es una convocatoria de AECID
+
             rows.append({
-                "id_convocatoria":   id_conv,
-                "titulo":            c.get("titulo", c.get("denominacion", "")),
-                "organo":            c.get("organoConvocante", "AECID"),
-                "fecha_publicacion": c.get("fechaPublicacion", ""),
-                "importe_total_eur": c.get("importeTotal", importe_total) or importe_total,
-                "n_beneficiarios":   c.get("numBeneficiarios", n_benef) or n_benef,
-                "tipo":              c.get("tipoConvocatoria", "Subvención"),
-                "estado":            c.get("estado", ""),
-                "url":               f"{BASE}/convocatorias?idConv={id_conv}",
+                "id_convocatoria":   c.get("id", ""),
+                "numero_bdns":       c.get("numeroConvocatoria", ""),
+                "titulo":            c.get("descripcion", ""),
+                "organo":            c.get("nivel3", "AECID"),
+                "fecha_publicacion": c.get("fechaRecepcion", ""),
+                # Pendiente: enlazar con /api/concesiones/busqueda una vez
+                # confirmado el parámetro de filtro por convocatoria.
+                "importe_total_eur": 0,
+                "n_beneficiarios":   0,
+                "tipo":              "Subvención",
+                "estado":            "",
+                "url":               f"https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/{c.get('numeroConvocatoria', '')}",
                 "fuente":            "BDNS",
             })
+
+        if data.get("last", True):
+            break
 
     if not rows:
         log.warning("  BDNS sin datos — usando seed")
