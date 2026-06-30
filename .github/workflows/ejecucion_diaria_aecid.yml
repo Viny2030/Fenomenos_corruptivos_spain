@@ -1,0 +1,44 @@
+﻿name: Actualización Diaria — Monitor AECID
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-pipeline-aecid:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio (Checkout)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar pipeline AECID (ingesta + análisis)
+        run: python pipeline.py
+
+      - name: Commit datos procesados AECID
+        run: |
+          git config --global user.name 'Robot Monitor AECID'
+          git config --global user.email 'robot-aecid@noreply.github.com'
+          git add data/raw/ data/processed/ reports/ pipeline.log
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Actualización diaria AECID: $(date +'%Y-%m-%d')"
+            git pull --rebase origin main
+            git push
+          else
+            echo "Sin cambios en los datos AECID."
+          fi

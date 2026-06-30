@@ -2,5 +2,15 @@
 __pycache__
 .git
 .github
+.idea
 *.xlsx
-*.csv
+
+# Ignorar CSV "de trabajo" en la raíz y crudos, pero NO los procesados
+# que main.py lee en runtime (data/processed/*.csv)
+bora_*.csv
+pipeline.log
+debug_page*.html
+data/2026-*/
+data/raw/*.csv
+data/boe_legislacion.csv
+data/matriz_alertas_monteverde.csv
