@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 30/06/2026 19:30*
+*Generado: 30/06/2026 19:51*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total fondos analizados | 41.4 M€ |
-| Intervenciones | 8 |
-| Entidades receptoras | 6 |
-| Score medio de trazabilidad | 44/100 |
+| Total fondos analizados | 675.2 M€ |
+| Intervenciones | 834 |
+| Entidades receptoras | 450 |
+| Score medio de trazabilidad | 54/100 |
 
 ---
 
@@ -18,8 +18,8 @@
 
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
-| 3 | OOII sin desglose (R1) | 7 | 40.5 | 97.8% |
-| 4 | Destino geográfico opaco | 1 | 0.9 | 2.2% |
+| 3 | OOII sin desglose (R1) | 112 | 239.2 | 35.4% |
+| 4 | Destino geográfico opaco | 722 | 436.0 | 64.6% |
 
 ---
 
@@ -27,8 +27,8 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 1 | 0.9 | 2.2% |
-| NARANJA | 7 | 40.5 | 97.8% |
+| AMARILLO | 739 | 452.5 | 67.0% |
+| NARANJA | 95 | 222.7 | 33.0% |
 
 ---
 
@@ -36,20 +36,22 @@
 
 | Título | Entidad | Importe | Eslabón | Score | Clasificación |
 |--------|---------|---------|---------|-------|---------------|
-| Refugiados Siria ACNUR | ACNUR | 6.4M€ | E3 | 56 | NARANJA |
-| Seguridad Alimentaria Sahel FAO | FAO | 7.2M€ | E3 | 55 | NARANJA |
-| Salud Mozambique OMS | OMS | 3.1M€ | E3 | 54 | NARANJA |
-| Programa Agua y Saneamiento Bolivia | PNUD | 4.5M€ | E3 | 54 | NARANJA |
-| Fondo Adaptación Climática África | PNUD | 15.0M€ | E3 | 54 | NARANJA |
-| Microfinanzas Ecuador PNUD | PNUD | 1.5M€ | E3 | 54 | NARANJA |
-| Educación Guatemala UNICEF | UNICEF | 2.8M€ | E3 | 53 | NARANJA |
-| Gobernabilidad Honduras consultoría | Consultoría XYZ S.L. | 0.9M€ | E4 | 40 | AMARILLO |
+| Protección y asistencia en rutas migratorias | OIM - Organización Internacion | 2.1M€ | E3 | 53 | NARANJA |
+| Prevención del desplazamiento interno | OIM - Organización Internacion | 1.0M€ | E3 | 53 | NARANJA |
+| Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 15.0M€ | E3 | 53 | NARANJA |
+| Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 17.5M€ | E3 | 53 | NARANJA |
+| Soluciones a los desplazamiento internos en Améric… | OIM - Organización Internacion | 0.6M€ | E3 | 53 | NARANJA |
+| Rehabilitación e inclusión de personas con discapa… | OIM - Organización Internacion | 0.8M€ | E3 | 53 | NARANJA |
+| Lucha global contra el sida, la tuberculosis y la … | Fondo Mundial de Lucha contra  | 85.0M€ | E3 | 53 | NARANJA |
+| Acceso y permanencia de las niñas afganas en el si… | UNICEF - Fondo de las Naciones | 0.8M€ | E3 | 52 | NARANJA |
+| Prevención y tratamiento de la malnutrición infant… | UNICEF - Fondo de las Naciones | 0.7M€ | E3 | 52 | NARANJA |
+| Mejora de la nutrición infantil en Niger | UNICEF - Fondo de las Naciones | 1.0M€ | E3 | 52 | NARANJA |
 
 ---
 
 ## Fuentes utilizadas
 
-- **aecid**: 8 registros (`aecid_intervenciones.csv`)
+- **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 3 registros (`bdns_subvenciones.csv`)
 - **place**: 200 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)

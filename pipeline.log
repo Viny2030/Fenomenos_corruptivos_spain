@@ -187,3 +187,45 @@
 19:30:06 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
 19:30:06 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
 19:30:06 [INFO] ════════════════════════════════════════════════════════════
+19:49:59 [INFO] ════════════════════════════════════════════════════════════
+19:49:59 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+19:49:59 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+19:49:59 [INFO] ════════════════════════════════════════════════════════════
+19:49:59 [INFO] ── Descargando datos.aecid.es...
+19:49:59 [INFO] Scraper AECID iniciando...
+19:51:11 [INFO]   Lista de intervenciones: 834/834 registros (14 paginas)
+19:51:11 [INFO]   Guardado: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/raw/aecid_intervenciones.csv
+19:51:11 [INFO]    834 intervenciones → aecid_intervenciones.csv
+19:51:11 [INFO] ── Descargando BDNS...
+19:51:11 [INFO] Scraper BDNS iniciando...
+19:51:12 [WARNING]   BDNS convocatorias: Expecting value: line 1 column 1 (char 0)
+19:51:12 [WARNING]   BDNS sin datos — usando seed
+19:51:12 [INFO]   BDNS: 3 convocatorias
+19:51:12 [INFO]    3 convocatorias → bdns_subvenciones.csv
+19:51:12 [INFO] ── Descargando PLACE / OCDS...
+19:51:12 [INFO] Scraper PLACE/OCDS iniciando...
+19:51:22 [INFO]   PLACE: 200 contratos
+19:51:22 [INFO]   R2 detectado: 10 contratos con adjudicación directa/sin publicidad
+19:51:22 [INFO]    200 contratos → place_contratos.csv
+19:51:22 [INFO] ── Limpieza y normalización...
+19:51:22 [INFO]    834/834 registros limpios → intervenciones_clean.csv
+19:51:22 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+19:51:23 [INFO]   Cruce AECID↔PLACE: 0/834 proyectos encontrados en PLACE
+19:51:24 [INFO]    Score medio de trazabilidad: 54.1
+19:51:24 [INFO]    R1 (112 fondos): 35.4% del total
+19:51:24 [INFO]    R2 (834 fondos): 100.0% del total
+19:51:24 [INFO]    R3 (379 fondos): 82.8% del total
+19:51:24 [INFO]    → trazabilidad_por_fondo.csv
+19:51:24 [INFO] ── Indicadores de riesgo corruptivo...
+19:51:24 [INFO]   ICR global: 2.5 (HHI=0.0275, n=450 entidades)
+19:51:24 [INFO]   Scores calculados: 450 entidades
+19:51:24 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+19:51:24 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+19:51:24 [INFO] ── Generando informe ejecutivo...
+19:51:24 [INFO]    → informe_ejecutivo.md
+19:51:24 [INFO] DB: DATABASE_URL no definida — se omite persistencia
+19:51:24 [INFO] ════════════════════════════════════════════════════════════
+19:51:24 [INFO] PIPELINE COMPLETADO
+19:51:24 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
+19:51:24 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
+19:51:24 [INFO] ════════════════════════════════════════════════════════════

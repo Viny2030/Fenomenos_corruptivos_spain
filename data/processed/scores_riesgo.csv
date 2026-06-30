@@ -1,7 +1,451 @@
 ﻿entidad,n_fondos,importe_total,sog_medio,res_medio,via_medio,score_medio,icr,score_riesgo,nivel_riesgo
-ACNUR,1,6400000,75.0,58.0,90.0,61.65,18.7,55.2,Alto
-Consultoría XYZ S.L.,1,890000,45.0,44.0,62.0,41.349999999999994,18.7,38.0,Medio
-FAO,1,7200000,75.0,58.0,78.0,59.25,18.7,53.2,Alto
-OMS,1,3100000,75.0,58.0,68.0,57.25,18.7,51.5,Alto
-PNUD,3,21000000,80.0,58.0,56.666666666666664,56.73333333333333,18.7,51.0,Alto
-UNICEF,1,2800000,75.0,58.0,60.0,55.65,18.7,50.1,Alto
+A Todo Pulmón Paraguay Respira,2,310000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ABAAD - Recursos para la Igualdad de Género,1,250000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+ACHNU - Asociación Chilena Pro Naciones Unidas,1,130000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+ACNUDH - Oficina del Alto Comisionado de las Naciones Unidas para los Derechos Humanos,2,550000.0,25.0,44.0,51.5,32.25,2.5,27.8,Medio
+ACNUR - Oficina del Alto Comisionado de UNHCR,14,17100000.0,70.71428571428571,58.0,62.07142857142857,54.56428571428571,2.5,46.8,Medio
+ACP - Associació Catalana per la Pau,5,2370707.0,33.0,44.0,56.4,36.029999999999994,2.5,31.0,Medio
+ADFM,1,300000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+AGARESO - Asociación Galega de Reporteiros Solidarios,1,85095.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+"AIDA - Ayuda, Intercambio y Desarrollo",3,1400345.0,31.666666666666668,44.0,48.333333333333336,33.949999999999996,2.5,29.2,Medio
+AIETI - Asociación de Investigación y Especialización sobre Temas Iberoamericanos,3,1700597.0,38.333333333333336,44.0,55.0,37.61666666666667,2.5,32.3,Medio
+AL AWDA (Union of Health Work Committees),1,350000.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+ALIARSE - Fundación para la Sostenibilidad y La Equidad,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+AMCP-SP - Alliance Médicale contre le Paludisme-Santé Population,1,400000.0,25.0,44.0,78.0,37.55,2.5,32.3,Medio
+AMIR - Asociación de Mujeres Intibucanas Renovadas,1,224999.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+AMPA,1,352572.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+AMUPROLAGO - Asociación de Municipios del Lago Yojoa y su Area de Influencia,1,349999.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+ANARASD - Asociación Navarra de Amigos y Amigas de la RASD,2,789709.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+ANCON - Asociación Nacional para la Conservación de la Naturaleza,1,240000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+APAC-NIGER - Association des Professionnelles Africaines de la Communication - Section du Niger,1,194031.0,25.0,44.0,75.0,36.95,2.5,31.8,Medio
+APLAN - Autoridad de Planificación del Centro Histórico de San Salvador,1,300000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ASALE - Asociación de Academias de la Lengua,1,490000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+ASFE - Arquitectura Sin Fronteras,6,5147057.0,45.0,44.0,59.333333333333336,40.81666666666666,2.5,35.1,Medio
+ASIES - Asociación de Investigación y Estudios Sociales,2,600000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+ATTSF - Asociación de Trabajadores,2,1109665.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+AUDA-NEPAD Agency,1,2000000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+AVSI Foundation - Association for Volunteers in International Service,1,300000.0,25.0,44.0,85.0,38.95,2.5,33.5,Medio
+Academia de las Artes Ciencias Cine Academia del Cine España,2,36000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Acciona Org Foundation Philippines,1,320100.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Acción Ciudadana,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Acción contra el Hambre Guatemala,1,1105842.0,45.0,44.0,60.0,40.949999999999996,2.5,35.2,Medio
+"Acción, Desarrollo y Sostenibilidad",1,411443.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+Agence Marocaine de Coopération,1,100000.0,25.0,44.0,75.0,36.95,2.5,31.8,Medio
+Agencia de la Cuenca Hidrográfica de Moulaya,1,761657.0,45.0,44.0,45.0,37.949999999999996,2.5,32.6,Medio
+AgriCord,1,500000.0,45.0,44.0,45.0,37.949999999999996,2.5,32.6,Medio
+Aisha,1,200000.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+Al Qantara,1,340000.0,25.0,44.0,40.0,29.95,2.5,25.8,Medio
+Alcaldía de Pikine,1,900000.0,45.0,44.0,40.0,36.949999999999996,2.5,31.8,Medio
+Aldeas Infantiles SOS de España,1,1000000.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Alianza por la Solidaridad Fundación Española para la Cooperación,9,7449642.0,42.77777777777778,44.0,72.44444444444444,42.66111111111111,2.5,36.6,Medio
+"Amigos de la tierra, España",4,2095168.0,35.0,44.0,58.0,37.05,2.5,31.9,Medio
+Applied Research Institute,1,900000.0,45.0,44.0,72.0,43.349999999999994,2.5,37.2,Medio
+Arbeiter-Samariter-Bund Deutschland,1,500000.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Artesanías de Colombia S.A.,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asamblea de Cooperación por la Paz,6,3834716.0,35.0,44.0,61.833333333333336,37.81666666666666,2.5,32.5,Medio
+Asociación Balam ONG,1,473092.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Asociación Calam,1,70000.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+Asociación Ceipaz,1,100000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación Centro Científico Tropical,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación Ciudad Saludable,1,500000.0,45.0,44.0,50.0,38.949999999999996,2.5,33.5,Medio
+Asociación Civil Plan Misiones,3,324999.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Asociación Civil Plan Moxos,3,389999.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Asociación Civil Recíclame Cumple con tu Planeta,1,110000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Asociación Colectiva de Mujeres para el Desarrollo Local,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Asociación Coordinadora de la Mujer,2,650000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Asociación Dominicana Pro Bienestar de la Familia (Profamilia),1,300000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación España Con ACNUR,3,2213282.0,68.33333333333333,58.0,55.0,52.31666666666666,2.5,44.8,Medio
+Asociación Feminista Kuña Poty,2,275000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación Hermanamiento León (Nicaragua) - Zaragoza (España),1,485000.0,25.0,44.0,68.0,35.55,2.5,30.6,Medio
+Asociación Infancia Sin Fronteras,1,506369.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Asociación Inscripta Con Capacidad Restringida Global (Global Infancia),1,210000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación Menonita para el Desarrollo Económico de Canadá,1,630601.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Asociación Mobdiun Creative Youth,1,200000.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+Asociación Mozambicana de Armadores,2,350000.0,25.0,44.0,68.0,35.55,2.5,30.6,Medio
+Asociación PROFAMILIA,1,650000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Asociación Promoción Claretiana de Cooperación para el Desarrollo,1,313720.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Asociación SETEM Hego Haizea,1,452009.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Asociación Solidaria Andaluza de Desarrollo,2,1311638.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+Asociación Solidaridad Periferias,1,88000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Asociación Suiza para el Desarrollo y la Cooperación Helvetas Guatemala,1,900000.0,45.0,44.0,60.0,40.949999999999996,2.5,35.2,Medio
+Asociación Vredeseilanden-Coopibo,1,900000.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Asociación de Mujeres Afrocolombianas AMUAFROC,1,155000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Asociación por la Paz y el Desarrollo,1,580000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Associacao Nacional de Quilombos para Cooperacao - Negra Anastacia,1,200000.0,55.0,58.0,55.0,47.65,2.5,40.9,Medio
+Associacao Preparatoria de Cidadaos do Amanha Instituto Aprecia,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Associació Acció Internacional per la Pau,2,870087.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Associació Cooperacció,1,688943.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Association Droit et Justice,1,450000.0,55.0,58.0,45.0,45.65,2.5,39.2,Medio
+Association Ennakhil,1,320000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+Association Leb Relief,1,750000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+"Ayuda en Acción Mexico, Asociación Civil",1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+"Azimut 360, SCCL",1,402978.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+BID - Banco Interamericano de Desarrollo,3,3000000.0,68.33333333333333,58.0,70.0,55.31666666666666,2.5,47.4,Medio
+"Bantay Kita, INC",1,110000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Built Environment Collective,1,200000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+CACI - Conferencia De Autoridades,1,350000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+CAJAR - Corporación Colectivo de Abogados y Abogadas José Alvear Restrepo,1,100000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+CANATUR - Cámara Nacional de Turismo de Perú,1,600000.0,45.0,44.0,50.0,38.949999999999996,2.5,33.5,Medio
+CAPMAS - Agencia Central de Movilización Pública y Estadística,1,267000.0,55.0,58.0,62.0,49.05,2.5,42.1,Medio
+CATIE - Centro Agronómico Tropical de Investigación y Enseñanza de Panama,1,645730.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+CAWTAR - Center for Arab Women Training and Research,1,298000.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+CEAMSO - Centro de Estudios Ambientales y Sociales,3,1977000.0,31.666666666666668,44.0,55.0,35.28333333333333,2.5,30.4,Medio
+CECJ - Coordinadora Estatal de Comercio Justo,1,140615.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+CEDDHH - Comisión Etíope de DDHH,1,150000.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+CEFREC - Fundación para el desarrollo de la comunicación intercultural,1,200000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+CEJIS - Centro de Estudios Juridícos e Investigación Social,1,160000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+CERAI - Centro de Estudios Rurales y de Agricultura Internacional,4,2372840.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+CERAI - Centro de Estudios Rurales y de Agricultura Internacional Mauritania,1,985728.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+CESAL,6,4531670.0,45.0,44.0,67.5,42.449999999999996,2.5,36.5,Medio
+CHUB7 - United Nations,5,2050000.0,29.0,44.0,70.0,37.35,2.5,32.1,Medio
+CIAT - Centro Interamericano de Administra Tributarias,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+CIAT - Centro Internacional de Agricultura Tropical,2,1715373.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+CICR - Comité Internacional de la Cruz Roja,2,6400000.0,45.0,44.0,86.0,46.14999999999999,2.5,39.6,Medio
+CICR - Comité International de la Croix-Rouge,2,900000.0,35.0,44.0,69.0,39.25,2.5,33.7,Medio
+CIHEAM - Instituto Agronómico Mediterráneo de Zaragoza,2,600000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+CIIFEN - Centro Internacional para la Invest del fenómeno de El Niño,1,200000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+CIPCA - Centro de Investigación y Promoción del Campesinado,3,840000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+CIRA - Centro de Incubación e Investigación - Acción en Economía Social y Solidaria,1,300000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+CISCSA - Centro de Intercambio Subregional Cono Sur Alahua,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+CLAD - Centro Latinoamericano de Administración para el Desarrollo,1,50000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+CND - Corporación Nacional para el Desarrollo,4,1399340.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+CNFPLF - Centro Nacional de la Función Publica Local y de la Formación,1,352745.0,25.0,44.0,40.0,29.95,2.5,25.8,Medio
+COADFORPAZ - Corporación Administrativa de Formación y Construcción de Paz,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+COCEMFE - Confederación Española de Personas con Discapacidad Física y Orgánica,2,758010.0,25.0,44.0,51.5,32.25,2.5,27.8,Medio
+CODHES - Consultoría para los Derechos Human y el Desplazamiento,2,600000.0,25.0,44.0,62.5,34.45,2.5,29.7,Medio
+COFERSA - Convergence des Femmes Rurales pour la Souveraineté Alimentaire,1,400000.0,25.0,44.0,78.0,37.55,2.5,32.3,Medio
+CONAPI - Coordinación Nacional de Pastoral Indígena - Conferencia Episcopal de Paraguay,1,280000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+CONEMUND,4,2696480.0,40.0,44.0,72.5,41.699999999999996,2.5,35.8,Medio
+"CONEXGUA - Conexión Guatemala, ONG",1,400000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+CONGDE - Coordinadora de ONGD´s,1,650000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+COPADE - Fundación Comercio para el Desarrollo,3,1541176.0,38.333333333333336,44.0,54.333333333333336,37.48333333333333,2.5,32.2,Medio
+CROSE - Coordinación Regional de Organizaciones del Sureste,1,578019.0,45.0,44.0,85.0,45.949999999999996,2.5,39.4,Medio
+Capital Humano y Social Alternativo,1,300000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Casa y Ciudad Asociación Civil,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Casal dels Infants per la Accio Social als Barris,1,242940.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+Centro Nacional de Memoria Histórica,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+"Centro de Desarrollo Empresarial de la Micro, Pequeña y Mediana Empresa de la Region Valle De Sula",1,200000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Centro de Estudios Hoya Amazónica Hoyam Mojos,1,47000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Centro de Estudios Judiciales del Paraguay,3,785000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Cives Mundi,2,1588589.0,45.0,44.0,47.5,38.449999999999996,2.5,33.1,Medio
+"Comisión de Intercambio Cultural, Educativo y Científico",2,500000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Confederación de Fondos de Cooperación,2,2350000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Consejo Consultivo de Turismo de la Ciudad de Encarnacion,2,100000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Consejo Cívico de Organizaciones Populares e Indígenas de Honduras Copinh,1,252311.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Consejo Departamental del Podor,1,350532.0,25.0,44.0,40.0,29.95,2.5,25.8,Medio
+Consejo de Alcaldes y Oficina de Planificación del Área Metropolitana de San Salvador (COAMSS/OPAMSS),1,900000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Coordinadora por los Derechos de la Infancia y de la Adolescencia,1,100000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Corporacion Caribe Afirmativo,1,164964.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Corporación Inst Ciencias Indígena,1,250000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Corporación Manos Visibles,1,250000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Corporación Misión de Observación Electoral,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Corporación de Estudios de Opinión Pública Latinoamericana - Latinobar,2,400000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Cruz Roja Española,7,6372803.0,45.0,44.0,63.857142857142854,41.72142857142857,2.5,35.8,Medio
+Cruz Roja Panameña,1,280000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Cámara Oficial de Comercio de España en Peru,2,700000.0,25.0,44.0,52.5,32.45,2.5,28.0,Medio
+Cámara Paraguaya de Turismo de las Misiones Jesuitas,1,80000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Cáritas Española,5,4012847.0,41.0,44.0,69.6,41.47,2.5,35.6,Medio
+Cáritas Venezuela,2,410000.0,25.0,44.0,80.0,37.95,2.5,32.6,Medio
+Cáritas de Honduras,1,399999.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+DEMUS - Estudio para la Defensa de los Derechos de la Mujer,1,300000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+DG ECHO - Dirección General de Protección Civil y Operaciones de Ayuda Humanitaria Europeas,2,2000000.0,45.0,44.0,72.0,43.349999999999994,2.5,37.2,Medio
+"Decidamos, Campaña Por la Expresión",1,215000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Defensoría del Pueblo de Bolivia,1,200000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Departamento de Nariño,1,1500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Departamento de la Guajira,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Departamento del Cauca,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Distrito Drag,1,150000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ECA - Asociación Escuela Complutense Africana,1,130000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ECREEE - ECOWAS Centre for Renewable Energy and Energy Efficiency,7,4057685.0,36.42857142857143,44.0,69.28571428571429,39.80714285714286,2.5,34.2,Medio
+ECTA - Autoridad Etíope del Café y del Té,1,102995.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+EIAR - Ethiopian Institute for Agricultural Research,1,350000.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+Egoaizia Asociación para la Cooperacion,1,85240.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+Encuentros Servicio Jesuita de la Solidaridad,1,350000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Enraíza Derechos,2,1006315.0,35.0,44.0,53.5,36.15,2.5,31.1,Medio
+Escuela de Jueces Estado de Bolivia,1,200000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Europalia Internacional,2,1700000.0,35.0,44.0,62.5,37.95,2.5,32.6,Medio
+FA - Fondo de Adaptación al Cambio Climático,2,32500000.0,75.0,58.0,70.0,57.65,2.5,49.4,Medio
+FAMME - Federación de Asociaciones Medicus Mundi en España,2,1442100.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+FAO - Organización de las Naciones Unidas para la Alimentación y la Agricultura,10,7050000.0,67.0,58.0,72.8,55.410000000000004,2.5,47.5,Medio
+"FCSAI - Fundación Estatal Salud, Infancia y Bienestar Social",1,1634249.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+FEMP - Federación Española de Municipios y Provincias,1,250000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+FEPP - Fondo Ecuatoriano Populorum Progressio,1,350000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+FFLA - Fundación Futuro Latinoamericano Internacional,1,400000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+FIDA - Fondo Internacional de Desarrollo Agrícola,1,350000.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+FILAC - Fondo para el Desarrollo de los Pueblos Indígenas de America Latina,2,690000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+FMS - Fondo de Mujeres del Sur,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+FORMASOL - Formación Solidaria,1,136000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+FPSC - Fundación Promoción Social de la Cultura,5,3844248.0,41.0,44.0,61.8,39.91,2.5,34.3,Medio
+FRS - Fundación de Religiosos para la Salud,4,2488980.0,40.0,44.0,55.0,38.199999999999996,2.5,32.8,Medio
+FUDEN - Fundación para el Desarrollo,1,352111.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+FUDIS - Fundación para el Desarrollo Integrado Sustentable,1,202840.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+FUNDEMAS,1,600000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fair Trade Lebanon,1,400000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Farmacéuticos Mundi,5,3897747.0,41.0,44.0,60.6,39.669999999999995,2.5,34.1,Medio
+Federación Dominicana de Municipios,1,350000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Federación Internacional de la Cruz Roja,2,11860000.0,35.0,44.0,69.0,39.25,2.5,33.7,Medio
+Federación Nacional de Formas Asoci para las Economias Sociales Ecomun,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Federación Nacional de Trabajadoras y Trabajadores del Hogar del Perú FENTTRAHOP,1,300000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Fondo Fiduciario para Combatir la Migración Ilegal y la Protección de los Migrantes,1,1043039.0,45.0,44.0,62.0,41.349999999999994,2.5,35.5,Medio
+"Fondo Mundial de Lucha contra el SIDA, la Tuberculosis y la Malaria",1,85000000.0,75.0,58.0,70.0,57.65,2.5,49.4,Medio
+Fondo de Población de Naciones Unidas,21,18245000.0,41.19047619047619,44.0,66.52380952380952,40.921428571428564,2.5,35.2,Medio
+"Front Line, The International Foundation for the Protection of Human Rights Defenders",1,1500000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Fundació Privada Mon-3,2,685852.0,25.0,44.0,40.0,29.95,2.5,25.8,Medio
+Fundació Privada Ulls del Mon,3,1361756.0,31.666666666666668,44.0,62.666666666666664,36.81666666666666,2.5,31.7,Medio
+Fundación ADRA - Agencia Adventista para el Desarrollo y Recursos Asistenciales,1,958215.0,45.0,44.0,75.0,43.949999999999996,2.5,37.7,Medio
+Fundación ATASIM,1,150000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación ATHISA,1,404800.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+Fundación Acciona Microenergía,1,990000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Acciona Org Mexico,1,899267.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Acción Contra el Hambre,8,7252330.0,45.0,44.0,62.625,41.474999999999994,2.5,35.6,Medio
+Fundación Acodea,1,497645.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Alas de Colibrí,1,300000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación Albihar,2,1264987.0,45.0,44.0,50.0,38.949999999999996,2.5,33.5,Medio
+Fundación Alboan,1,958969.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Albéniz,1,177000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Amigos de la Naturaleza,2,1800000.0,45.0,44.0,52.0,39.349999999999994,2.5,33.8,Medio
+Fundación Avina,2,899999.0,35.0,44.0,58.5,37.15,2.5,32.0,Medio
+Fundación Ayuda en Acción,8,6053304.0,40.0,44.0,66.375,40.474999999999994,2.5,34.8,Medio
+Fundación CAJE - Fundación Centro y Apoyo Ecuatoriano,1,249999.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación CIDEAL de Cooperación e Investigación,3,2255289.0,45.0,44.0,64.0,41.74999999999999,2.5,35.9,Medio
+Fundación CODESPA,7,3582583.0,36.42857142857143,44.0,54.714285714285715,36.892857142857146,2.5,31.7,Medio
+Fundación Carolina,2,11400000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Fundación Casa America Cataluña,2,400000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Centroamérica Cuenta,2,109900.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Cepaim,1,182732.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Construir,2,550000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Fundación Cultura y Creación FCC,1,60000.0,25.0,44.0,85.0,38.95,2.5,33.5,Medio
+Fundación Dignitas,1,270000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Diálogo Diverso,1,300000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación ETEA para el Desarrollo,1,593647.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Economistas Sin Fronteras,1,213675.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Educación y Cooperación,5,3729241.0,41.0,44.0,56.0,38.75,2.5,33.3,Medio
+Fundación Energía Sin Fronteras,1,355259.0,25.0,44.0,68.0,35.55,2.5,30.6,Medio
+Fundación Entreculturas - Fe y Alegría,4,2361639.0,35.0,44.0,72.0,39.85,2.5,34.2,Medio
+Fundación Escuela Taller Barichara,1,300000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Escuela Taller de Cali,1,125000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Fundecooperación para el Desarrollo Sostenible,1,150000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación GABO - Fundación Gabriel García Marquez para el Nuevo Periodismo Iberoamericano,1,170000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación HEIFER Ecuador,2,549999.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación Helpage International España,1,430816.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Intered,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Jóvenes y Desarrollo,1,342737.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Kelluwün Artes y Cultura de los Pueblos Originarios,1,150000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Kemb´alil,1,115000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Fundación Madre Coraje,2,1696023.0,45.0,44.0,59.0,40.75,2.5,35.0,Medio
+Fundación Manhica,2,3000000.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Fundación Mundubat,4,3117097.0,45.0,44.0,59.25,40.8,2.5,35.1,Medio
+Fundación Municipal de Cultura,2,30000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Museo de la Memoria y los Derechos Humanos,1,99800.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Nuestra Señora del Camino,1,276639.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación ONCE para la Cooperación,1,275000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+Fundación ONCE para la Solidaridad,1,481295.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Oxfam Colombia,1,350000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fundación Oxfam Intermón,5,3515021.0,41.0,44.0,59.4,39.42999999999999,2.5,33.9,Medio
+Fundación Pacífico Administración,1,614000.0,45.0,44.0,48.0,38.55,2.5,33.1,Medio
+Fundación Plan Internacional España,4,3499992.0,45.0,44.0,52.5,39.449999999999996,2.5,33.9,Medio
+Fundación Princesa Diana,1,390000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Proclade Yanapay,1,646295.0,45.0,44.0,48.0,38.55,2.5,33.1,Medio
+Fundación Propetén,2,750000.0,35.0,44.0,60.0,37.45,2.5,32.2,Medio
+Fundación SEMG Solidaria,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Save The Children,4,3453247.0,45.0,44.0,71.0,43.14999999999999,2.5,37.1,Medio
+Fundación Tierra de Hombres España,1,987783.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Triángulo,1,552774.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Fundación Universidad Estatal a Distancia para el Desarrollo y Promoción de la Educación a Distancia,1,80000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Universidad Loyola Andalu,1,492879.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación Universidad de Costa Rica,1,300000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Fundación Universidad de Costa Rica para la Investigación,5,945000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación World Vision International,1,1000000.0,45.0,44.0,72.0,43.349999999999994,2.5,37.2,Medio
+Fundación de Solidaridad Amaranta,1,459030.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación del Valle,3,2209863.0,45.0,44.0,54.333333333333336,39.81666666666666,2.5,34.2,Medio
+Fundación la Merced,1,150000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación para Investigación del Clima,1,588001.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Fundación para el Avance de las Reformas y las Oportunidades Grupo Faro,1,300000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Fundación para el Desarrollo Comunitario Save The Children Dominicana INC,1,203750.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Fundación para la Cooperación APY Solidaridad,1,319979.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Funide,1,174999.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+GAFSP - Programa Global para la Agricultura y la Seguridad Alimentaria,1,8000000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+GPE - Global Partnership for Education,1,20000000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Gobierno Autónomo Municipal La Paz,2,110000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Gobierno Autónomo Municipal Potosí,2,200000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Grupo GEA,2,605348.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Grupo Sunu de Acción Intercultural,1,140000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+HEGOA - Instituto de Estudios sobre Desarrollo y Cooperación Internacional,1,129776.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+HIAS Ecuador (HIAS Panamá),1,450000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+HORIZONT3000 - Organización Austriaca de Cooperación para el desarrollo,1,542853.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Habitat para la Humanidad Paraguay,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Haqel,1,300000.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+Health & Psychology,1,150000.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+Helvetas Swiss Intercooperation,1,600000.0,45.0,44.0,85.0,45.949999999999996,2.5,39.4,Medio
+ICARDA - International Center for Agricultur Research in the Dry Areas,1,250000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+ICC - Instituto Privado de Investigación sobre Cambio Climático,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+ICCPG - Instituto de Estudios Comparados en Ciencias Penales de Guatemala,1,150000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+ICEFI - Instituto Centroamericano de Estudios Fiscales,1,250000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+ICIEG - Instituto Caboverdiano de Igualdad y Equidad de Género,1,450000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+IDEA - International Institute for Democracy & Electoral Assistance,1,350000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+IDEA Internacional,1,178000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+IFEMA - Institución Ferial de Madrid,2,80000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+IICA - Instituto Interamericano de Cooperación para la Agricultura,2,550000.0,25.0,44.0,53.5,32.650000000000006,2.5,28.1,Medio
+ILGA World,1,290798.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+IMIPAS - Instituto Mexicano de Investigación en Pesca y Acuacultura Sustentables,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+INACAL - Instituto Nacional de Calidad,1,570200.0,45.0,44.0,50.0,38.949999999999996,2.5,33.5,Medio
+INDEMAYA - Instituto para el Desarrollo de la Cultura Maya del Estado de Yucatan,1,80000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+INDOCAFE - Instituto Dominicano del Café,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+INFOTEP - Instituto Nacional de Formación Técnico Profesional,1,800000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+IPDR de Níger,1,299998.0,25.0,44.0,75.0,36.95,2.5,31.8,Medio
+IPYS - Instituto Prensa y Sociedad,2,450000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+ISGlobal - Fundación Privada Instituto de Salud Global,1,444743.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ISIS - Instituto de Salud Incluyente de Guatemala,1,400000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+ITC - Centro Comercio Internacional,1,1500000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Institut Europeu de la Mediterrània,2,1199999.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Institut des Religieuses de Marie Immaculée,1,200000.0,25.0,44.0,78.0,37.55,2.5,32.3,Medio
+Instituto Desarrollo,2,1000000.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+Instituto Interamericano para la Agricultura,1,900000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Instituto Nacional de Salud de Mozambique,1,700000.0,45.0,44.0,68.0,42.55,2.5,36.5,Medio
+Instituto Tecnológico Producción,1,95000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Instituto de Comunicación y Desarrollo ICD,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Instituto de Estudios Sobre Conflictos y Accion Humanitaria,3,320004.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Instituto de Investigación Geológico y Energético,1,269999.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+JUSDEM - Asociación de Jueces para la Justicia y la Democracia,1,280000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Jurisdicción Especial para la Paz,1,500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Justicia Alimentaria,4,2099517.0,35.0,44.0,59.25,37.3,2.5,32.1,Medio
+Karapatan Alliance Philippines Inc,1,139312.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+King Hussein Cancer Fundation,1,500000.0,45.0,44.0,40.0,36.949999999999996,2.5,31.8,Medio
+"Kultura, Communication y Desarrollo",1,600000.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+LEECP - Liga Española de la Educación y la Cultura Popular,1,288010.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+LIDEMA - Liga de Defensa del Medio Ambiente,1,20000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Las Hormigas,1,200000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Life Vision for Development Organization,1,250000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+MIPROS - Mouvement Integration Pour la Promotion Sociale,1,550045.0,45.0,44.0,85.0,45.949999999999996,2.5,39.4,Medio
+MIPY - Asociación Articulación de Mujeres Indígenas del Paraguay,1,100000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+"MPDL - Movimiento por la Paz, el Desarme y la Libertad",6,4355634.0,38.333333333333336,44.0,69.16666666666667,40.449999999999996,2.5,34.8,Medio
+MUSOL - Municipalistas por la Solid,1,801736.0,45.0,44.0,52.0,39.349999999999994,2.5,33.8,Medio
+MZC - Mujeres en Zona de Conflicto,1,572353.0,45.0,44.0,45.0,37.949999999999996,2.5,32.6,Medio
+Mancomunidad del Güisayote,1,249999.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Manos Unidas Campaña contra el Hambre en el Mundo,2,1331775.0,45.0,44.0,58.5,40.64999999999999,2.5,34.9,Medio
+Matres Mundi,1,382266.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+MedCities,1,299999.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+Media Luna Roja Argelina,4,3400000.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+Media Luna Roja Palestina,1,500000.0,45.0,44.0,72.0,43.349999999999994,2.5,37.2,Medio
+Ministerio Federal de Salud de Etiopía,2,1162680.0,35.0,44.0,65.0,38.45,2.5,33.1,Medio
+Ministerio de Agricultura de la Republica Dominicana,1,350000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Ministerio de Agricultura y de Desarrollo de Recursos Naturales de Etiopía,1,750000.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+Ministerio de Ciencia y Educación de Etiopía,1,1000000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+"Ministerio de Culturas, Descoloniza y Despatriarcalización",2,112915.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Ministerio de Familia e Inclusión Social,1,545000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Ministerio de Finanzas de Palestina,2,4000000.0,45.0,44.0,72.0,43.349999999999994,2.5,37.2,Medio
+Ministerio de Igualdad y Equidad de Colombia,1,130000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Ministerio de Interior,1,337678.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Ministerio de Justicia de Jordania,1,450000.0,25.0,44.0,40.0,29.95,2.5,25.8,Medio
+Ministerio de Justicia de Mauritania,1,154999.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Ministerio de Salud Jordano,1,1000000.0,45.0,44.0,40.0,36.949999999999996,2.5,31.8,Medio
+"Ministerio de Solidaridad, Inclusión Social y Familia (MSISF)",1,381000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+Ministerio de Trabajo y Previsión Social de Guatemala,1,300000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Ministerio de la Mujer y la Equidad de Género (MMEG),1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Ministerio de la Producción de Perú,1,750000.0,45.0,44.0,50.0,38.949999999999996,2.5,33.5,Medio
+Ministerio del Ambiente de Perú (MINAM),1,250000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Ministério da Agricultura e Ambiente,1,430000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Minsiterio de Justicia y Transparencia Institucional del Estado Plurinacional de Bolivia,3,450000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+Mundukide Fundazioa,3,1560698.0,38.333333333333336,44.0,57.0,38.016666666666666,2.5,32.7,Medio
+Municipalidad Distrital de La Jalca Grande,2,390000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Municipalidad Provincial de Chachapoyas,2,180000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Municipalidad de Guatemala,1,50000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Municipalidad de Trujillo,1,200000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Médicos del Mundo,6,4514298.0,41.666666666666664,44.0,71.0,41.98333333333333,2.5,36.1,Medio
+NASMAR - Mancomunidad de los Municipios del Sur,1,350000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+"NATIVA - ONG Naturaleza, Tierra y Vida",1,460000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+NDRMC - National Disaster Risk Management Commission,1,350000.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+NOVACT - Asociación Instituto Internacional por la Acción No Violenta,1,446811.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+NOVACT - Nova Centre per a la Innovació Social,3,1381431.0,31.666666666666668,44.0,41.333333333333336,32.550000000000004,2.5,28.0,Medio
+OCHA - Oficina de Coordinación de Asuntos Humanitarios,10,10100000.0,41.0,44.0,68.4,41.23,2.5,35.4,Medio
+OEA - Organización Estados Americanos,2,4000000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+OECD - Organisation for Economic Co-Operation and Development,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+"OEI - Organización de Estados Iberoamericanos para la Educación, la Ciencia y la Cultura",7,5550300.0,30.714285714285715,44.0,59.285714285714285,35.80714285714286,2.5,30.8,Medio
+OIM - Organización Internacional para las Migraciones,4,4550000.0,75.0,58.0,70.0,57.65,2.5,49.4,Medio
+OISS - Organización Iberoamericana de Seguridad Social,2,1200000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+OIT - Organización Internacional del Trabajo,4,6300000.0,70.0,58.0,63.75,54.65,2.5,46.8,Medio
+OLADE - Organización Latinoamericana de Energía,2,650000.0,35.0,44.0,53.5,36.15,2.5,31.1,Medio
+OMS - Organización Mundial de la Salud,11,9250000.0,67.72727272727273,58.0,70.0,55.10454545454545,2.5,47.2,Medio
+ON Habitat,1,900000.0,45.0,44.0,52.0,39.349999999999994,2.5,33.8,Medio
+ONG Rescate Internacional,3,1999777.0,45.0,44.0,72.66666666666667,43.48333333333333,2.5,37.3,Medio
+ONGAWA - Ingeniería para el Desarrollo Humano,5,2479666.0,37.0,44.0,55.6,37.269999999999996,2.5,32.1,Medio
+ONIC - Organización Nacional Indígena de Colombia,1,150000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+ONU Mujeres,14,12550000.0,65.0,58.0,61.714285714285715,52.49285714285714,2.5,45.0,Medio
+OPS - Organización Panamericana de la Salud,10,4510000.0,33.0,44.0,65.5,37.85,2.5,32.5,Medio
+OTC Guatemala,1,90948.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+Of Nacional a Familia y Población,1,170000.0,25.0,44.0,42.0,30.35,2.5,26.2,Medio
+Om Habibeh Foundation,1,400000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Organización Internacional del,1,790000.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+Organization for Social Science Research in Eastern and Southern Africa,1,200000.0,25.0,44.0,65.0,34.95,2.5,30.1,Medio
+PFPPA - Palestinian Family Planning and Protection Association,1,256613.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+PMA - Programa Mundial de Alimentos,17,29747000.0,67.94117647058823,58.0,70.11764705882354,55.20294117647058,2.5,47.3,Medio
+PNUD - Programa de las Naciones Unidas para el Desarrollo,12,15065000.0,63.333333333333336,58.0,61.25,51.81666666666666,2.5,44.4,Medio
+PRODIVERSA - Progreso y Diversidad,3,1311763.0,25.0,44.0,61.666666666666664,34.28333333333334,2.5,29.5,Medio
+Pastoral Social Diócesis de Quibdó,1,150000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Pontificia Universidad Católica del Perú (PUCP),1,303900.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Pro Conservación Peninsular,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Procuraduría General de la República Dominicana,2,650000.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+Proyecto Colombia Diversa,1,200000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Publish What You Fund LTD,1,40000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+RAP Pacífico - Región Administrativa y de Planificación del Pacífico,2,1090214.0,35.0,44.0,55.0,36.45,2.5,31.4,Medio
+RWDS - Rural Women Development Society,2,485300.0,25.0,44.0,72.0,36.35,2.5,31.3,Medio
+Red Adelco Colombia,1,400000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Red Peruana de Jóvenes Afrodescendientes Ashanti,1,100000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Región de Nuakchot,1,1608600.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+SANIT - Fundación Salud Naturaleza Integral,1,800000.0,45.0,44.0,52.0,39.349999999999994,2.5,33.8,Medio
+SEE - Save Environment Ethiopia,1,578000.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+SEGIB - Secretaría General Iberoamericana,5,2970000.0,33.0,44.0,67.0,38.15,2.5,32.8,Medio
+SEPREM - Secretaria Presidencial de la Mujer,1,300000.0,25.0,44.0,60.0,33.95,2.5,29.2,Medio
+SERAPAZ - Servicios y Asesoría para la Paz,1,50000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+SETCAM Honduras,1,275000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+SETEFE - Secretaría Técnica del Financiamiento Externo,1,600000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+SG-SICA - Secretaria General del Sistema de la Integración Centroamericana,3,1750000.0,38.333333333333336,44.0,68.66666666666667,40.349999999999994,2.5,34.7,Medio
+SIV - SIV DevCo Maroc,1,380000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+SNDP - Sociedad Nacional de Distribución de Pescado,1,1248400.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+Save The Children International,1,400000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Secretaria Nacional de Cultura,1,60000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Secretaria Provincial de Economía y Finanzas de Cabo Delgado,1,214950.0,25.0,44.0,68.0,35.55,2.5,30.6,Medio
+Sendera ONG,1,709507.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+Shamseya for Innovative Community Healthcare Solutions,1,150000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Social Innovation Cluster For Change,1,858529.0,45.0,44.0,60.0,40.949999999999996,2.5,35.2,Medio
+Socios-Mexico - Centro de Colaboración Cívica,1,199995.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Solidaridad Educación y Desarrollo,1,602569.0,45.0,44.0,48.0,38.55,2.5,33.1,Medio
+Solidaridad Internacional - Nazioarteko Elkartasuna,1,597440.0,45.0,44.0,60.0,40.949999999999996,2.5,35.2,Medio
+Solidaridad Internacional Andalucía,2,910525.0,25.0,44.0,66.5,35.25,2.5,30.3,Medio
+Solidaridad para el Desarrollo y la Paz,1,605219.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+Spain-USA Foundation,1,175000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+St Andrew´s Refugee Services,1,250000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+"Studio Tamani, Project Fondation Hirondelle Mali",1,200000.0,25.0,44.0,78.0,37.55,2.5,32.3,Medio
+Sustentia SL,1,235178.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Tadwein Gender Research Center,1,300000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Takween Integrated Community Development,1,400000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+Transparency International EV,1,275000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Trésorerie Géneràle du Royaume,1,150000.0,25.0,44.0,45.0,30.95,2.5,26.7,Medio
+UARIV - Unidad para la Atención y Reparación Integral a las Víctimas,1,1500000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+UICN - Union Internationale Pour la Conservation de la Nature Et de Ses Ressources,2,850000.0,35.0,44.0,59.0,37.25,2.5,32.0,Medio
+UNDRR - Oficina de Naciones Unidas para la Reducción del Riesgo de Desastres,1,450000.0,25.0,44.0,52.0,32.35,2.5,27.9,Medio
+UNESCO,1,500000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+UNICEF - Fondo de las Naciones Unidas para la Infancia,12,13450000.0,73.33333333333333,58.0,67.41666666666667,56.550000000000004,2.5,48.4,Medio
+UNRISD - Instituto de Investigación de las Naciones Unidas para el Desarrollo Social,1,600000.0,45.0,44.0,55.0,39.949999999999996,2.5,34.3,Medio
+UNRWA,4,18500000.0,45.0,44.0,64.0,41.74999999999999,2.5,35.9,Medio
+UPlanet,1,85257.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Union de Cooperativas Agropecuaria de Servicios Soppexcca RL,1,143461.0,25.0,44.0,68.0,35.55,2.5,30.6,Medio
+Universidad Católica de San Pablo de Arequipa,1,76500.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Universidad Científica e Idiomas de America Latina Sociedad Civil (UCIL),1,200000.0,55.0,58.0,55.0,47.65,2.5,40.9,Medio
+Universidad Nacional (UNTRM),2,220000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Universidad Nacional de Cajamarca (UNC),1,20000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Universidad Nacional de Quilmes (UNQ),1,299999.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+Universidad Regional Amazónica,1,250000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Universidad de Almería,1,744272.0,45.0,44.0,60.0,40.949999999999996,2.5,35.2,Medio
+Universidad de Piura,1,76500.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Universidad de Sevilla,2,1460238.0,45.0,44.0,52.5,39.449999999999996,2.5,33.9,Medio
+Universidad de Vigo,2,808900.0,25.0,44.0,52.5,32.45,2.5,28.0,Medio
+Universidad de Zaragoza,1,899900.0,45.0,44.0,65.0,41.949999999999996,2.5,36.0,Medio
+Universidad del Nilo,1,350000.0,55.0,58.0,62.0,49.05,2.5,42.1,Medio
+Universidad del Valle de Guatemala,1,300000.0,25.0,44.0,62.0,34.35,2.5,29.6,Medio
+UpM - Unión por el Mediterráneo,1,1000000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Vicariato Apostólico de Esmeraldas,2,350000.0,25.0,44.0,48.0,31.55,2.5,27.2,Medio
+Vicariato Apostólico de Iquitos,1,150000.0,25.0,44.0,50.0,31.95,2.5,27.5,Medio
+Vivamos Humanos,1,250000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
+WOLA - Oficina en Washington para Asuntos Latinoamericanos,1,488871.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Xarxa de Consum Solidari,1,792719.0,45.0,44.0,48.0,38.55,2.5,33.1,Medio
