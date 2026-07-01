@@ -612,6 +612,9 @@ footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top
   <p>Fondos transferidos a Organismos Internacionales (PNUD, UNICEF, FAO, ACNUR…) sin desglosar la aportación española en el estándar IATI.</p>
   <h3><span class="badge r2">R2</span> Sub-contratación sin OCDS</h3>
   <p>Contratos sin publicación en el Portal de la Contratación del Estado (PLACE) bajo el estándar Open Contracting Data Standard.</p>
+  <p style="background:#2d1f0a;border:1px solid #78350f;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#fcd34d;margin-top:8px">
+    ⚠️ <strong>Nota metodológica:</strong> si R2 aparece hoy en 100% para un fondo, refleja que <strong>todavía no se completó el cruce automático</strong> entre AECID y PLACE para esa entidad — no significa necesariamente que el contrato esté ausente. El cruce se construye mediante un backfill progresivo (por páginas, con cursor persistente) que avanza en cada corrida del pipeline. Mientras el backfill esté en marcha, un R2 alto puede sobreestimar el riesgo real. Este indicador debe leerse junto con la fecha de la última corrida y bajará gradualmente a medida que el backfill cubra más contratos publicados en PLACE.
+  </p>
   <h3><span class="badge r3">R3</span> Sin justificante auditable</h3>
   <p>Proyectos con importe superior a 500.000€ sin evaluación final publicada ni respuesta favorable a solicitud LTAIBG (Ley 19/2013).</p>
 </div>
