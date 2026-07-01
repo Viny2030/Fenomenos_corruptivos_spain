@@ -105,9 +105,16 @@ class ModeloTrazabilidad:
         if row.get("entidad") and str(row.get("entidad")).strip():
             eslabon = 2
 
-        # Eslabón 3: está en BDNS o tiene registro OOII
-        if row.get("fuente", "") in ("BDNS", "datos.aecid.es/API", "seed") or \
-           row.get("id_bdns", ""):
+        # Eslabón 3: la entidad implementadora aparece como beneficiaria real
+        # en una concesión BDNS (ver cruzar_con_aecid en scraper_bdns.py), o
+        # es un dato de demostración (seed).
+        # NOTA: antes se comparaba row["fuente"] contra ("BDNS", "datos.aecid.es/API",
+        # "seed") -- pero la fuente real de producción es
+        # "datos.aecid.es/lista-de-intervenciones", que nunca matcheaba esa
+        # lista. En la práctica esto significaba que el eslabón 3 nunca se
+        # alcanzaba con datos reales. Se corrige para depender del cruce
+        # real con BDNS.
+        if row.get("en_bdns", False) or row.get("id_bdns", "") or row.get("fuente", "") == "seed":
             eslabon = 3
 
         # Eslabón 4: destino geográfico declarado
