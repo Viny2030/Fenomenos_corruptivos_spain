@@ -1,0 +1,76 @@
+--- original/Fenomenos_corruptivos_spain-main/pipeline.py	2026-07-01 10:45:15.000000000 +0000
++++ Fenomenos_corruptivos_spain-main/pipeline.py	2026-07-01 15:30:11.590420243 +0000
+@@ -43,7 +43,9 @@
+ sys.path.insert(0, str(SRC))
+ 
+ from scraper_aecid      import run_scraper         as scrape_aecid
+-from scraper_bdns       import scrape_bdns
++from scraper_bdns       import (scrape_bdns, scrape_concesiones_aecid,
++                                 enriquecer_convocatorias_con_concesiones,
++                                 cruzar_con_aecid as cruzar_bdns_con_aecid)
+ from scraper_place      import scrape_place, detectar_adjudicacion_directa, cruzar_con_aecid
+ from indicadores_riesgo import calcular_scores_completos, generar_resumen_global
+ from src.trazabilidad_score import ModeloTrazabilidad
+@@ -87,16 +89,22 @@
+         log.info(f"   datos.aecid.es ya existe ({path_aecid.name}) — omitido")
+     archivos["aecid"] = path_aecid
+ 
+-    # 1b. BDNS — subvenciones y convenios
++    # 1b. BDNS — convocatorias + concesiones (beneficiario e importe real)
+     path_bdns = DATA_RAW / "bdns_subvenciones.csv"
++    path_concesiones = DATA_RAW / "bdns_concesiones.csv"
+     if not path_bdns.exists() or forzar:
+-        log.info("── Descargando BDNS...")
++        log.info("── Descargando BDNS (convocatorias + concesiones)...")
+         df_bdns = scrape_bdns()
++        df_concesiones = scrape_concesiones_aecid()
++        df_bdns = enriquecer_convocatorias_con_concesiones(df_bdns, df_concesiones)
+         df_bdns.to_csv(path_bdns, index=False, encoding="utf-8-sig")
+-        log.info(f"   {len(df_bdns)} convocatorias → {path_bdns.name}")
++        df_concesiones.to_csv(path_concesiones, index=False, encoding="utf-8-sig")
++        log.info(f"   {len(df_bdns)} convocatorias, {len(df_concesiones)} concesiones → "
++                 f"{path_bdns.name}, {path_concesiones.name}")
+     else:
+         log.info(f"   BDNS ya existe — omitido")
+     archivos["bdns"] = path_bdns
++    archivos["bdns_concesiones"] = path_concesiones
+ 
+     # 1c. PLACE — contratos adjudicados
+     path_place = DATA_RAW / "place_contratos.csv"
+@@ -228,13 +236,18 @@
+     df = pd.read_csv(clean_path)
+ 
+     # Cargar fuentes externas si existen
+-    df_place  = pd.read_csv(archivos["place"])  if archivos["place"].exists()  else pd.DataFrame()
+-    df_ltaibg = pd.read_csv(archivos["ltaibg"]) if archivos["ltaibg"].exists() else pd.DataFrame()
++    df_place       = pd.read_csv(archivos["place"])            if archivos["place"].exists()            else pd.DataFrame()
++    df_ltaibg      = pd.read_csv(archivos["ltaibg"])            if archivos["ltaibg"].exists()           else pd.DataFrame()
++    df_concesiones = pd.read_csv(archivos["bdns_concesiones"])  if archivos.get("bdns_concesiones") and archivos["bdns_concesiones"].exists() else pd.DataFrame()
+ 
+     # Cruzar AECID ↔ PLACE
+     if not df_place.empty:
+         df = cruzar_con_aecid(df_place, df)
+ 
++    # Cruzar AECID ↔ BDNS (por entidad implementadora, ver scraper_bdns.py)
++    if not df_concesiones.empty:
++        df = cruzar_bdns_con_aecid(df_concesiones, df)
++
+     modelo = ModeloTrazabilidad(
+         df_place=df_place,
+         df_ltaibg=df_ltaibg,
+@@ -453,10 +466,11 @@
+         archivos = paso_ingesta(años=args.años, forzar=args.forzar)
+     else:
+         archivos = {
+-            "aecid":   DATA_RAW / "aecid_intervenciones.csv",
+-            "bdns":    DATA_RAW / "bdns_subvenciones.csv",
+-            "place":   DATA_RAW / "place_contratos.csv",
+-            "ltaibg":  DATA_RAW / "ltaibg_respuestas.csv",
++            "aecid":            DATA_RAW / "aecid_intervenciones.csv",
++            "bdns":             DATA_RAW / "bdns_subvenciones.csv",
++            "bdns_concesiones": DATA_RAW / "bdns_concesiones.csv",
++            "place":            DATA_RAW / "place_contratos.csv",
++            "ltaibg":           DATA_RAW / "ltaibg_respuestas.csv",
+         }
+ 
+     if args.solo_ingesta:
