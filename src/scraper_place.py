@@ -267,11 +267,40 @@ def detectar_adjudicacion_directa(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _extraer_paises_conocidos(pais_region_series: pd.Series) -> set:
+    """Vocabulario de países/regiones tal como aparece en pais_region de AECID
+    (valores separados por coma). Descarta las categorías agregadas tipo
+    "Países en Vías de Desarrollo (No Especificado)" porque no son un país
+    concreto que pueda mencionarse en un título de contrato."""
+    paises = set()
+    for valor in pais_region_series.dropna():
+        for p in str(valor).split(","):
+            p = p.strip()
+            if p and "No Especificado" not in p:
+                paises.add(p)
+    return paises
+
+
 def cruzar_con_aecid(df_place: pd.DataFrame, df_aecid: pd.DataFrame,
                      umbral: int = 75) -> pd.DataFrame:
     """
-    Cruce fuzzy entre contratos PLACE (ya filtrados a AECID como órgano de
-    contratación) y proyectos AECID de datos.aecid.es.
+    Cruce AECID↔PLACE por PAÍS mencionado en el título del contrato.
+
+    Antes esto comparaba el título completo del contrato PLACE contra el
+    título completo de la intervención AECID con fuzzy matching — pero son
+    vocabularios de naturaleza distinta: AECID describe el PROGRAMA/temática
+    ("Prevención de la violencia de género..."), mientras que PLACE describe
+    el SERVICIO concreto contratado para ejecutarlo ("Contrato de servicios
+    de diseño gráfico en el Centro Cultural de España en Costa Rica...").
+    El fuzzy match por título daba sistemáticamente 0 aunque hubiera cruce
+    real, porque nunca comparten vocabulario suficiente.
+
+    Igual que se hizo para el cruce AECID↔BDNS (por entidad implementadora,
+    no por título), acá se usa una clave estructurada más confiable: el país,
+    que SÍ aparece de forma consistente en ambos lados — como columna
+    'pais_region' en AECID, y mencionado en texto libre dentro del título de
+    PLACE (p.ej. "...en Etiopía", "...en Bolivia").
+
     Agrega columna 'en_place' y 'score_cruce' al df_aecid.
     """
     if df_place.empty or df_aecid.empty:
@@ -280,19 +309,43 @@ def cruzar_con_aecid(df_place: pd.DataFrame, df_aecid: pd.DataFrame,
         df_aecid["score_cruce"] = 0
         return df_aecid
 
-    titulos_place = df_place["titulo"].fillna("").tolist()
+    if "pais_region" not in df_aecid.columns:
+        # Compatibilidad: si no hay columna de país, no podemos hacer el
+        # cruce por país — se marca todo sin cruce en vez de fallar.
+        log.warning("  Cruce AECID↔PLACE: falta columna 'pais_region' en "
+                    "df_aecid — no se puede cruzar por país, se omite")
+        df_aecid = df_aecid.copy()
+        df_aecid["en_place"]    = False
+        df_aecid["score_cruce"] = 0
+        return df_aecid
 
-    def _max_score(titulo_aecid):
-        if not titulo_aecid:
+    paises_conocidos = _extraer_paises_conocidos(df_aecid["pais_region"])
+    # Los más largos primero, para que "Costa Rica" no quede eclipsado por
+    # una coincidencia parcial de un país más corto contenido en el nombre.
+    paises_conocidos = sorted(paises_conocidos, key=len, reverse=True)
+    patrones = {p: re.compile(r"\b" + re.escape(p) + r"\b", re.IGNORECASE)
+                for p in paises_conocidos}
+
+    # Qué países aparecen mencionados en AL MENOS un título de contrato PLACE
+    paises_con_contrato = set()
+    for titulo in df_place["titulo"].fillna(""):
+        for p, pat in patrones.items():
+            if pat.search(titulo):
+                paises_con_contrato.add(p)
+
+    def _evaluar(pais_region_fondo):
+        if not pais_region_fondo:
             return 0
-        scores = [fuzz.token_sort_ratio(titulo_aecid, t) for t in titulos_place]
-        return max(scores) if scores else 0
+        paises_fondo = {p.strip() for p in str(pais_region_fondo).split(",")}
+        return 100 if paises_fondo & paises_con_contrato else 0
 
     df_aecid = df_aecid.copy()
-    df_aecid["score_cruce"] = df_aecid["titulo"].apply(_max_score)
+    df_aecid["score_cruce"] = df_aecid["pais_region"].apply(_evaluar)
     df_aecid["en_place"]    = df_aecid["score_cruce"] >= umbral
     n = df_aecid["en_place"].sum()
-    log.info(f"  Cruce AECID↔PLACE: {n}/{len(df_aecid)} proyectos encontrados en PLACE")
+    log.info(f"  Cruce AECID↔PLACE: {n}/{len(df_aecid)} proyectos encontrados "
+             f"en PLACE (por país mencionado en el contrato, "
+             f"{len(paises_con_contrato)} países con al menos 1 contrato)")
     return df_aecid
 
 
