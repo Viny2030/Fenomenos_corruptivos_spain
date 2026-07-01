@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 01/07/2026 21:22*
+*Generado: 01/07/2026 22:35*
 
 ---
 
@@ -10,7 +10,7 @@
 | Total fondos analizados | 675.2 M€ |
 | Intervenciones | 834 |
 | Entidades receptoras | 450 |
-| Score medio de trazabilidad | 64/100 |
+| Score medio de trazabilidad | 69/100 |
 
 ---
 
@@ -19,9 +19,9 @@
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
 | 3 | OOII sin desglose (R1) | 112 | 239.2 | 35.4% |
-| 4 | Destino geográfico opaco | 353 | 248.5 | 36.8% |
-| 5 | Sub-contratación sin OCDS (R2) | 156 | 131.0 | 19.4% |
-| 6 | Sin justificante público (R3) | 213 | 56.4 | 8.4% |
+| 4 | Destino geográfico opaco | 162 | 129.2 | 19.1% |
+| 5 | Sub-contratación sin OCDS (R2) | 238 | 223.1 | 33.0% |
+| 6 | Sin justificante público (R3) | 322 | 83.7 | 12.4% |
 
 ---
 
@@ -29,9 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 524 | 396.7 | 58.7% |
-| NARANJA | 78 | 207.9 | 30.8% |
-| VERDE | 232 | 70.6 | 10.5% |
+| AMARILLO | 426 | 403.2 | 59.7% |
+| NARANJA | 47 | 161.1 | 23.9% |
+| VERDE | 361 | 111.0 | 16.4% |
 
 ---
 
@@ -42,13 +42,13 @@
 | Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 15.0M€ | E3 | 53 | NARANJA |
 | Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 17.5M€ | E3 | 53 | NARANJA |
 | Lucha global contra el sida, la tuberculosis y la … | Fondo Mundial de Lucha contra  | 85.0M€ | E3 | 53 | NARANJA |
-| Protección y asistencia en rutas migratorias | OIM - Organización Internacion | 2.1M€ | E3 | 52 | NARANJA |
-| Prevención del desplazamiento interno | OIM - Organización Internacion | 1.0M€ | E3 | 52 | NARANJA |
-| Soluciones a los desplazamiento internos en Améric… | OIM - Organización Internacion | 0.6M€ | E3 | 52 | NARANJA |
-| Rehabilitación e inclusión de personas con discapa… | OIM - Organización Internacion | 0.8M€ | E3 | 52 | NARANJA |
 | Acceso universal al agua y saneamiento en América … | BID - Banco Interamericano de  | 2.0M€ | E3 | 52 | NARANJA |
 | Tecnologías satelitales para la reducción de riesg… | BID - Banco Interamericano de  | 0.7M€ | E3 | 52 | NARANJA |
 | Acceso universal a agua y saneamiento en América L… | BID - Banco Interamericano de  | 0.3M€ | E3 | 52 | NARANJA |
+| Prevención y el tratamiento del cáncer cérvico ute… | OMS - Organización Mundial de  | 1.0M€ | E3 | 52 | NARANJA |
+| Erradicación de la polio y refuerzo de la inmuniza… | OMS - Organización Mundial de  | 0.1M€ | E3 | 52 | NARANJA |
+| Apoyo la investigación y formación en enfermedades… | OMS - Organización Mundial de  | 0.1M€ | E3 | 52 | NARANJA |
+| Atención quirúrgica esencial y de emergencias y fo… | OMS - Organización Mundial de  | 0.8M€ | E3 | 52 | NARANJA |
 
 ---
 
@@ -57,7 +57,7 @@
 - **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 74 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,211 registros (`bdns_concesiones.csv`)
-- **place**: 124 registros (`place_contratos.csv`)
+- **place**: 312 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)
 
 ---
