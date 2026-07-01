@@ -403,3 +403,50 @@
 20:59:28 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
 20:59:28 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
 20:59:28 [INFO] ════════════════════════════════════════════════════════════
+21:15:14 [INFO] ════════════════════════════════════════════════════════════
+21:15:14 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+21:15:14 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+21:15:14 [INFO] ════════════════════════════════════════════════════════════
+21:15:14 [INFO] ── Descargando datos.aecid.es...
+21:15:14 [INFO] Scraper AECID iniciando...
+21:16:16 [INFO]   Lista de intervenciones: 834/834 registros (14 paginas)
+21:16:16 [INFO]   Guardado: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/raw/aecid_intervenciones.csv
+21:16:16 [INFO]    834 intervenciones → aecid_intervenciones.csv
+21:16:16 [INFO] ── Descargando BDNS (convocatorias + concesiones)...
+21:16:16 [INFO] Scraper BDNS (convocatorias) iniciando...
+21:16:28 [INFO]   BDNS convocatorias: 74
+21:16:28 [INFO] Scraper BDNS (concesiones) iniciando...
+21:20:08 [INFO]   BDNS concesiones: 1211 (736 institucionales / 475 personas físicas)
+21:20:08 [INFO]   Importes reales completados: 17/74 convocatorias
+21:20:08 [INFO]    74 convocatorias, 1211 concesiones → bdns_subvenciones.csv, bdns_concesiones.csv
+21:20:08 [INFO] ── Descargando PLACE / OCDS...
+21:20:08 [INFO] Scraper PLACE/AECID iniciando...
+21:20:08 [INFO]   Histórico previo cargado: 118 contratos AECID
+21:20:09 [INFO]   Página actual del feed: 0 contratos AECID nuevos
+21:22:14 [INFO]   Backfill: 10 páginas recorridas en esta corrida (agotado=False)
+21:22:14 [INFO]   PLACE/AECID acumulado total: 124 contratos
+21:22:14 [INFO]   R2 detectado: 5 contratos con adjudicación directa/sin publicidad
+21:22:14 [INFO]    124 contratos → place_contratos.csv
+21:22:14 [INFO] ── Limpieza y normalización...
+21:22:14 [INFO]    834/834 registros limpios → intervenciones_clean.csv
+21:22:14 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+21:22:14 [INFO]   Cruce AECID↔PLACE: 404/834 proyectos encontrados en PLACE (por país mencionado en el contrato, 21 países con al menos 1 contrato)
+21:22:15 [INFO]   Cruce AECID↔BDNS: 209/834 intervenciones con entidad identificada como beneficiaria en BDNS
+21:22:16 [INFO]    Score medio de trazabilidad: 64.1
+21:22:16 [INFO]    R1 (112 fondos): 35.4% del total
+21:22:16 [INFO]    R2 (438 fondos): 67.3% del total
+21:22:16 [INFO]    R3 (379 fondos): 82.8% del total
+21:22:16 [INFO]    → trazabilidad_por_fondo.csv
+21:22:16 [INFO] ── Indicadores de riesgo corruptivo...
+21:22:16 [INFO]   ICR global: 2.5 (HHI=0.0275, n=450 entidades)
+21:22:16 [INFO]   Scores calculados: 450 entidades
+21:22:16 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+21:22:16 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+21:22:16 [INFO] ── Generando informe ejecutivo...
+21:22:16 [INFO]    → informe_ejecutivo.md
+21:22:16 [INFO] DB: DATABASE_URL no definida — se omite persistencia
+21:22:16 [INFO] ════════════════════════════════════════════════════════════
+21:22:16 [INFO] PIPELINE COMPLETADO
+21:22:16 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
+21:22:16 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
+21:22:16 [INFO] ════════════════════════════════════════════════════════════

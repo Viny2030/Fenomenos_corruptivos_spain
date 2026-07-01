@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 01/07/2026 20:59*
+*Generado: 01/07/2026 21:22*
 
 ---
 
@@ -10,7 +10,7 @@
 | Total fondos analizados | 675.2 M€ |
 | Intervenciones | 834 |
 | Entidades receptoras | 450 |
-| Score medio de trazabilidad | 54/100 |
+| Score medio de trazabilidad | 64/100 |
 
 ---
 
@@ -19,7 +19,9 @@
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
 | 3 | OOII sin desglose (R1) | 112 | 239.2 | 35.4% |
-| 4 | Destino geográfico opaco | 722 | 436.0 | 64.6% |
+| 4 | Destino geográfico opaco | 353 | 248.5 | 36.8% |
+| 5 | Sub-contratación sin OCDS (R2) | 156 | 131.0 | 19.4% |
+| 6 | Sin justificante público (R3) | 213 | 56.4 | 8.4% |
 
 ---
 
@@ -27,8 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 739 | 452.5 | 67.0% |
-| NARANJA | 95 | 222.7 | 33.0% |
+| AMARILLO | 524 | 396.7 | 58.7% |
+| NARANJA | 78 | 207.9 | 30.8% |
+| VERDE | 232 | 70.6 | 10.5% |
 
 ---
 
@@ -36,16 +39,16 @@
 
 | Título | Entidad | Importe | Eslabón | Score | Clasificación |
 |--------|---------|---------|---------|-------|---------------|
-| Protección y asistencia en rutas migratorias | OIM - Organización Internacion | 2.1M€ | E3 | 53 | NARANJA |
-| Prevención del desplazamiento interno | OIM - Organización Internacion | 1.0M€ | E3 | 53 | NARANJA |
 | Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 15.0M€ | E3 | 53 | NARANJA |
 | Adaptación al cambio climático en países en desarr… | FA - Fondo de Adaptación al Ca | 17.5M€ | E3 | 53 | NARANJA |
-| Soluciones a los desplazamiento internos en Améric… | OIM - Organización Internacion | 0.6M€ | E3 | 53 | NARANJA |
-| Rehabilitación e inclusión de personas con discapa… | OIM - Organización Internacion | 0.8M€ | E3 | 53 | NARANJA |
 | Lucha global contra el sida, la tuberculosis y la … | Fondo Mundial de Lucha contra  | 85.0M€ | E3 | 53 | NARANJA |
-| Acceso y permanencia de las niñas afganas en el si… | UNICEF - Fondo de las Naciones | 0.8M€ | E3 | 52 | NARANJA |
-| Prevención y tratamiento de la malnutrición infant… | UNICEF - Fondo de las Naciones | 0.7M€ | E3 | 52 | NARANJA |
-| Mejora de la nutrición infantil en Niger | UNICEF - Fondo de las Naciones | 1.0M€ | E3 | 52 | NARANJA |
+| Protección y asistencia en rutas migratorias | OIM - Organización Internacion | 2.1M€ | E3 | 52 | NARANJA |
+| Prevención del desplazamiento interno | OIM - Organización Internacion | 1.0M€ | E3 | 52 | NARANJA |
+| Soluciones a los desplazamiento internos en Améric… | OIM - Organización Internacion | 0.6M€ | E3 | 52 | NARANJA |
+| Rehabilitación e inclusión de personas con discapa… | OIM - Organización Internacion | 0.8M€ | E3 | 52 | NARANJA |
+| Acceso universal al agua y saneamiento en América … | BID - Banco Interamericano de  | 2.0M€ | E3 | 52 | NARANJA |
+| Tecnologías satelitales para la reducción de riesg… | BID - Banco Interamericano de  | 0.7M€ | E3 | 52 | NARANJA |
+| Acceso universal a agua y saneamiento en América L… | BID - Banco Interamericano de  | 0.3M€ | E3 | 52 | NARANJA |
 
 ---
 
@@ -54,7 +57,7 @@
 - **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 74 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,211 registros (`bdns_concesiones.csv`)
-- **place**: 118 registros (`place_contratos.csv`)
+- **place**: 124 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)
 
 ---
