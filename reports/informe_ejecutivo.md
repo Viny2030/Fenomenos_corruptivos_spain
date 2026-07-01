@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 01/07/2026 22:35*
+*Generado: 01/07/2026 23:09*
 
 ---
 
@@ -10,7 +10,7 @@
 | Total fondos analizados | 675.2 M€ |
 | Intervenciones | 834 |
 | Entidades receptoras | 450 |
-| Score medio de trazabilidad | 69/100 |
+| Score medio de trazabilidad | 70/100 |
 
 ---
 
@@ -19,9 +19,9 @@
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
 | 3 | OOII sin desglose (R1) | 112 | 239.2 | 35.4% |
-| 4 | Destino geográfico opaco | 162 | 129.2 | 19.1% |
-| 5 | Sub-contratación sin OCDS (R2) | 238 | 223.1 | 33.0% |
-| 6 | Sin justificante público (R3) | 322 | 83.7 | 12.4% |
+| 4 | Destino geográfico opaco | 152 | 121.9 | 18.1% |
+| 5 | Sub-contratación sin OCDS (R2) | 245 | 229.7 | 34.0% |
+| 6 | Sin justificante público (R3) | 325 | 84.4 | 12.5% |
 
 ---
 
@@ -29,9 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 426 | 403.2 | 59.7% |
-| NARANJA | 47 | 161.1 | 23.9% |
-| VERDE | 361 | 111.0 | 16.4% |
+| AMARILLO | 435 | 415.9 | 61.6% |
+| NARANJA | 35 | 147.7 | 21.9% |
+| VERDE | 364 | 111.7 | 16.5% |
 
 ---
 
@@ -57,7 +57,7 @@
 - **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 74 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,211 registros (`bdns_concesiones.csv`)
-- **place**: 312 registros (`place_contratos.csv`)
+- **place**: 363 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)
 
 ---

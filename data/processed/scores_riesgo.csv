@@ -1,9 +1,9 @@
 ﻿entidad,n_fondos,importe_total,sog_medio,res_medio,via_medio,score_medio,icr,score_riesgo,nivel_riesgo
 A Todo Pulmón Paraguay Respira,2,310000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
-ABAAD - Recursos para la Igualdad de Género,1,250000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+ABAAD - Recursos para la Igualdad de Género,1,250000.0,0.0,15.0,70.0,18.5,2.5,16.1,Bajo
 ACHNU - Asociación Chilena Pro Naciones Unidas,1,130000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
 ACNUDH - Oficina del Alto Comisionado de las Naciones Unidas para los Derechos Humanos,2,550000.0,0.0,15.0,51.5,14.8,2.5,13.0,Bajo
-ACNUR - Oficina del Alto Comisionado de UNHCR,14,17100000.0,61.785714285714285,58.0,62.07142857142857,51.43928571428571,2.5,44.1,Medio
+ACNUR - Oficina del Alto Comisionado de UNHCR,14,17100000.0,60.0,58.0,62.07142857142857,50.81428571428571,2.5,43.6,Medio
 ACP - Associació Catalana per la Pau,5,2370707.0,13.0,26.8,56.4,23.869999999999997,2.5,20.7,Bajo
 ADFM,1,300000.0,0.0,15.0,45.0,13.5,2.5,11.8,Bajo
 AGARESO - Asociación Galega de Reporteiros Solidarios,1,85095.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
@@ -77,7 +77,7 @@ Associació Acció Internacional per la Pau,2,870087.0,0.0,15.0,55.0,15.5,2.5,13
 Associació Cooperacció,1,688943.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
 Association Droit et Justice,1,450000.0,30.0,58.0,45.0,36.9,2.5,31.7,Medio
 Association Ennakhil,1,320000.0,0.0,15.0,45.0,13.5,2.5,11.8,Bajo
-Association Leb Relief,1,750000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
+Association Leb Relief,1,750000.0,20.0,30.0,70.0,30.0,2.5,25.9,Medio
 "Ayuda en Acción Mexico, Asociación Civil",1,400000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 "Azimut 360, SCCL",1,402978.0,0.0,15.0,45.0,13.5,2.5,11.8,Bajo
 BID - Banco Interamericano de Desarrollo,3,3000000.0,68.33333333333333,58.0,70.0,55.31666666666666,2.5,47.4,Medio
@@ -144,7 +144,7 @@ Cruz Roja Española,7,6372803.0,30.714285714285715,36.0,63.857142857142854,34.32
 Cruz Roja Panameña,1,280000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 Cámara Oficial de Comercio de España en Peru,2,700000.0,12.5,29.5,52.5,23.725,2.5,20.5,Bajo
 Cámara Paraguaya de Turismo de las Misiones Jesuitas,1,80000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
-Cáritas Española,5,4012847.0,26.0,35.6,69.6,33.7,2.5,29.0,Medio
+Cáritas Española,5,4012847.0,21.0,32.8,69.6,31.110000000000003,2.5,26.8,Medio
 Cáritas Venezuela,2,410000.0,25.0,44.0,80.0,37.95,2.5,32.6,Medio
 Cáritas de Honduras,1,399999.0,0.0,15.0,62.0,16.9,2.5,14.7,Bajo
 DEMUS - Estudio para la Defensa de los Derechos de la Mujer,1,300000.0,0.0,15.0,50.0,14.5,2.5,12.7,Bajo
@@ -175,12 +175,12 @@ FIDA - Fondo Internacional de Desarrollo Agrícola,1,350000.0,0.0,15.0,72.0,18.9
 FILAC - Fondo para el Desarrollo de los Pueblos Indígenas de America Latina,2,690000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
 FMS - Fondo de Mujeres del Sur,1,200000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 FORMASOL - Formación Solidaria,1,136000.0,0.0,15.0,52.0,14.9,2.5,13.0,Bajo
-FPSC - Fundación Promoción Social de la Cultura,5,3844248.0,21.0,29.8,61.8,28.65,2.5,24.7,Bajo
+FPSC - Fundación Promoción Social de la Cultura,5,3844248.0,16.0,27.0,61.8,26.060000000000002,2.5,22.5,Bajo
 FRS - Fundación de Religiosos para la Salud,4,2488980.0,15.0,26.25,55.0,24.125,2.5,20.9,Bajo
 FUDEN - Fundación para el Desarrollo,1,352111.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 FUDIS - Fundación para el Desarrollo Integrado Sustentable,1,202840.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 FUNDEMAS,1,600000.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
-Fair Trade Lebanon,1,400000.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+Fair Trade Lebanon,1,400000.0,0.0,15.0,70.0,18.5,2.5,16.1,Bajo
 Farmacéuticos Mundi,5,3897747.0,26.0,32.6,60.6,31.0,2.5,26.7,Medio
 Federación Dominicana de Municipios,1,350000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 Federación Internacional de la Cruz Roja,2,11860000.0,22.5,37.0,69.0,32.775000000000006,2.5,28.2,Medio
@@ -197,7 +197,7 @@ Fundación ATASIM,1,150000.0,0.0,15.0,48.0,14.100000000000001,2.5,12.4,Bajo
 Fundación ATHISA,1,404800.0,0.0,15.0,45.0,13.5,2.5,11.8,Bajo
 Fundación Acciona Microenergía,1,990000.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
 Fundación Acciona Org Mexico,1,899267.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
-Fundación Acción Contra el Hambre,8,7252330.0,23.125,31.75,62.625,30.143749999999997,2.5,26.0,Medio
+Fundación Acción Contra el Hambre,8,7252330.0,20.0,30.0,62.625,28.525,2.5,24.6,Bajo
 Fundación Acodea,1,497645.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 Fundación Alas de Colibrí,1,300000.0,0.0,15.0,48.0,14.100000000000001,2.5,12.4,Bajo
 Fundación Albihar,2,1264987.0,20.0,30.0,50.0,26.0,2.5,22.5,Bajo
@@ -248,7 +248,7 @@ Fundación Princesa Diana,1,390000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 Fundación Proclade Yanapay,1,646295.0,20.0,30.0,48.0,25.6,2.5,22.1,Bajo
 Fundación Propetén,2,750000.0,10.0,22.5,60.0,22.25,2.5,19.3,Bajo
 Fundación SEMG Solidaria,1,200000.0,25.0,44.0,55.0,32.95,2.5,28.4,Medio
-Fundación Save The Children,4,3453247.0,32.5,37.0,71.0,36.675,2.5,31.5,Medio
+Fundación Save The Children,4,3453247.0,26.25,33.5,71.0,33.4375,2.5,28.8,Medio
 Fundación Tierra de Hombres España,1,987783.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
 Fundación Triángulo,1,552774.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
 Fundación Universidad Estatal a Distancia para el Desarrollo y Promoción de la Educación a Distancia,1,80000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
@@ -318,7 +318,7 @@ Las Hormigas,1,200000.0,0.0,15.0,62.0,16.9,2.5,14.7,Bajo
 Life Vision for Development Organization,1,250000.0,0.0,15.0,62.0,16.9,2.5,14.7,Bajo
 MIPROS - Mouvement Integration Pour la Promotion Sociale,1,550045.0,20.0,30.0,85.0,33.0,2.5,28.4,Medio
 MIPY - Asociación Articulación de Mujeres Indígenas del Paraguay,1,100000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
-"MPDL - Movimiento por la Paz, el Desarme y la Libertad",6,4355634.0,25.833333333333332,34.5,69.16666666666667,33.225,2.5,28.6,Medio
+"MPDL - Movimiento por la Paz, el Desarme y la Libertad",6,4355634.0,17.5,29.833333333333332,69.16666666666667,28.90833333333333,2.5,24.9,Bajo
 MUSOL - Municipalistas por la Solid,1,801736.0,20.0,30.0,52.0,26.4,2.5,22.8,Bajo
 MZC - Mujeres en Zona de Conflicto,1,572353.0,20.0,30.0,45.0,25.0,2.5,21.6,Bajo
 Mancomunidad del Güisayote,1,249999.0,0.0,15.0,62.0,16.9,2.5,14.7,Bajo
@@ -378,8 +378,8 @@ Om Habibeh Foundation,1,400000.0,0.0,15.0,62.0,16.9,2.5,14.7,Bajo
 Organización Internacional del,1,790000.0,20.0,30.0,65.0,29.0,2.5,25.0,Bajo
 Organization for Social Science Research in Eastern and Southern Africa,1,200000.0,0.0,15.0,65.0,17.5,2.5,15.2,Bajo
 PFPPA - Palestinian Family Planning and Protection Association,1,256613.0,0.0,15.0,72.0,18.9,2.5,16.4,Bajo
-PMA - Programa Mundial de Alimentos,17,29747000.0,51.76470588235294,58.0,70.11764705882354,49.54117647058823,2.5,42.5,Medio
-PNUD - Programa de las Naciones Unidas para el Desarrollo,12,15065000.0,44.583333333333336,58.0,61.25,45.25416666666666,2.5,38.8,Medio
+PMA - Programa Mundial de Alimentos,17,29747000.0,50.294117647058826,58.0,70.11764705882354,49.02647058823529,2.5,42.0,Medio
+PNUD - Programa de las Naciones Unidas para el Desarrollo,12,15065000.0,40.416666666666664,58.0,61.25,43.79583333333333,2.5,37.6,Medio
 PRODIVERSA - Progreso y Diversidad,3,1311763.0,0.0,15.0,61.666666666666664,16.833333333333332,2.5,14.7,Bajo
 Pastoral Social Diócesis de Quibdó,1,150000.0,0.0,15.0,55.0,15.5,2.5,13.6,Bajo
 Pontificia Universidad Católica del Perú (PUCP),1,303900.0,0.0,15.0,50.0,14.5,2.5,12.7,Bajo
@@ -425,10 +425,10 @@ UARIV - Unidad para la Atención y Reparación Integral a las Víctimas,1,150000
 UICN - Union Internationale Pour la Conservation de la Nature Et de Ses Ressources,2,850000.0,22.5,37.0,59.0,30.775000000000002,2.5,26.5,Medio
 UNDRR - Oficina de Naciones Unidas para la Reducción del Riesgo de Desastres,1,450000.0,0.0,15.0,52.0,14.9,2.5,13.0,Bajo
 UNESCO,1,500000.0,45.0,44.0,70.0,42.949999999999996,2.5,36.9,Medio
-UNICEF - Fondo de las Naciones Unidas para la Infancia,12,13450000.0,60.833333333333336,58.0,67.41666666666667,52.175000000000004,2.5,44.7,Medio
+UNICEF - Fondo de las Naciones Unidas para la Infancia,12,13450000.0,58.75,58.0,67.41666666666667,51.44583333333333,2.5,44.1,Medio
 UNRISD - Instituto de Investigación de las Naciones Unidas para el Desarrollo Social,1,600000.0,20.0,30.0,55.0,27.0,2.5,23.3,Bajo
 UNRWA,4,18500000.0,20.0,30.0,64.0,28.799999999999997,2.5,24.9,Bajo
-UPlanet,1,85257.0,25.0,44.0,70.0,35.95,2.5,30.9,Medio
+UPlanet,1,85257.0,0.0,15.0,70.0,18.5,2.5,16.1,Bajo
 Union de Cooperativas Agropecuaria de Servicios Soppexcca RL,1,143461.0,0.0,15.0,68.0,18.1,2.5,15.8,Bajo
 Universidad Católica de San Pablo de Arequipa,1,76500.0,0.0,15.0,50.0,14.5,2.5,12.7,Bajo
 Universidad Científica e Idiomas de America Latina Sociedad Civil (UCIL),1,200000.0,30.0,58.0,55.0,38.9,2.5,33.4,Medio
