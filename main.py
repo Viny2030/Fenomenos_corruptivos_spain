@@ -316,7 +316,10 @@ footer{{background:#071a10;border-top:1px solid #0d3320;padding:16px 28px;displa
 </div>
 
 <footer>
-  <div class="footer-t">Monitor Fenómenos Corruptivos Spain · github.com/Viny2030 · Ph.D. Vicente Humberto Monteverde</div>
+  <div class="footer-t">
+    <div>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</div>
+    <div>Monitor Fenómenos Corruptivos Spain · github.com/Viny2030 · Ph.D. Vicente Humberto Monteverde</div>
+  </div>
   <div class="footer-l">
     <a href="/dashboard">Dashboard</a>
     <a href="/manual">Manual</a>
@@ -425,8 +428,8 @@ tr:hover td{background:#1e2235}
 .tabs{display:flex;gap:4px;margin-bottom:14px}
 .tab{padding:5px 14px;border-radius:6px;border:1px solid #2d3561;cursor:pointer;font-size:0.8rem;color:#a0aec0;background:#0f1117}
 .tab.active{background:#2d3561;color:#fff}
-footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px}
-@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px;text-align:left}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}footer{justify-content:center;text-align:center}}
 </style>
 </head>
 <body>
@@ -487,7 +490,10 @@ footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top
   </table>
 </div>
 </main>
-<footer>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Actualización diaria via GitHub Actions</footer>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
+  <span>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Actualización diaria via GitHub Actions</span>
+</footer>
 <script>
 const COLORS=['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6','#4ade80','#facc15'];
 const REGION_COLORS={'América Latina':'#34d399','Multipaís/Global':'#a78bfa','MENA':'#fbbf24','África':'#f87171'};
@@ -572,7 +578,8 @@ th{text-align:left;padding:8px 10px;color:#7c8db5;border-bottom:1px solid #2d356
 td{padding:8px 10px;border-bottom:1px solid #1e2235;color:#c0c8d8}
 code{background:#1e2235;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:0.85rem;color:#7eb8f7}
 .endpoint{background:#1e2235;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-family:monospace;font-size:0.85rem}
-footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:32px}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:32px;text-align:left}
+@media(max-width:900px){footer{justify-content:center;text-align:center}}
 </style>
 </head>
 <body>
@@ -648,7 +655,10 @@ footer{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top
   <p>Referencia: Monteverde, V.H. (2020). <em>Great corruption – theory of corrupt phenomena</em>. Journal of Financial Crime. Emerald Publishing.</p>
 </div>
 </main>
-<footer>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain</footer>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
+  <span>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain</span>
+</footer>
 </body>
 </html>
 """
@@ -704,7 +714,8 @@ main{{padding:36px 28px;max-width:900px;margin:0 auto}}
 .dona-row .val{{font-size:0.88rem;color:#e0e0e0;font-weight:500}}
 .dona-row .val.mono{{font-family:monospace;color:#7eb8f7;font-size:0.9rem;background:#0f1117;padding:3px 8px;border-radius:5px;display:inline-block;margin-top:2px}}
 .dona-row .val.alias{{color:#34d399;font-family:monospace;font-size:0.9rem}}
-footer{{text-align:center;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px}}
+footer{{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px;text-align:left}}
+@media(max-width:600px){{footer{{justify-content:center;text-align:center}}}}
 a{{color:#7eb8f7;text-decoration:none}}
 @media(max-width:600px){{.autor-card{{flex-direction:column;align-items:center;text-align:center}}.email-row{{justify-content:center}}}}
 </style>
@@ -767,7 +778,10 @@ a{{color:#7eb8f7;text-decoration:none}}
     </div>
   </div>
 </main>
-<footer>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Ph.D. Vicente Humberto Monteverde · <a href="mailto:vhmonte@retina.ar">vhmonte@retina.ar</a></footer>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
+  <span>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Ph.D. Vicente Humberto Monteverde · <a href="mailto:vhmonte@retina.ar">vhmonte@retina.ar</a></span>
+</footer>
 </body>
 </html>"""
 
