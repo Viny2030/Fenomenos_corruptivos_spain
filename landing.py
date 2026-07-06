@@ -314,7 +314,10 @@ footer{background:#071a10;border-top:1px solid #0d3320;padding:16px 28px;display
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-t">Monitor Fenómenos Corruptivos Spain · github.com/Viny2030 · Ph.D. Vicente Humberto Monteverde</div>
+  <div class="footer-t">
+    <div>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</div>
+    <div>Monitor Fenómenos Corruptivos Spain · github.com/Viny2030 · Ph.D. Vicente Humberto Monteverde</div>
+  </div>
   <div class="footer-l">
     <a href="/">Dashboard</a>
     <a href="/manual">Manual</a>
