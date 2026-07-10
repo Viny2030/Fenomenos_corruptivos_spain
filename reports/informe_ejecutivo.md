@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 09/07/2026 09:46*
+*Generado: 10/07/2026 09:39*
 
 ---
 
@@ -57,7 +57,7 @@
 - **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 74 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,213 registros (`bdns_concesiones.csv`)
-- **place**: 369 registros (`place_contratos.csv`)
+- **place**: 371 registros (`place_contratos.csv`)
 - **ltaibg**: 0 registros (`ltaibg_respuestas.csv`)
 
 ---
