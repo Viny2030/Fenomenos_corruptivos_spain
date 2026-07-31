@@ -156,6 +156,7 @@ footer{{background:#071a10;border-top:1px solid #0d3320;padding:16px 28px;displa
     <a class="nav-link" href="/dashboard">Dashboard</a>
     <a class="nav-link" href="/manual">Manual</a>
     <a class="nav-link" href="/autor">Autor</a>
+    <a class="nav-link" href="/en">🇬🇧 English</a>
     <a class="nav-link" href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">GitHub</a>
   </div>
 </nav>
@@ -324,6 +325,7 @@ footer{{background:#071a10;border-top:1px solid #0d3320;padding:16px 28px;displa
     <a href="/dashboard">Dashboard</a>
     <a href="/manual">Manual</a>
     <a href="/autor">Autor</a>
+    <a href="/en">English</a>
     <a href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">GitHub</a>
     <a href="mailto:vhmonte@retina.ar">Contacto</a>
   </div>
@@ -643,6 +645,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
     <a href="/dashboard">📊 Dashboard</a>
     <a href="/manual" class="active">📖 Manual</a>
     <a href="/autor">👤 Autor</a>
+    <a href="/en/manual">🇬🇧 English</a>
   </nav>
 </header>
 <main>
@@ -689,6 +692,17 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
       <tr><td><strong>VIA</strong></td><td>20%</td><td>Vulnerabilidad Institucional del país receptor.</td></tr>
     </tbody>
   </table>
+</div>
+<h2>🕸️ Pestaña de Grafos (Dashboard)</h2>
+<div class="card">
+  <p>El Dashboard incluye una pestaña <strong>🕸️ Grafos</strong> que visualiza la red de flujo de fondos como un grafo interactivo: <code>AECID → Entidad receptora → Eslabón donde se corta la trazabilidad</code>.</p>
+  <ul>
+    <li>El tamaño de cada nodo de entidad refleja el importe total canalizado hacia esa entidad.</li>
+    <li>El color del nodo refleja su clasificación de riesgo: <span class="badge" style="background:#7f1d1d;color:#fca5a5">ROJO</span> <span class="badge" style="background:#78350f;color:#fcd34d">NARANJA</span> <span class="badge" style="background:#713f12;color:#fde68a">AMARILLO</span> <span class="badge" style="background:#14532d;color:#86efac">VERDE</span>.</li>
+    <li>Las aristas punteadas indican fondos sin contrato PLACE/OCDS trazable (ruptura R2).</li>
+    <li>Los nodos cuadrados <code>E1</code>–<code>E7</code> representan el eslabón donde se corta la cadena de trazabilidad para esa entidad.</li>
+  </ul>
+  <p>Los datos del grafo se sirven desde <code>GET /api/grafo?top=N</code> (ver sección de endpoints), calculados on-the-fly a partir de <code>analisis_completo.csv</code> — no requiere una base de datos de grafos separada.</p>
 </div>
 <h2>🔌 Endpoints de la API</h2>
 <div class="card">
@@ -840,6 +854,452 @@ a{{color:#7eb8f7;text-decoration:none}}
 </html>"""
 
 # ─────────────────────────────────────────────────────────────────────────────
+# LANDING HTML (ENGLISH)
+# ─────────────────────────────────────────────────────────────────────────────
+LANDING_HTML_EN = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corrupt Phenomena Monitor — Spain · AECID</title>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JK8GYT9GT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', 'G-0JK8GYT9GT');
+</script>
+
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:'Segoe UI',system-ui,sans-serif;background:#050f0a;color:#d1fae5}}
+nav{{background:#071a10;border-bottom:1px solid #0d3320;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}}
+.nav-brand{{display:flex;align-items:center;gap:10px}}
+.nav-logo{{width:34px;height:34px;background:#064e2e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid #0d6e3f}}
+.nav-title{{font-size:.9rem;font-weight:600;color:#a7f3d0}}
+.nav-sub{{font-size:.7rem;color:#34795a}}
+.nav-links{{display:flex;gap:6px;flex-wrap:wrap}}
+.nav-link{{padding:5px 12px;border-radius:6px;border:1px solid #0d3320;color:#34d399;font-size:.76rem;text-decoration:none;transition:background .15s}}
+.nav-link:hover{{background:#0d3320;color:#a7f3d0}}
+.hero{{background:#071a10;padding:56px 36px 48px;text-align:center;border-bottom:1px solid #0d3320}}
+.hero-badge{{display:inline-flex;align-items:center;gap:6px;background:#0a2e1a;color:#34d399;border:1px solid #0d6e3f;border-radius:20px;padding:4px 14px;font-size:.74rem;margin-bottom:20px}}
+.dot{{width:7px;height:7px;background:#34d399;border-radius:50%;display:inline-block;animation:pulse 2s infinite}}
+@keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.35}}}}
+.hero h1{{font-size:2rem;font-weight:700;color:#a7f3d0;line-height:1.25;margin-bottom:12px;max-width:680px;margin-left:auto;margin-right:auto}}
+.hero h1 em{{color:#34d399;font-style:normal}}
+.hero-sub{{color:#4ade80;opacity:.8;font-size:.9rem;max-width:560px;margin:0 auto 28px;line-height:1.65}}
+.hero-tags{{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:30px}}
+.hero-tag{{background:#0a2218;border:1px solid #0d3320;color:#6ee7b7;padding:4px 12px;border-radius:8px;font-size:.74rem}}
+.hero-btns{{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}}
+.btn-p{{background:#059669;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.85rem;font-weight:600;text-decoration:none;display:inline-block}}
+.btn-p:hover{{background:#047857}}
+.btn-g{{background:transparent;color:#34d399;border:1px solid #0d3320;padding:10px 20px;border-radius:8px;font-size:.85rem;text-decoration:none;display:inline-block}}
+.btn-g:hover{{background:#0a2218}}
+.stats{{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));border-bottom:1px solid #0d3320}}
+.stat{{padding:22px 14px;text-align:center;border-right:1px solid #0d3320}}
+.stat:last-child{{border-right:none}}
+.stat-val{{font-size:1.5rem;font-weight:700;color:#34d399}}
+.stat-lbl{{font-size:.7rem;color:#34795a;margin-top:4px}}
+.sec{{padding:40px 28px;max-width:1200px;margin:0 auto}}
+.sec-title{{font-size:1.1rem;font-weight:600;color:#a7f3d0;margin-bottom:6px}}
+.sec-sub{{font-size:.8rem;color:#34795a;margin-bottom:22px}}
+.divider{{border:none;border-top:1px solid #0d3320;margin:0}}
+.method-grid{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+.mcard{{background:#071a10;border:1px solid #0d3320;border-radius:10px;padding:16px;display:flex;gap:12px}}
+.mpct{{font-size:1.4rem;font-weight:700;min-width:50px;flex-shrink:0}}
+.m1{{color:#34d399}}.m2{{color:#6ee7b7}}.m3{{color:#a7f3d0}}.m4{{color:#4ade80}}
+.mname{{font-size:.82rem;font-weight:600;color:#a7f3d0;margin-bottom:4px}}
+.mdesc{{font-size:.73rem;color:#34795a;line-height:1.5}}
+.mbar{{height:3px;border-radius:2px;background:#34d399;margin-top:8px}}
+.esl-grid{{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}}
+.esl-card{{background:#071a10;border:1px solid #0d3320;border-radius:8px;padding:10px 8px;text-align:center}}
+.esl-num{{font-size:1rem;font-weight:700;color:#34d399;margin-bottom:3px}}
+.esl-name{{font-size:.65rem;color:#6ee7b7;margin-bottom:4px;font-weight:600}}
+.esl-desc{{font-size:.62rem;color:#34795a;line-height:1.35}}
+.rupt-grid{{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}}
+.rcard{{background:#071a10;border:1px solid #0d3320;border-radius:10px;padding:16px}}
+.rbadge{{display:inline-block;background:#052e16;color:#34d399;border:1px solid #0d6e3f;border-radius:6px;font-size:.7rem;font-weight:700;padding:2px 8px;margin-bottom:8px}}
+.rname{{font-size:.82rem;font-weight:600;color:#a7f3d0;margin-bottom:5px}}
+.rdesc{{font-size:.73rem;color:#34795a;line-height:1.5}}
+.ind-grid{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+.icard{{background:#071a10;border:1px solid #0d3320;border-radius:10px;padding:16px;display:flex;gap:10px;align-items:flex-start}}
+.ipct{{font-size:1.05rem;font-weight:700;color:#34d399;min-width:38px;flex-shrink:0}}
+.iname{{font-size:.82rem;font-weight:600;color:#a7f3d0;margin-bottom:3px}}
+.idesc{{font-size:.73rem;color:#34795a;line-height:1.4}}
+.tech-row{{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}}
+.tpill{{background:#071a10;border:1px solid #0d3320;color:#6ee7b7;padding:5px 12px;border-radius:20px;font-size:.74rem;display:flex;align-items:center;gap:5px}}
+.tdot{{width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0}}
+.autor-card{{background:#071a10;border:1px solid #0d3320;border-radius:12px;padding:24px;display:flex;gap:20px;align-items:flex-start;margin-top:6px}}
+.autor-img{{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid #34d399;flex-shrink:0}}
+.autor-name{{font-size:1rem;font-weight:600;color:#a7f3d0;margin-bottom:4px}}
+.autor-role{{font-size:.78rem;color:#34795a;line-height:1.6;margin-bottom:12px}}
+.autor-em{{color:#34d399;font-style:normal}}
+.amail{{display:inline-flex;align-items:center;gap:5px;background:#0a2218;color:#34d399;border:1px solid #0d3320;padding:5px 12px;border-radius:6px;font-size:.76rem;margin-right:6px;text-decoration:none}}
+.dona-header{{text-align:center;padding:20px 0 14px}}
+.dona-header h3{{font-size:1rem;color:#fbbf24;margin-bottom:5px}}
+.dona-header p{{font-size:.8rem;color:#34795a}}
+.dona-grid{{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}}
+.dcard{{background:#071a10;border-radius:10px;padding:18px}}
+.dcard.ars{{border:1px solid #0d6e3f;border-top:3px solid #34d399}}
+.dcard.usd{{border:1px solid #0d6e3f;border-top:3px solid #6ee7b7}}
+.dcard.wire{{border:1px solid #0d6e3f;border-top:3px solid #a7f3d0}}
+.dcard h4{{font-size:.76rem;color:#6ee7b7;font-weight:600;margin-bottom:14px}}
+.drow{{margin-bottom:9px}}
+.dlbl{{font-size:.67rem;color:#34795a;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}}
+.dval{{font-size:.82rem;color:#d1fae5;font-weight:500}}
+.dval.mono{{font-family:monospace;color:#34d399;background:#050f0a;padding:2px 7px;border-radius:4px;display:inline-block;font-size:.84rem}}
+.dval.alias{{color:#6ee7b7;font-family:monospace;font-size:.84rem}}
+.disclaimer{{background:#050f0a;border-top:1px solid #0d3320;padding:20px 28px;font-size:.72rem;color:#1a4a2e;text-align:center;line-height:1.65}}
+footer{{background:#071a10;border-top:1px solid #0d3320;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}}
+.footer-t{{font-size:.72rem;color:#1a4a2e}}
+.footer-l{{display:flex;gap:14px}}
+.footer-l a{{font-size:.72rem;color:#34795a;text-decoration:none}}
+.footer-l a:hover{{color:#34d399}}
+@media(max-width:800px){{
+  .method-grid,.rupt-grid,.dona-grid,.ind-grid{{grid-template-columns:1fr}}
+  .esl-grid{{grid-template-columns:repeat(4,1fr)}}
+  .hero h1{{font-size:1.4rem}}
+  .autor-card{{flex-direction:column;align-items:center;text-align:center}}
+  .stats{{grid-template-columns:repeat(3,1fr)}}
+}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">🔍</div>
+    <div>
+      <div class="nav-title">Corrupt Phenomena Monitor</div>
+      <div class="nav-sub">Spain · AECID · Ph.D. Vicente Humberto Monteverde</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="/dashboard">Dashboard</a>
+    <a class="nav-link" href="/en/manual">Manual</a>
+    <a class="nav-link" href="/autor">Author</a>
+    <a class="nav-link" href="/">🇪🇸 Español</a>
+    <a class="nav-link" href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span> Active · Official public data · Open source</div>
+  <h1>AECID Traceability Monitor<br>Corrupt Phenomena — Spain</h1>
+  <p class="hero-sub">Algorithmic audit of international cooperation funds. From the Spanish budget to the final beneficiary — 7 links, 3 structural ruptures, 1 explainable risk index.</p>
+  <div class="hero-tags">
+    <div class="hero-tag">🔍 Fund traceability</div>
+    <div class="hero-tag">🌍 AECID · IOs · NGDOs</div>
+    <div class="hero-tag">⚙️ XAI · Explainable algorithm</div>
+    <div class="hero-tag">📡 REST API</div>
+    <div class="hero-tag">⭐ Open Source</div>
+  </div>
+  <div class="hero-btns">
+    <a class="btn-p" href="/dashboard">Open Dashboard →</a>
+    <a class="btn-g" href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">View on GitHub</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val">~€1,000M</div><div class="stat-lbl">AECID / year</div></div>
+  <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">Links</div></div>
+  <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Structural ruptures</div></div>
+  <div class="stat"><div class="stat-val">8%</div><div class="stat-lbl">Beneficiary traceability</div></div>
+  <div class="stat"><div class="stat-val">4</div><div class="stat-lbl">Risk indicators</div></div>
+  <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Official public data</div></div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">Methodology</div>
+  <div class="sec-sub">Institutional Risk Index (IRI) — 4 weighted dimensions. Every alert is explainable, not a black box.</div>
+  <div class="method-grid">
+    <div class="mcard"><div><div class="mpct m1">35%</div><div class="mbar" style="width:35%"></div></div><div><div class="mname">Financial Risk</div><div class="mdesc">Anomalies in budget execution, payment flows and AECID treasury operations</div></div></div>
+    <div class="mcard"><div><div class="mpct m2">30%</div><div class="mbar" style="width:30%;opacity:.8"></div></div><div><div class="mname">Procurement Risk</div><div class="mdesc">XAI detection of irregular patterns in tenders and contracts (PLACE + BDNS + OCDS)</div></div></div>
+    <div class="mcard"><div><div class="mpct m3">20%</div><div class="mbar" style="width:20%;opacity:.6"></div></div><div><div class="mname">Operational Risk</div><div class="mdesc">Institutional performance and management metrics of fund-receiving entities</div></div></div>
+    <div class="mcard"><div><div class="mpct m4">15%</div><div class="mbar" style="width:15%;opacity:.45"></div></div><div><div class="mname">Data Risk</div><div class="mdesc">Quality, completeness and timeliness of publicly available information by source</div></div></div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">7-Link Model</div>
+  <div class="sec-sub">Each fund is evaluated according to the last traceability link reached. Score from 14/100 (L1) to 100/100 (L7).</div>
+  <div class="esl-grid">
+    <div class="esl-card"><div class="esl-num">L1</div><div class="esl-name">Budget</div><div class="esl-desc">Approved Spanish PGE</div></div>
+    <div class="esl-card"><div class="esl-num">L2</div><div class="esl-name">Transfer</div><div class="esl-desc">AECID HQ → entity</div></div>
+    <div class="esl-card"><div class="esl-num">L3</div><div class="esl-name">IOs/BDNS</div><div class="esl-desc">Registered receiving channel</div></div>
+    <div class="esl-card"><div class="esl-num">L4</div><div class="esl-name">Destination</div><div class="esl-desc">Declared country/region</div></div>
+    <div class="esl-card"><div class="esl-num">L5</div><div class="esl-name">Contracts</div><div class="esl-desc">Published PLACE/OCDS</div></div>
+    <div class="esl-card"><div class="esl-num">L6</div><div class="esl-name">Justification</div><div class="esl-desc">Audit / LTAIBG</div></div>
+    <div class="esl-card" style="border-color:#0d6e3f"><div class="esl-num" style="color:#6ee7b7">L7</div><div class="esl-name" style="color:#6ee7b7">Beneficiary</div><div class="esl-desc">Tax ID / name identified</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">The 3 Structural Ruptures</div>
+  <div class="sec-sub">They explain why traceability collapses between link 3 and link 7.</div>
+  <div class="rupt-grid">
+    <div class="rcard"><div class="rbadge">R1</div><div class="rname">IOs — Black box</div><div class="rdesc">Funds to UNDP, UNICEF, FAO, UNHCR… that aggregate multi-donor contributions without breaking down the Spanish contribution in IATI. Traceability is cut at L3.</div></div>
+    <div class="rcard"><div class="rbadge">R2</div><div class="rname">Sub-contracting without OCDS</div><div class="rdesc">Contracts awarded without publication on the State Procurement Portal (PLACE) under the Open Contracting Data Standard.</div></div>
+    <div class="rcard"><div class="rbadge">R3</div><div class="rname">No auditable justification</div><div class="rdesc">Projects &gt;€500,000 without a published final evaluation nor a favorable response to an information request (Transparency Law 19/2013).</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">Risk Indicators</div>
+  <div class="sec-sub">Integrated score = 60% risk (ICR + SOG + RES + VIA) + 40% inverted traceability. Classification: GREEN / YELLOW / ORANGE / RED.</div>
+  <div class="ind-grid">
+    <div class="icard"><div class="ipct">ICR<br><span style="font-size:.68rem;color:#34795a;font-weight:400">15%</span></div><div><div class="iname">Recipient Concentration Index</div><div class="idesc">Normalized HHI. Detects whether a few actors concentrate most of the funds.</div></div></div>
+    <div class="icard"><div class="ipct">SOG<br><span style="font-size:.68rem;color:#34795a;font-weight:400">35%</span></div><div><div class="iname">Management Opacity Score</div><div class="idesc">Weighted sum of binary indicators: is an IO, has R2, has R3, direct award, no declared country.</div></div></div>
+    <div class="icard"><div class="ipct">RES<br><span style="font-size:.68rem;color:#34795a;font-weight:400">30%</span></div><div><div class="iname">Cut-off Link Risk</div><div class="idesc">Inverse of the traceability score. The lower the link reached, the higher the risk.</div></div></div>
+    <div class="icard"><div class="ipct">VIA<br><span style="font-size:.68rem;color:#34795a;font-weight:400">20%</span></div><div><div class="iname">Institutional Vulnerability</div><div class="idesc">Proxy for the World Bank Governance Index (WGI 0-100) for the recipient country.</div></div></div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">Tech Stack</div>
+  <div class="sec-sub">Open source · Python + FastAPI · Railway · Official AECID, BDNS, PLACE, IATI, OECD data. Daily updates via GitHub Actions.</div>
+  <div class="tech-row">
+    <div class="tpill"><div class="tdot"></div>Python 3</div>
+    <div class="tpill"><div class="tdot"></div>FastAPI</div>
+    <div class="tpill"><div class="tdot"></div>Uvicorn</div>
+    <div class="tpill"><div class="tdot"></div>Railway</div>
+    <div class="tpill"><div class="tdot"></div>XAI / Explainable AI</div>
+    <div class="tpill"><div class="tdot"></div>AECID Open Data</div>
+    <div class="tpill"><div class="tdot"></div>BDNS</div>
+    <div class="tpill"><div class="tdot"></div>PLACE / OCDS</div>
+    <div class="tpill"><div class="tdot"></div>IATI Standard</div>
+    <div class="tpill"><div class="tdot"></div>OECD CRS</div>
+    <div class="tpill"><div class="tdot"></div>Transparency Law 19/2013</div>
+    <div class="tpill"><div class="tdot"></div>GitHub Actions</div>
+  </div>
+</div>
+
+<hr class="divider">
+<div class="sec">
+  <div class="sec-title">Author</div>
+  <div class="sec-sub">Project lead researcher</div>
+  <div class="autor-card">
+    <img class="autor-img" src="{FOTO_BASE64}" alt="Ph.D. Vicente Humberto Monteverde">
+    <div style="flex:1">
+      <div class="autor-name">Ph.D. Vicente Humberto Monteverde</div>
+      <div class="autor-role">
+        Ph.D. in Economic Sciences · Researcher in political economy and corruption phenomena.<br>
+        Author of the <em class="autor-em">Regressive Income Transfer</em> theory and developer
+        of the <em class="autor-em">XAI</em> algorithm applied to public procurement analysis.<br>
+        Publications in <em class="autor-em">Journal of Financial Crime</em> (Emerald Publishing).
+        Advisor on transparency and algorithmic auditing of public spending.
+      </div>
+      <a class="amail" href="mailto:vhmonte@retina.ar">✉️ vhmonte@retina.ar</a>
+      <a class="amail" href="mailto:viny01958@gmail.com">✉️ viny01958@gmail.com</a>
+    </div>
+  </div>
+
+  <div class="dona-header">
+    <h3>💛 Support this project — Voluntary donations</h3>
+    <p>If this project is useful to you, you can support it with a voluntary donation.</p>
+  </div>
+  <div class="dona-grid">
+    <div class="dcard ars">
+      <h4>🇦🇷 Argentina · Pesos (ARS)</h4>
+      <div class="drow"><div class="dlbl">Type</div><div class="dval">Savings Account</div></div>
+      <div class="drow"><div class="dlbl">CBU</div><div class="dval mono">0140005203400552652310</div></div>
+      <div class="drow"><div class="dlbl">Alias</div><div class="dval alias">ALGORIT.MONTE.PESOS</div></div>
+      <div class="drow"><div class="dlbl">Account holder</div><div class="dval">Vicente Humberto Monteverde</div></div>
+      <div class="drow"><div class="dlbl">Tax ID (CUIL/CUIT)</div><div class="dval mono">20-12034411-1</div></div>
+    </div>
+    <div class="dcard usd">
+      <h4>🇦🇷 Argentina · Dollars (USD)</h4>
+      <div class="drow"><div class="dlbl">Type</div><div class="dval">USD Savings Account</div></div>
+      <div class="drow"><div class="dlbl">CBU</div><div class="dval mono">0140005204400550329709</div></div>
+      <div class="drow"><div class="dlbl">Alias</div><div class="dval alias">ALGO.MONTE.DOLARES</div></div>
+      <div class="drow"><div class="dlbl">Account holder</div><div class="dval">Vicente Humberto Monteverde</div></div>
+      <div class="drow"><div class="dlbl">Tax ID (CUIL/CUIT)</div><div class="dval mono">20-12034411-1</div></div>
+    </div>
+    <div class="dcard wire">
+      <h4>🌐 From abroad (USD Wire)</h4>
+      <div class="drow"><div class="dlbl">Bank</div><div class="dval">Banco Santander Rio</div></div>
+      <div class="drow"><div class="dlbl">Beneficiary</div><div class="dval">Vicente Humberto Monteverde</div></div>
+      <div class="drow"><div class="dlbl">Address</div><div class="dval">Av. Directorio 3024 PB DTO 04</div></div>
+      <div class="drow"><div class="dlbl">USD Account</div><div class="dval mono">005200183500</div></div>
+      <div class="drow"><div class="dlbl">SWIFT / BIC</div><div class="dval alias">BSCHUYMM</div></div>
+      <div class="drow"><div class="dlbl">Tax ID</div><div class="dval mono">20-12034411-1</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  This tool is experimental and academic in nature. Results are algorithmic risk indicators —
+  they do not imply legal judgment, accusation, or a determination of responsibility for any company, institution or individual.
+  The goal is to promote transparency and informed public debate about international cooperation spending.
+</div>
+
+<footer>
+  <div class="footer-t">
+    <div>&copy; 2026 Vicente H. Monteverde | AECID Traceability Monitor. All rights reserved.</div>
+    <div>Corrupt Phenomena Monitor Spain · github.com/Viny2030 · Ph.D. Vicente Humberto Monteverde</div>
+  </div>
+  <div class="footer-l">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/en/manual">Manual</a>
+    <a href="/autor">Author</a>
+    <a href="/">Español</a>
+    <a href="https://github.com/Viny2030/Fenomenos_corruptivos_spain" target="_blank">GitHub</a>
+    <a href="mailto:vhmonte@retina.ar">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MANUAL HTML (ENGLISH)
+# ─────────────────────────────────────────────────────────────────────────────
+MANUAL_HTML_EN = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Manual — AECID Monitor</title>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JK8GYT9GT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0JK8GYT9GT');
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e0e0e0}
+header{background:#1a1d2e;padding:18px 28px;border-bottom:2px solid #2d3561;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+header h1{font-size:1.3rem;color:#fff}
+.nav-links{display:flex;gap:8px}
+.nav-links a{background:#2d3561;color:#7eb8f7;padding:6px 14px;border-radius:6px;font-size:0.82rem;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{background:#3b82f6;color:#fff}
+main{padding:32px 28px;max-width:900px;margin:0 auto}
+h2{font-size:1.2rem;color:#7eb8f7;margin:32px 0 12px;border-bottom:1px solid #2d3561;padding-bottom:6px}
+h3{font-size:1rem;color:#a0aec0;margin:20px 0 8px}
+p{margin-bottom:10px;color:#c0c8d8}
+ul{padding-left:20px;margin-bottom:12px;color:#c0c8d8}
+li{margin-bottom:6px}
+.card{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:20px;margin-bottom:18px}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;margin-right:6px}
+.r1{background:#7f1d1d;color:#fca5a5}
+.r2{background:#78350f;color:#fcd34d}
+.r3{background:#78350f;color:#fb923c}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0}
+th{text-align:left;padding:8px 10px;color:#7c8db5;border-bottom:1px solid #2d3561;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid #1e2235;color:#c0c8d8}
+code{background:#1e2235;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:0.85rem;color:#7eb8f7}
+.endpoint{background:#1e2235;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-family:monospace;font-size:0.85rem}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:32px;text-align:left}
+@media(max-width:900px){footer{justify-content:center;text-align:center}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>📖 User Manual — AECID Traceability Monitor</h1></div>
+  <nav class="nav-links">
+    <a href="/en">🏠 Home</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/en/manual" class="active">📖 Manual</a>
+    <a href="/autor">👤 Author</a>
+    <a href="/manual">🇪🇸 Español</a>
+  </nav>
+</header>
+<main>
+<div class="card">
+  <h2 style="margin-top:0">What is this system?</h2>
+  <p>The <strong>AECID Traceability Monitor</strong> is an algorithmic audit tool that analyzes international cooperation funds managed by AECID, applying the <em>Corrupt Phenomena</em> methodology by Ph.D. Vicente Humberto Monteverde.</p>
+  <p>The system automatically detects <strong>breaks in the traceability chain</strong> of each fund — from the budget approved in Spain to the final beneficiary.</p>
+</div>
+<h2>📊 The 7-Link Model</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Link</th><th>Stage</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>L1</code></td><td>Spain Budget</td><td>The fund appears in the approved General State Budget.</td></tr>
+      <tr><td><code>L2</code></td><td>AECID Transfer</td><td>The receiving entity is identified (IO, NGDO or consultancy).</td></tr>
+      <tr><td><code>L3</code></td><td>IO/BDNS Registration</td><td>The fund is registered in BDNS or in international organizations.</td></tr>
+      <tr><td><code>L4</code></td><td>Geographic destination</td><td>The destination country or region is publicly declared.</td></tr>
+      <tr><td><code>L5</code></td><td>PLACE/OCDS Contracts</td><td>Derived contracts are published on the procurement portal.</td></tr>
+      <tr><td><code>L6</code></td><td>Public justification</td><td>Final evaluations exist or positive responses to LTAIBG requests.</td></tr>
+      <tr><td><code>L7</code></td><td>Final beneficiary</td><td>The final beneficiary is identified with a tax ID or name.</td></tr>
+    </tbody>
+  </table>
+</div>
+<h2>🚨 The Three Main Ruptures</h2>
+<div class="card">
+  <h3><span class="badge r1">R1</span> IOs — Black box</h3>
+  <p>Funds transferred to International Organizations (UNDP, UNICEF, FAO, UNHCR…) without breaking down the Spanish contribution in the IATI standard.</p>
+  <h3><span class="badge r2">R2</span> Sub-contracting without OCDS</h3>
+  <p>Contracts without publication on the State Procurement Portal (PLACE) under the Open Contracting Data Standard.</p>
+  <p style="background:#2d1f0a;border:1px solid #78350f;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#fcd34d;margin-top:8px">
+    ⚠️ <strong>Methodological note:</strong> if R2 appears at 100% for a fund today, it reflects that the <strong>automatic cross-check between AECID and PLACE has not yet been completed</strong> for that entity — it does not necessarily mean the contract is absent. The cross-check is built through a progressive backfill (page by page, with a persistent cursor) that advances with every pipeline run. While the backfill is in progress, a high R2 may overestimate the real risk. This indicator should be read together with the date of the last run, and it will gradually decrease as the backfill covers more contracts published on PLACE.
+  </p>
+  <h3><span class="badge r3">R3</span> No auditable justification</h3>
+  <p>Projects with an amount over €500,000 without a published final evaluation nor a favorable response to an LTAIBG request (Law 19/2013).</p>
+</div>
+<h2>📈 Risk Indicators</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Indicator</th><th>Weight</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ICR</strong></td><td>15%</td><td>Recipient Concentration Index (normalized HHI).</td></tr>
+      <tr><td><strong>SOG</strong></td><td>35%</td><td>Management Opacity Score.</td></tr>
+      <tr><td><strong>RES</strong></td><td>30%</td><td>Cut-off Link Risk.</td></tr>
+      <tr><td><strong>VIA</strong></td><td>20%</td><td>Institutional Vulnerability of the recipient country.</td></tr>
+    </tbody>
+  </table>
+</div>
+<h2>🕸️ Graphs Tab (Dashboard)</h2>
+<div class="card">
+  <p>The Dashboard includes a <strong>🕸️ Graphs</strong> tab that visualizes the fund flow network as an interactive graph: <code>AECID → Receiving entity → Link where traceability is cut</code>.</p>
+  <ul>
+    <li>The size of each entity node reflects the total amount channeled to that entity.</li>
+    <li>The node color reflects its risk classification: <span class="badge" style="background:#7f1d1d;color:#fca5a5">RED</span> <span class="badge" style="background:#78350f;color:#fcd34d">ORANGE</span> <span class="badge" style="background:#713f12;color:#fde68a">YELLOW</span> <span class="badge" style="background:#14532d;color:#86efac">GREEN</span>.</li>
+    <li>Dashed edges indicate funds without a traceable PLACE/OCDS contract (R2 rupture).</li>
+    <li>The square nodes <code>E1</code>–<code>E7</code> represent the link where the traceability chain is cut for that entity.</li>
+  </ul>
+  <p>Graph data is served from <code>GET /api/grafo?top=N</code> (see endpoints section), computed on-the-fly from <code>analisis_completo.csv</code> — no separate graph database is required.</p>
+</div>
+<h2>🔌 API Endpoints</h2>
+<div class="card">
+  <div class="endpoint">GET /api/status — Service status</div>
+  <div class="endpoint">GET /api/resumen — Executive KPIs</div>
+  <div class="endpoint">GET /api/fondos?entidad=X&amp;clasificacion=ROJO&amp;limit=100</div>
+  <div class="endpoint">GET /api/trazabilidad — Analysis by link</div>
+  <div class="endpoint">GET /api/entidades?top=30&amp;nivel=Alto</div>
+  <div class="endpoint">GET /api/riesgo — Scores by entity</div>
+  <div class="endpoint">GET /api/grafo?top=30 — AECID → entity → cut-off link flow network</div>
+  <div class="endpoint">GET /api/mensual — Monthly evolution by region</div>
+  <div class="endpoint">GET /api/informe — Executive report in Markdown</div>
+  <div class="endpoint">POST /api/refresh (Header: X-Refresh-Token)</div>
+</div>
+<h2>📚 Theoretical framework</h2>
+<div class="card">
+  <p>Based on the <em>Corrupt Phenomena</em> theory by Ph.D. Vicente Humberto Monteverde: regressive income transfers facilitated by discretion in legal decisions.</p>
+  <p>Reference: Monteverde, V.H. (2020). <em>Great corruption – theory of corrupt phenomena</em>. Journal of Financial Crime. Emerald Publishing.</p>
+</div>
+</main>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | AECID Traceability Monitor. All rights reserved.</span>
+  <span>AECID Monitor v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain</span>
+</footer>
+</body>
+</html>
+"""
+
+# ─────────────────────────────────────────────────────────────────────────────
 # LIFESPAN
 # ─────────────────────────────────────────────────────────────────────────────
 @asynccontextmanager
@@ -932,6 +1392,14 @@ def manual():
 @app.get("/autor", response_class=HTMLResponse)
 def autor():
     return HTMLResponse(AUTOR_HTML)
+
+@app.get("/en", response_class=HTMLResponse)
+def landing_en():
+    return HTMLResponse(LANDING_HTML_EN)
+
+@app.get("/en/manual", response_class=HTMLResponse)
+def manual_en():
+    return HTMLResponse(MANUAL_HTML_EN)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # API — STATUS
