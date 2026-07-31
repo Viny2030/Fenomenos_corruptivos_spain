@@ -382,6 +382,7 @@ DASHBOARD_HTML = r"""<!DOCTYPE html>
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e0e0e0}
@@ -428,6 +429,9 @@ tr:hover td{background:#1e2235}
 .tabs{display:flex;gap:4px;margin-bottom:14px}
 .tab{padding:5px 14px;border-radius:6px;border:1px solid #2d3561;cursor:pointer;font-size:0.8rem;color:#a0aec0;background:#0f1117}
 .tab.active{background:#2d3561;color:#fff}
+.view-tabs{display:flex;gap:6px;margin-bottom:18px}
+.view-tab{padding:8px 18px;border-radius:8px;border:1px solid #2d3561;cursor:pointer;font-size:0.85rem;color:#a0aec0;background:#1a1d2e;font-weight:600}
+.view-tab.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
 footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px;text-align:left}
 @media(max-width:900px){.grid2{grid-template-columns:1fr}footer{justify-content:center;text-align:center}}
 </style>
@@ -449,6 +453,11 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
   </div>
 </header>
 <main>
+<div class="view-tabs">
+  <div class="view-tab active" onclick="switchView('resumen',this)">📊 Resumen</div>
+  <div class="view-tab" onclick="switchView('grafos',this)">🕸️ Grafos</div>
+</div>
+<div id="view-resumen" class="view">
 <div class="kpis" id="kpis"></div>
 <div class="grid2">
   <div class="card"><h3>🔗 Rupturas de trazabilidad</h3><div id="rupturas"></div><div class="chart-wrap" style="height:160px;margin-top:12px"><canvas id="chartRupturas"></canvas></div></div>
@@ -489,6 +498,31 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
     <tbody></tbody>
   </table>
 </div>
+</div>
+<div id="view-grafos" class="view" style="display:none">
+  <div class="card" style="margin-bottom:18px">
+    <h3>🕸️ Red de flujo de fondos: AECID → Entidad → Eslabón de corte</h3>
+    <div class="filters">
+      <select id="grafo-top" onchange="cargarGrafo()">
+        <option value="15">Top 15 entidades</option>
+        <option value="30" selected>Top 30 entidades</option>
+        <option value="60">Top 60 entidades</option>
+        <option value="150">Top 150 entidades</option>
+      </select>
+      <span id="grafo-info" style="font-size:0.78rem;color:#7c8db5;align-self:center"></span>
+    </div>
+    <div style="display:flex;gap:14px;margin-bottom:10px;font-size:0.75rem;color:#a0aec0;flex-wrap:wrap">
+      <span>⭐ AECID (origen)</span>
+      <span>🔴 Clasif. ROJO</span>
+      <span>🟠 NARANJA</span>
+      <span>🟡 AMARILLO</span>
+      <span>🟢 VERDE</span>
+      <span>◻️ Eslabón de corte (E1–E7)</span>
+      <span>┄ Arista punteada = sin contrato PLACE/OCDS trazable (R2)</span>
+    </div>
+    <div id="grafo-container" style="height:560px;background:#0f1117;border-radius:8px;border:1px solid #2d3561"></div>
+  </div>
+</div>
 </main>
 <footer>
   <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
@@ -497,7 +531,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 <script>
 const COLORS=['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6','#4ade80','#facc15'];
 const REGION_COLORS={'América Latina':'#34d399','Multipaís/Global':'#a78bfa','MENA':'#fbbf24','África':'#f87171'};
-let _entidades=[],_fondos=[],_mensualData={},_chartMensual=null;
+let _entidades=[],_fondos=[],_mensualData={},_chartMensual=null,_network=null,_grafoCargado=false;
 function mkChart(id,type,labels,datasets,opts={}){const ctx=document.getElementById(id);if(!ctx)return null;if(ctx._chart)ctx._chart.destroy();const c=new Chart(ctx,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a0aec0',font:{size:11}}}},scales:type!=='pie'&&type!=='doughnut'?{x:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}}}:{},...opts}});ctx._chart=c;return c;}
 async function cargar(){
   const[res,ent,fond,mens]=await Promise.all([fetch('/api/resumen').then(r=>r.json()),fetch('/api/entidades?top=50').then(r=>r.json()),fetch('/api/fondos?limit=500').then(r=>r.json()),fetch('/api/mensual').then(r=>r.json())]);
@@ -529,6 +563,25 @@ function renderEntidades(data){document.querySelector('#tabla-entidades tbody').
 function renderFondos(data){document.querySelector('#tabla-fondos tbody').innerHTML=data.slice(0,100).map(f=>`<tr><td title="${f.titulo||''}">${(f.titulo||'').substring(0,40)}…</td><td>${(f.entidad||'').substring(0,25)}</td><td>${f.pais_region||'—'}</td><td>${f.año||f.fecha?.substring(0,4)||'—'}</td><td>${((f.importe_eur||0)/1e6).toFixed(2)}M€</td><td>E${f.eslabon_corte||'—'}</td><td>${f.score_trazabilidad||0}/100</td><td><span class="pill ${f.clasificacion||''}">${f.clasificacion||'—'}</span></td></tr>`).join('');}
 function filtrarEntidades(){const busq=document.getElementById('busq-entidad').value.toLowerCase();const nivel=document.getElementById('filtro-nivel').value;renderEntidades(_entidades.filter(e=>(!busq||(e.entidad||'').toLowerCase().includes(busq))&&(!nivel||e.nivel_riesgo===nivel)));}
 function filtrarFondos(){const busq=document.getElementById('busq-fondo').value.toLowerCase();const clasif=document.getElementById('filtro-clasif').value;const eslab=document.getElementById('filtro-eslabon').value;const año=document.getElementById('filtro-año').value;renderFondos(_fondos.filter(f=>(!busq||(f.titulo||'').toLowerCase().includes(busq)||(f.entidad||'').toLowerCase().includes(busq))&&(!clasif||f.clasificacion===clasif)&&(!eslab||String(f.eslabon_corte)===eslab)&&(!año||String(f.año||f.fecha?.substring(0,4))===año)));}
+function switchView(view,el){
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('view-resumen').style.display = view==='resumen' ? '' : 'none';
+  document.getElementById('view-grafos').style.display = view==='grafos' ? '' : 'none';
+  if(view==='grafos' && !_grafoCargado){ _grafoCargado=true; cargarGrafo(); }
+}
+async function cargarGrafo(){
+  const top=document.getElementById('grafo-top').value||30;
+  const res=await fetch(`/api/grafo?top=${top}`).then(r=>r.json());
+  const GROUP_COLOR={root:'#3b82f6',entidad:'#7eb8f7',eslabon:'#a0aec0'};
+  const nodesData=new vis.DataSet(res.nodes.map(n=>({id:n.id,label:n.label,value:n.value,title:n.title||n.label,color:n.color||GROUP_COLOR[n.group]||'#7eb8f7',shape:n.group==='root'?'star':(n.group==='eslabon'?'box':'dot'),font:{color:'#e0e0e0',size:11}})));
+  const edgesData=new vis.DataSet(res.edges.map(e=>({from:e.from,to:e.to,value:e.value,dashes:!!e.dashes,color:{color:'#2d3561',highlight:'#7eb8f7',opacity:0.6},title:e.title||''})));
+  const container=document.getElementById('grafo-container');
+  const options={nodes:{scaling:{min:8,max:40}},edges:{scaling:{min:1,max:12},smooth:{type:'continuous'}},physics:{stabilization:true,barnesHut:{gravitationalConstant:-3000,springLength:120}},interaction:{hover:true,tooltipDelay:120}};
+  if(_network)_network.destroy();
+  _network=new vis.Network(container,{nodes:nodesData,edges:edgesData},options);
+  document.getElementById('grafo-info').textContent=`${res.nodes.length} nodos · ${res.edges.length} conexiones · ${res.total_entidades||0} entidades totales en el sistema`;
+}
 cargar();
 </script>
 </body>
@@ -645,6 +698,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
   <div class="endpoint">GET /api/trazabilidad — Análisis por eslabón</div>
   <div class="endpoint">GET /api/entidades?top=30&amp;nivel=Alto</div>
   <div class="endpoint">GET /api/riesgo — Scores por entidad</div>
+  <div class="endpoint">GET /api/grafo?top=30 — Red de flujo AECID → entidad → eslabón de corte</div>
   <div class="endpoint">GET /api/mensual — Evolución mensual por región</div>
   <div class="endpoint">GET /api/informe — Informe ejecutivo en Markdown</div>
   <div class="endpoint">POST /api/refresh (Header: X-Refresh-Token)</div>
@@ -1056,12 +1110,17 @@ def refresh(x_refresh_token: str = Header(None)):
 def mensual():
     df = _cargar_fondos()
     if df.empty or "fecha" not in df.columns:
-        return {"data": []}
+        return {"total": [], "region": {}, "sector": {}}
     df = df.copy()
-    df["fecha_dt"]    = pd.to_datetime(df["fecha"], errors="coerce")
-    df["mes"]         = df["fecha_dt"].dt.to_period("M").astype(str)
+    df["fecha_dt"] = pd.to_datetime(df["fecha"], errors="coerce")
+    df["mes"] = df["fecha_dt"].dt.to_period("M").astype(str)
     df["importe_num"] = df["importe_eur"].apply(_parsear_monto)
-    mensual_total = df.groupby("mes").agg(n=("importe_num","count"), importe=("importe_num","sum")).reset_index().sort_values("mes")
+
+    mensual_total = df.groupby("mes").agg(
+        n=("importe_num", "count"),
+        importe=("importe_num", "sum"),
+    ).reset_index().sort_values("mes")
+
     mensual_region = {}
     if "region" in df.columns:
         for region, grp in df.groupby("region"):
@@ -1071,14 +1130,15 @@ def mensual():
     elif "pais_region" in df.columns:
         df["region_inf"] = df["pais_region"].apply(lambda p: (
             "América Latina" if any(x in str(p) for x in ["Bolivia","Colombia","Ecuador","Guatemala","Honduras","México","Nicaragua","Perú","Cuba","Haití"]) else
-            "África"         if any(x in str(p) for x in ["Etiopía","Mozambique","Mali","Niger","Senegal","Chad","Kenya"]) else
-            "MENA"           if any(x in str(p) for x in ["Marruecos","Túnez","Jordania","Líbano","Palestina","Siria","Yemen"]) else
+            "África" if any(x in str(p) for x in ["Etiopía","Mozambique","Mali","Niger","Senegal","Chad","Kenya"]) else
+            "MENA" if any(x in str(p) for x in ["Marruecos","Túnez","Jordania","Líbano","Palestina","Siria","Yemen"]) else
             "Multipaís/Global"
         ))
         for region, grp in df.groupby("region_inf"):
             evol = grp.groupby("mes")["importe_num"].sum().reset_index()
             evol.columns = ["mes", "importe"]
             mensual_region[str(region)] = evol.to_dict(orient="records")
+
     mensual_sector = {}
     if "ambito" in df.columns:
         for sector, grp in df.groupby("ambito"):
@@ -1087,4 +1147,123 @@ def mensual():
             evol = grp.groupby("mes")["importe_num"].sum().reset_index()
             evol.columns = ["mes", "importe"]
             mensual_sector[str(sector)] = evol.to_dict(orient="records")
-    return {"total": mensual_total.to_dict(orient="records"), "region": mensual_region, "sector": mensual_sector}
+
+    return {
+        "total": mensual_total.to_dict(orient="records"),
+        "region": mensual_region,
+        "sector": mensual_sector,
+    }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# API — GRAFO DE FLUJOS (AECID → Entidad → Eslabón de corte)
+# ─────────────────────────────────────────────────────────────────────────────
+@app.get("/api/grafo")
+def grafo(top: int = Query(30, ge=5, le=200, description="Cantidad de entidades a graficar")):
+    """
+    Construye la red de flujo de fondos AECID → entidad → eslabón donde se corta
+    la trazabilidad, a partir de los datos ya existentes en analisis_completo.csv
+    (entidad, importe_eur, eslabon_corte, clasificacion, ruptura_r2).
+
+    No requiere un modelo de grafo separado: se sintetiza on-the-fly agregando
+    por entidad, igual que hacen /api/resumen y /api/entidades.
+    """
+    df = _cargar_fondos()
+    if df.empty or "entidad" not in df.columns:
+        return {"nodes": [], "edges": [], "total_entidades": 0}
+
+    df = df.copy()
+    df["importe_num"] = df["importe_eur"].apply(_parsear_monto)
+
+    stats: dict = {}
+    for _, f in df.iterrows():
+        ent = str(f.get("entidad") or "").strip()
+        if not ent:
+            continue
+        s = stats.setdefault(
+            ent, {"importe": 0.0, "n": 0, "eslabones": {}, "clasif": {}, "r2": 0}
+        )
+        s["importe"] += float(f.get("importe_num") or 0)
+        s["n"] += 1
+
+        esl = f.get("eslabon_corte")
+        if esl not in (None, "") and str(esl) != "nan":
+            try:
+                esl_i = int(float(esl))
+                s["eslabones"][esl_i] = s["eslabones"].get(esl_i, 0) + 1
+            except (ValueError, TypeError):
+                pass
+
+        clasif = f.get("clasificacion")
+        if clasif and str(clasif) != "nan":
+            s["clasif"][clasif] = s["clasif"].get(clasif, 0) + 1
+
+        if f.get("ruptura_r2"):
+            s["r2"] += 1
+
+    top_entidades = sorted(stats.items(), key=lambda kv: kv[1]["importe"], reverse=True)[:top]
+
+    CLASIF_COLOR = {"ROJO": "#f87171", "NARANJA": "#fb923c", "AMARILLO": "#fbbf24", "VERDE": "#34d399"}
+    ESLABON_LABEL = {
+        1: "E1 · PGE",
+        2: "E2 · AECID sede",
+        3: "E3 · Canal (ONGD/OOII)",
+        4: "E4 · OTC país",
+        5: "E5 · Sub-ejecutor",
+        6: "E6 · Actividad",
+        7: "E7 · Beneficiario final",
+    }
+
+    nodes = [{
+        "id": "AECID",
+        "label": "AECID",
+        "group": "root",
+        "value": int(sum(s["importe"] for _, s in top_entidades)) or 1,
+        "title": "AECID — origen de los fondos",
+    }]
+    edges = []
+    eslabones_usados = set()
+
+    for ent, s in top_entidades:
+        ent_id = f"ent::{ent}"
+        clasif_top = max(s["clasif"], key=s["clasif"].get) if s["clasif"] else ""
+        color = CLASIF_COLOR.get(clasif_top, "#7eb8f7")
+        nodes.append({
+            "id": ent_id,
+            "label": ent[:34],
+            "group": "entidad",
+            "value": int(s["importe"]) or 1,
+            "color": color,
+            "title": f"{ent} · {s['n']} fondos · {s['importe']/1e6:.1f}M€ · Clasif: {clasif_top or '—'}",
+        })
+        edges.append({
+            "from": "AECID",
+            "to": ent_id,
+            "value": int(s["importe"]) or 1,
+            "title": f"{s['importe']/1e6:.1f}M€",
+        })
+
+        esl_top = max(s["eslabones"], key=s["eslabones"].get) if s["eslabones"] else None
+        if esl_top is not None:
+            esl_id = f"E{esl_top}"
+            eslabones_usados.add(esl_top)
+            edges.append({
+                "from": ent_id,
+                "to": esl_id,
+                "value": int(s["importe"]) or 1,
+                "dashes": s["r2"] > s["n"] / 2,
+                "title": "Sin contrato PLACE/OCDS trazable (R2)" if s["r2"] > s["n"] / 2 else "",
+            })
+
+    for esl in sorted(eslabones_usados):
+        nodes.append({
+            "id": f"E{esl}",
+            "label": ESLABON_LABEL.get(esl, f"E{esl}"),
+            "group": "eslabon",
+            "value": 1,
+        })
+
+    return {
+        "nodes": nodes,
+        "edges": edges,
+        "total_entidades": len(stats),
+    }
