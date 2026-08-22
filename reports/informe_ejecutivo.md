@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 21/08/2026 06:25*
+*Generado: 22/08/2026 06:14*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total fondos analizados | 634.2 M€ |
-| Intervenciones | 774 |
-| Entidades receptoras | 442 |
-| Score medio de trazabilidad | 69/100 |
+| Total fondos analizados | 675.2 M€ |
+| Intervenciones | 834 |
+| Entidades receptoras | 450 |
+| Score medio de trazabilidad | 70/100 |
 
 ---
 
@@ -18,10 +18,10 @@
 
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
-| 3 | OOII sin desglose (R1) | 112 | 239.2 | 37.7% |
-| 4 | Destino geográfico opaco | 143 | 114.5 | 18.1% |
-| 5 | Sub-contratación sin OCDS (R2) | 213 | 203.1 | 32.0% |
-| 6 | Sin justificante público (R3) | 306 | 77.4 | 12.2% |
+| 3 | OOII sin desglose (R1) | 112 | 239.2 | 35.4% |
+| 4 | Destino geográfico opaco | 152 | 121.9 | 18.1% |
+| 5 | Sub-contratación sin OCDS (R2) | 245 | 229.7 | 34.0% |
+| 6 | Sin justificante público (R3) | 325 | 84.4 | 12.5% |
 
 ---
 
@@ -29,9 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 401 | 385.4 | 60.8% |
-| NARANJA | 35 | 147.7 | 23.3% |
-| VERDE | 338 | 101.2 | 16.0% |
+| AMARILLO | 435 | 415.9 | 61.6% |
+| NARANJA | 35 | 147.7 | 21.9% |
+| VERDE | 364 | 111.7 | 16.5% |
 
 ---
 
@@ -54,7 +54,7 @@
 
 ## Fuentes utilizadas
 
-- **aecid**: 774 registros (`aecid_intervenciones.csv`)
+- **aecid**: 834 registros (`aecid_intervenciones.csv`)
 - **bdns**: 75 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,215 registros (`bdns_concesiones.csv`)
 - **place**: 381 registros (`place_contratos.csv`)
