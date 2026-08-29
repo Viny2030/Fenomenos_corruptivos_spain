@@ -3244,3 +3244,57 @@
 09:18:08 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
 09:18:08 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
 09:18:08 [INFO] ════════════════════════════════════════════════════════════
+06:17:22 [INFO] ════════════════════════════════════════════════════════════
+06:17:22 [INFO] PIPELINE TRAZABILIDAD FONDOS AECID
+06:17:22 [INFO] Años: [2020, 2021, 2022, 2023, 2024]
+06:17:22 [INFO] ════════════════════════════════════════════════════════════
+06:17:22 [INFO] ── Descargando datos.aecid.es...
+06:17:22 [INFO] Scraper AECID iniciando...
+06:17:22 [WARNING]   intento 1/3 fallido: 503 Server Error: Service Unavailable for url: https://datos.aecid.es/lista-de-intervenciones?delta=60&start=1
+06:17:23 [WARNING]   intento 2/3 fallido: 503 Server Error: Service Unavailable for url: https://datos.aecid.es/lista-de-intervenciones?delta=60&start=1
+06:17:56 [WARNING]   intento 3/3 fallido: HTTPSConnectionPool(host='datos.aecid.es', port=443): Read timed out. (read timeout=30)
+06:18:00 [WARNING]   Lista de intervenciones vacia -- probando API CKAN vieja...
+06:18:30 [WARNING]   intento 1/3 fallido: HTTPSConnectionPool(host='datos.aecid.es', port=443): Read timed out. (read timeout=30)
+06:19:01 [WARNING]   intento 2/3 fallido: HTTPSConnectionPool(host='datos.aecid.es', port=443): Read timed out. (read timeout=30)
+06:19:34 [WARNING]   intento 3/3 fallido: HTTPSConnectionPool(host='datos.aecid.es', port=443): Read timed out. (read timeout=30)
+06:19:38 [WARNING]   Usando datos seed (sin conexion a AECID)
+06:19:38 [INFO]   Guardado: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/raw/aecid_intervenciones.csv
+06:19:38 [INFO]    8 intervenciones → aecid_intervenciones.csv
+06:19:38 [INFO] ── Descargando BDNS (convocatorias + concesiones)...
+06:19:38 [INFO] Scraper BDNS (convocatorias) iniciando...
+06:19:49 [INFO]   BDNS convocatorias: 75
+06:19:49 [INFO] Scraper BDNS (concesiones) iniciando...
+06:23:56 [INFO]   BDNS concesiones: 1232 (738 institucionales / 494 personas físicas)
+06:23:56 [INFO]   Importes reales completados: 19/75 convocatorias
+06:23:56 [INFO]    75 convocatorias, 1232 concesiones → bdns_subvenciones.csv, bdns_concesiones.csv
+06:23:56 [INFO] ── Descargando PLACE / OCDS...
+06:23:56 [INFO] Scraper PLACE/AECID iniciando...
+06:23:56 [INFO]   Histórico previo cargado: 381 contratos AECID
+06:23:58 [INFO]   Página actual del feed: 0 contratos AECID nuevos
+06:23:58 [INFO]   Backfill histórico ya completo — solo se revisa la página actual del feed
+06:23:58 [INFO]   PLACE/AECID acumulado total: 381 contratos
+06:23:58 [INFO]   R2 detectado: 14 contratos con adjudicación directa/sin publicidad
+06:23:58 [INFO]    381 contratos → place_contratos.csv
+06:23:58 [INFO] ── Limpieza y normalización...
+06:23:58 [INFO]    8/8 registros limpios → intervenciones_clean.csv
+06:23:58 [INFO] ── Análisis de trazabilidad (7 eslabones)...
+06:23:58 [INFO]   Cruce AECID↔PLACE: 6/8 proyectos encontrados en PLACE (por país mencionado en el contrato, 6 países con al menos 1 contrato)
+06:23:58 [INFO]   Cruce AECID↔BDNS: 0/8 intervenciones con entidad identificada como beneficiaria en BDNS
+06:23:58 [INFO]    Score medio de trazabilidad: 45.5
+06:23:58 [INFO]    R1 (7 fondos): 97.8% del total
+06:23:58 [INFO]    R2 (2 fondos): 51.7% del total
+06:23:58 [INFO]    R3 (8 fondos): 100.0% del total
+06:23:58 [INFO]    → trazabilidad_por_fondo.csv
+06:23:58 [INFO] ── Indicadores de riesgo corruptivo...
+06:23:58 [INFO]   ICR global: 18.7 (HHI=0.3222, n=6 entidades)
+06:23:58 [INFO]   Scores calculados: 6 entidades
+06:23:58 [INFO]    Clasificación ROJO: 0 fondos | 0.0 M€
+06:23:58 [INFO]    → scores_riesgo.csv + analisis_completo.csv
+06:23:58 [INFO] ── Generando informe ejecutivo...
+06:23:58 [INFO]    → informe_ejecutivo.md
+06:23:58 [INFO] DB: DATABASE_URL no definida — se omite persistencia
+06:23:58 [INFO] ════════════════════════════════════════════════════════════
+06:23:58 [INFO] PIPELINE COMPLETADO
+06:23:58 [INFO]   Análisis completo: /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/data/processed/analisis_completo.csv
+06:23:58 [INFO]   Informe:           /home/runner/work/Fenomenos_corruptivos_spain/Fenomenos_corruptivos_spain/reports/informe_ejecutivo.md
+06:23:58 [INFO] ════════════════════════════════════════════════════════════
