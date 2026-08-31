@@ -1,3 +1,15 @@
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+.idea/
+
+# Logs y diffs de trabajo — no son código fuente
+*.log
+*.diff
+
+# Dumps de debug de scraping — se regeneran, no aportan nada versionados
+debug_page*.html
+
+# Carpeta temporal de backfill histórico (puede pesar cientos de MB)
+data/raw/_tmp_backfill_historico/

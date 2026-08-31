@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Uso — Monitor AECID</title>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JK8GYT9GT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0JK8GYT9GT');
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e0e0e0}
+header{background:#1a1d2e;padding:18px 28px;border-bottom:2px solid #2d3561;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+header h1{font-size:1.3rem;color:#fff}
+.nav-links{display:flex;gap:8px}
+.nav-links a{background:#2d3561;color:#7eb8f7;padding:6px 14px;border-radius:6px;font-size:0.82rem;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{background:#3b82f6;color:#fff}
+main{padding:32px 28px;max-width:900px;margin:0 auto}
+h2{font-size:1.2rem;color:#7eb8f7;margin:32px 0 12px;border-bottom:1px solid #2d3561;padding-bottom:6px}
+h3{font-size:1rem;color:#a0aec0;margin:20px 0 8px}
+p{margin-bottom:10px;color:#c0c8d8}
+ul{padding-left:20px;margin-bottom:12px;color:#c0c8d8}
+li{margin-bottom:6px}
+.card{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:20px;margin-bottom:18px}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;margin-right:6px}
+.r1{background:#7f1d1d;color:#fca5a5}
+.r2{background:#78350f;color:#fcd34d}
+.r3{background:#78350f;color:#fb923c}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0}
+th{text-align:left;padding:8px 10px;color:#7c8db5;border-bottom:1px solid #2d3561;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid #1e2235;color:#c0c8d8}
+code{background:#1e2235;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:0.85rem;color:#7eb8f7}
+.endpoint{background:#1e2235;border-left:3px solid #3b82f6;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-family:monospace;font-size:0.85rem}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:32px;text-align:left}
+@media(max-width:900px){footer{justify-content:center;text-align:center}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>📖 Manual de Uso — Monitor Trazabilidad AECID</h1></div>
+  <nav class="nav-links">
+    <a href="/">🏠 Inicio</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/manual" class="active">📖 Manual</a>
+    <a href="/autor">👤 Autor</a>
+    <a href="/en/manual">🇬🇧 English</a>
+  </nav>
+</header>
+<main>
+<div class="card">
+  <h2 style="margin-top:0">¿Qué es este sistema?</h2>
+  <p>El <strong>Monitor de Trazabilidad AECID</strong> es una herramienta de auditoría algorítmica que analiza los fondos de cooperación internacional gestionados por la AECID, aplicando la metodología de <em>Fenómenos Corruptivos</em> del Ph.D. Vicente Humberto Monteverde.</p>
+  <p>El sistema detecta automáticamente las <strong>rupturas en la cadena de trazabilidad</strong> de cada fondo — desde el presupuesto aprobado en España hasta el beneficiario final.</p>
+</div>
+<h2>📊 El Modelo de 7 Eslabones</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Eslabón</th><th>Etapa</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><code>E1</code></td><td>Presupuesto España</td><td>El fondo aparece en el Presupuesto General del Estado aprobado.</td></tr>
+      <tr><td><code>E2</code></td><td>Transferencia AECID</td><td>La entidad receptora está identificada (OOII, ONGD o consultora).</td></tr>
+      <tr><td><code>E3</code></td><td>Registro OOII/BDNS</td><td>El fondo está registrado en BDNS o en organismos internacionales.</td></tr>
+      <tr><td><code>E4</code></td><td>Destino geográfico</td><td>El país o región de destino está declarado públicamente.</td></tr>
+      <tr><td><code>E5</code></td><td>Contratos PLACE/OCDS</td><td>Los contratos derivados están publicados en el portal de contratación.</td></tr>
+      <tr><td><code>E6</code></td><td>Justificantes públicos</td><td>Existen evaluaciones finales o respuestas positivas a solicitudes LTAIBG.</td></tr>
+      <tr><td><code>E7</code></td><td>Beneficiario final</td><td>El beneficiario final está identificado con NIF/CIF o nombre.</td></tr>
+    </tbody>
+  </table>
+</div>
+<h2>🚨 Las Tres Rupturas Principales</h2>
+<div class="card">
+  <h3><span class="badge r1">R1</span> OOII — Caja negra</h3>
+  <p>Fondos transferidos a Organismos Internacionales (PNUD, UNICEF, FAO, ACNUR…) sin desglosar la aportación española en el estándar IATI.</p>
+  <h3><span class="badge r2">R2</span> Sub-contratación sin OCDS</h3>
+  <p>Contratos sin publicación en el Portal de la Contratación del Estado (PLACE) bajo el estándar Open Contracting Data Standard.</p>
+  <p style="background:#2d1f0a;border:1px solid #78350f;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#fcd34d;margin-top:8px">
+    ⚠️ <strong>Nota metodológica:</strong> si R2 aparece hoy en 100% para un fondo, refleja que <strong>todavía no se completó el cruce automático</strong> entre AECID y PLACE para esa entidad — no significa necesariamente que el contrato esté ausente. El cruce se construye mediante un backfill progresivo (por páginas, con cursor persistente) que avanza en cada corrida del pipeline. Mientras el backfill esté en marcha, un R2 alto puede sobreestimar el riesgo real. Este indicador debe leerse junto con la fecha de la última corrida y bajará gradualmente a medida que el backfill cubra más contratos publicados en PLACE.
+  </p>
+  <h3><span class="badge r3">R3</span> Sin justificante auditable</h3>
+  <p>Proyectos con importe superior a 500.000€ sin evaluación final publicada ni respuesta favorable a solicitud LTAIBG (Ley 19/2013).</p>
+</div>
+<h2>📈 Indicadores de Riesgo</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Indicador</th><th>Peso</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ICR</strong></td><td>15%</td><td>Índice de Concentración de Receptores (HHI normalizado).</td></tr>
+      <tr><td><strong>SOG</strong></td><td>35%</td><td>Score de Opacidad en la Gestión.</td></tr>
+      <tr><td><strong>RES</strong></td><td>30%</td><td>Riesgo por Eslabón de Corte.</td></tr>
+      <tr><td><strong>VIA</strong></td><td>20%</td><td>Vulnerabilidad Institucional del país receptor.</td></tr>
+    </tbody>
+  </table>
+</div>
+<h2>🕸️ Pestaña de Grafos (Dashboard)</h2>
+<div class="card">
+  <p>El Dashboard incluye una pestaña <strong>🕸️ Grafos</strong> que visualiza la red de flujo de fondos como un grafo interactivo: <code>AECID → Entidad receptora → Eslabón donde se corta la trazabilidad</code>.</p>
+  <ul>
+    <li>El tamaño de cada nodo de entidad refleja el importe total canalizado hacia esa entidad.</li>
+    <li>El color del nodo refleja su clasificación de riesgo: <span class="badge" style="background:#7f1d1d;color:#fca5a5">ROJO</span> <span class="badge" style="background:#78350f;color:#fcd34d">NARANJA</span> <span class="badge" style="background:#713f12;color:#fde68a">AMARILLO</span> <span class="badge" style="background:#14532d;color:#86efac">VERDE</span>.</li>
+    <li>Las aristas punteadas indican fondos sin contrato PLACE/OCDS trazable (ruptura R2).</li>
+    <li>Los nodos cuadrados <code>E1</code>–<code>E7</code> representan el eslabón donde se corta la cadena de trazabilidad para esa entidad.</li>
+  </ul>
+  <p>Los datos del grafo se sirven desde <code>GET /api/grafo?top=N</code> (ver sección de endpoints), calculados on-the-fly a partir de <code>analisis_completo.csv</code> — no requiere una base de datos de grafos separada.</p>
+</div>
+<h2>🔌 Endpoints de la API</h2>
+<div class="card">
+  <div class="endpoint">GET /api/status — Estado del servicio</div>
+  <div class="endpoint">GET /api/resumen — KPIs ejecutivos</div>
+  <div class="endpoint">GET /api/fondos?entidad=X&amp;clasificacion=ROJO&amp;limit=100</div>
+  <div class="endpoint">GET /api/trazabilidad — Análisis por eslabón</div>
+  <div class="endpoint">GET /api/entidades?top=30&amp;nivel=Alto</div>
+  <div class="endpoint">GET /api/riesgo — Scores por entidad</div>
+  <div class="endpoint">GET /api/grafo?top=30 — Red de flujo AECID → entidad → eslabón de corte</div>
+  <div class="endpoint">GET /api/mensual — Evolución mensual por región</div>
+  <div class="endpoint">GET /api/informe — Informe ejecutivo en Markdown</div>
+  <div class="endpoint">POST /api/refresh (Header: X-Refresh-Token) — máx. 1 llamada cada 60s</div>
+</div>
+<h2>🔐 Seguridad y actualización de datos</h2>
+<div class="card">
+  <p><code>POST /api/refresh</code> dispara una corrida del pipeline de análisis. Requiere un token válido en el header <code>X-Refresh-Token</code> — sin ese token, o con uno incorrecto, devuelve <code>401</code>. Para evitar abuso, además hay un límite de <strong>una llamada cada 60 segundos</strong>: una llamada dentro de ese intervalo devuelve <code>429</code> hasta que pase el tiempo restante.</p>
+  <p>El resto de la API (<code>GET /api/*</code>) es de solo lectura y no requiere autenticación — sirve datos públicos ya procesados.</p>
+</div>
+<h2>📚 Marco teórico</h2>
+<div class="card">
+  <p>Basado en la teoría de los <em>Fenómenos Corruptivos</em> del Ph.D. Vicente Humberto Monteverde: transferencias regresivas de ingresos facilitadas por la discrecionalidad en decisiones legales.</p>
+  <p>Referencia: Monteverde, V.H. (2020). <em>Great corruption – theory of corrupt phenomena</em>. Journal of Financial Crime. Emerald Publishing.</p>
+</div>
+</main>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
+  <span>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain</span>
+</footer>
+</body>
+</html>
+

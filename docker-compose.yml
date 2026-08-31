@@ -5,8 +5,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8501:8501" # Puerto estándar de Streamlit
-    stdin_open: true
-    tty: true
-    # Forzamos a que use 'streamlit run' para evitar el error de ScriptRunContext
-    command: streamlit run dashboard.py --server.address=0.0.0.0
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

@@ -57,84 +57,78 @@ Cada nodo es analizable: peso, centralidad, cambios temporales, eslabón de cort
 ## 📐 Estructura del proyecto
 
 ```
-aecid_fondos/
+Fenomenos_corruptivos_spain1/
 │
-├── notebooks/
-│   ├── 00_ingesta_datos.ipynb          # AECID portal + BDNS + PLACE + IATI + LTAIBG
-│   ├── 01_limpieza_normalizacion.ipynb # Entidades, CRS, regiones, campo eslabón_corte
-│   ├── 02_analisis_contratos.ipynb     # Contrato a contrato: importes, alertas, cruce PLACE
-│   ├── 03_flujos_financieros.ipynb     # Grafo bipartito NetworkX — flujos por eslabón
-│   ├── 04_concentracion_actores.ipynb  # HHI, curva de Lorenz, capturas de sector
-│   ├── 05_riesgo_trazabilidad.ipynb    # ICR+SOG+RES+VIA + R1+R2+R3 — score por fondo
-│   ├── 06_comparativa_ocde.ipynb       # España vs Francia, Alemania, Suecia (CRS)
-│   └── 07_dashboard_resumen.ipynb      # Visualizaciones finales + informe ejecutivo
+├── main.py                  # App FastAPI: rutas UI + API REST (servida en Railway)
+├── pipeline.py               # Orquestador: ingesta (scrapers) + análisis + scores
+├── db.py                     # Persistencia opcional en PostgreSQL (Railway) — no-op sin DATABASE_URL
+├── monitor_completo_es.py    # Script legado, corrido por .github/workflows/ejecucion_diaria.yml
+│
+├── templates/                 # HTML estático servido por main.py (sin lógica de plantillas)
+│   ├── landing_es.html / landing_en.html
+│   ├── dashboard.html
+│   ├── manual_es.html / manual_en.html
+│   └── autor.html
+├── static/
+│   └── autor.jpg              # Foto del autor (antes embebida en base64 dentro de main.py)
+│
+├── src/                       # Scrapers + cálculo de indicadores
+│   ├── scraper_aecid.py       # Portal datos.aecid.es
+│   ├── scraper_bdns.py        # BDNS — convocatorias y concesiones
+│   ├── scraper_place.py       # PLACE / OCDS — contratos adjudicados
+│   ├── indicadores_riesgo.py  # ICR, SOG, RES, VIA
+│   ├── trazabilidad_score.py  # R1, R2, R3 + score por eslabón (E1-E7)
+│   └── seed_aecid.py
 │
 ├── data/
-│   ├── raw/
-│   │   ├── aecid_intervenciones.csv    # datos.aecid.es — 835+ registros
-│   │   ├── aecid_detalles.csv          # Detalle individual por intervención
-│   │   ├── bdns_subvenciones.csv       # BDNS — convenios y subvenciones AECID
-│   │   ├── place_contratos.csv         # PLACE / OCDS — contratos adjudicados
-│   │   ├── iati_spain.xml              # IATI estándar — España como donante
-│   │   ├── ocde_crs_spain.csv          # OCDE CRS donor=20 años 2000-2024
-│   │   └── ltaibg_respuestas.csv       # Respuestas a solicitudes de transparencia
-│   └── processed/
-│       ├── intervenciones_clean.csv    # Datos limpios con campo eslabón_corte
-│       ├── contratos_analizados.csv    # Con flags de alerta por contrato
-│       ├── scores_riesgo.csv           # ICR+SOG+RES+VIA+R1+R2+R3 por entidad
-│       └── trazabilidad_por_fondo.csv  # Score de trazabilidad 0-100 por intervención
-│
-├── src/
-│   ├── scraper_aecid.py                # Portal datos.aecid.es (✓ completo)
-│   ├── scraper_bdns.py                 # BDNS — subvenciones y convenios
-│   ├── scraper_place.py                # PLACE / OCDS — contratos
-│   ├── scraper_iati.py                 # IATI XML parser
-│   ├── indicadores_riesgo.py           # ICR, SOG, RES, VIA (✓ completo)
-│   ├── trazabilidad_score.py           # R1, R2, R3 + score por eslabón (NUEVO)
-│   ├── red_actores.py                  # Grafo bipartito de flujos
-│   └── utils.py                        # Funciones auxiliares
+│   ├── raw/                   # CSVs descargados por los scrapers (aecid, bdns, place)
+│   └── processed/             # analisis_completo.csv, trazabilidad_por_fondo.csv, scores_riesgo.csv
 │
 ├── reports/
-│   ├── informe_ejecutivo.md
-│   └── fichas_entidades/               # Una ficha por entidad top-20
+│   └── informe_ejecutivo.md   # Generado por pipeline.py
 │
 ├── config/
-│   └── params.yaml                     # Umbrales, años, fuentes, eslabones
+│   └── params.yaml            # Umbrales de riesgo, sectores CRS
 │
+├── tests/
+│   ├── test_trazabilidad.py   # Tests del modelo de scoring
+│   └── test_api.py            # Smoke tests de los endpoints REST (FastAPI TestClient)
+│
+├── .github/workflows/         # Actualización diaria (AECID + legado) y backfill PLACE histórico
+├── Dockerfile                 # Imagen usada por Railway (uvicorn main:app)
 └── requirements.txt
 ```
 
----
-
-## 📊 Fuentes de datos
-
-| Fuente | URL | Eslabón | Formato |
-|--------|-----|---------|---------|
-| Portal AECID | datos.aecid.es/lista-de-intervenciones | 1–3 | HTML scraping |
-| BDNS | infosubvenciones.es | 2–3 | API JSON |
-| PLACE / OCDS | contrataciondelestado.es | 3–5 | JSON / SPARQL |
-| IATI | iatistandard.org | 3–6 | XML / API |
-| OCDE CRS | stats.oecd.org | 1–3 | CSV |
-| transparencia.gob.es | transparencia.gob.es | 2–5 | CSV |
-| LTAIBG (solicitudes) | access-info.org / portal transparencia | 5–7 | Manual + CSV |
+> Nota: `data/processed/*.csv` y `reports/informe_ejecutivo.md` se versionan en git a propósito —
+> es lo que le da a Railway datos disponibles inmediatamente después de cada deploy, sin depender
+> de que el pipeline corra primero. `db.py` (PostgreSQL) es una capa de respaldo adicional, opcional.
 
 ---
 
 ## 🚀 Inicio rápido
 
 ```bash
-git clone https://github.com/TU_USUARIO/aecid_fondos_analisis
-cd aecid_fondos_analisis
+git clone https://github.com/Viny2030/Fenomenos_corruptivos_spain
+cd Fenomenos_corruptivos_spain
 pip install -r requirements.txt
 
-# Paso 1: descargar datos de todos los eslabones
-python src/scraper_aecid.py        # eslabón 1-3
-python src/scraper_bdns.py         # eslabón 2-3
-python src/scraper_place.py        # eslabón 3-5
+# Pipeline completo (ingesta + análisis) — genera data/processed/ y reports/
+python pipeline.py
 
-# Paso 2: ejecutar notebooks en orden
-jupyter lab notebooks/
+# Levantar la API + dashboard localmente
+uvicorn main:app --reload
+# → http://127.0.0.1:8000/dashboard
+
+# Tests
+pytest --tb=short -q
 ```
+
+Variables de entorno relevantes (ver `.env` / configuración de Railway):
+
+| Variable | Requerida | Uso |
+|---|---|---|
+| `REFRESH_TOKEN` | **Sí, en producción** | Header `X-Refresh-Token` para `POST /api/refresh`. Si no está seteada, `main.py` genera un token aleatorio en cada arranque (el endpoint queda inutilizable hasta que la configures). |
+| `DATABASE_URL` | No | Si está seteada (Postgres de Railway), `db.py` persiste los CSVs procesados como respaldo entre deploys. |
 
 ---
 

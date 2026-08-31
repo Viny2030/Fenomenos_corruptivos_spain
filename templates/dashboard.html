@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor Trazabilidad AECID</title>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0JK8GYT9GT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0JK8GYT9GT');
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e0e0e0}
+header{background:#1a1d2e;padding:18px 28px;border-bottom:2px solid #2d3561;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+header h1{font-size:1.3rem;color:#fff}
+header span.sub{font-size:0.8rem;color:#7c8db5}
+.badge{background:#2d3561;color:#7eb8f7;padding:3px 10px;border-radius:12px;font-size:0.75rem}
+.nav-links{display:flex;gap:8px}
+.nav-links a{background:#2d3561;color:#7eb8f7;padding:6px 14px;border-radius:6px;font-size:0.82rem;text-decoration:none;transition:background .2s}
+.nav-links a:hover,.nav-links a.active{background:#3b82f6;color:#fff}
+main{padding:20px 28px;max-width:1400px;margin:0 auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:16px}
+.kpi .val{font-size:1.8rem;font-weight:700;color:#7eb8f7}
+.kpi .lbl{font-size:0.75rem;color:#7c8db5;margin-top:4px}
+.kpi.alerta .val{color:#f87171}
+.kpi.medio .val{color:#fbbf24}
+.kpi.ok .val{color:#34d399}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.card{background:#1a1d2e;border:1px solid #2d3561;border-radius:10px;padding:18px}
+.card h3{font-size:0.85rem;color:#a0aec0;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+.chart-wrap{position:relative;height:220px}
+.chart-wrap.tall{height:280px}
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+th{text-align:left;padding:7px 9px;color:#7c8db5;border-bottom:1px solid #2d3561;font-weight:600}
+td{padding:7px 9px;border-bottom:1px solid #1e2235}
+tr:hover td{background:#1e2235}
+.pill{padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.ROJO{background:#7f1d1d;color:#fca5a5}
+.NARANJA{background:#78350f;color:#fcd34d}
+.AMARILLO{background:#713f12;color:#fde68a}
+.VERDE{background:#14532d;color:#86efac}
+.Alto{background:#7f1d1d;color:#fca5a5}
+.Crítico{background:#581c87;color:#d8b4fe}
+.Medio{background:#78350f;color:#fcd34d}
+.Bajo{background:#14532d;color:#86efac}
+.bar-wrap{margin:6px 0}
+.bar-label{display:flex;justify-content:space-between;font-size:0.75rem;color:#a0aec0;margin-bottom:3px}
+.bar-bg{background:#2d3561;border-radius:4px;height:7px}
+.bar-fill{height:7px;border-radius:4px}
+.r1{background:#f87171}.r2{background:#fbbf24}.r3{background:#fb923c}
+.filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.filters input,.filters select{background:#0f1117;border:1px solid #2d3561;color:#e0e0e0;padding:5px 10px;border-radius:6px;font-size:0.82rem}
+.tabs{display:flex;gap:4px;margin-bottom:14px}
+.tab{padding:5px 14px;border-radius:6px;border:1px solid #2d3561;cursor:pointer;font-size:0.8rem;color:#a0aec0;background:#0f1117}
+.tab.active{background:#2d3561;color:#fff}
+.view-tabs{display:flex;gap:6px;margin-bottom:18px}
+.view-tab{padding:8px 18px;border-radius:8px;border:1px solid #2d3561;cursor:pointer;font-size:0.85rem;color:#a0aec0;background:#1a1d2e;font-weight:600}
+.view-tab.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;padding:16px;color:#4a5568;font-size:0.75rem;border-top:1px solid #1a1d2e;margin-top:24px;text-align:left}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}footer{justify-content:center;text-align:center}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🔍 Monitor Trazabilidad AECID</h1>
+    <span class="sub">Ph.D. Vicente Humberto Monteverde — Algoritmos contra la Corrupción</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="badge" id="ts">Cargando...</span>
+    <nav class="nav-links">
+      <a href="/">🏠 Inicio</a>
+      <a href="/dashboard" class="active">📊 Dashboard</a>
+      <a href="/manual">📖 Manual</a>
+      <a href="/autor">👤 Autor</a>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="view-tabs">
+  <div class="view-tab active" onclick="switchView('resumen',this)">📊 Resumen</div>
+  <div class="view-tab" onclick="switchView('grafos',this)">🕸️ Grafos</div>
+</div>
+<div id="view-resumen" class="view">
+<div class="kpis" id="kpis"></div>
+<div class="grid2">
+  <div class="card"><h3>🔗 Rupturas de trazabilidad</h3><div id="rupturas"></div><div class="chart-wrap" style="height:160px;margin-top:12px"><canvas id="chartRupturas"></canvas></div></div>
+  <div class="card"><h3>📊 Distribución por eslabón</h3><div class="chart-wrap"><canvas id="chartEslabones"></canvas></div></div>
+</div>
+<div class="grid2">
+  <div class="card"><h3>📈 Evolución anual acumulada (M€)</h3><div class="chart-wrap tall"><canvas id="chartAnual"></canvas></div></div>
+  <div class="card"><h3>🌍 Distribución por región (M€)</h3><div class="chart-wrap tall"><canvas id="chartRegion"></canvas></div></div>
+</div>
+<div class="grid2">
+  <div class="card"><h3>🗺️ Top países por importe</h3><div class="chart-wrap tall"><canvas id="chartPaises"></canvas></div></div>
+  <div class="card"><h3>📆 Evolución mensual por región</h3><div class="tabs" id="tabsRegion"></div><div class="chart-wrap tall"><canvas id="chartMensual"></canvas></div></div>
+</div>
+<div class="card" style="margin-bottom:18px">
+  <h3>🏢 Ranking entidades por riesgo</h3>
+  <div class="filters">
+    <input id="busq-entidad" placeholder="Buscar..." oninput="filtrarEntidades()">
+    <select id="filtro-nivel" onchange="filtrarEntidades()">
+      <option value="">Todos los niveles</option>
+      <option>Crítico</option><option>Alto</option><option>Medio</option><option>Bajo</option>
+    </select>
+  </div>
+  <table id="tabla-entidades">
+    <thead><tr><th>Entidad</th><th>Score</th><th>Nivel</th><th>Fondos</th><th>Importe</th><th>SOG</th><th>ICR</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<div class="card">
+  <h3>📋 Fondos analizados</h3>
+  <div class="filters">
+    <input id="busq-fondo" placeholder="Buscar fondo o entidad..." oninput="filtrarFondos()">
+    <select id="filtro-clasif" onchange="filtrarFondos()"><option value="">Todas las clasificaciones</option><option>ROJO</option><option>NARANJA</option><option>AMARILLO</option><option>VERDE</option></select>
+    <select id="filtro-eslabon" onchange="filtrarFondos()"><option value="">Todos los eslabones</option><option value="3">E3</option><option value="4">E4</option><option value="5">E5</option><option value="6">E6</option><option value="7">E7</option></select>
+    <select id="filtro-año" onchange="filtrarFondos()"><option value="">Todos los años</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option></select>
+  </div>
+  <table id="tabla-fondos">
+    <thead><tr><th>Título</th><th>Entidad</th><th>País</th><th>Año</th><th>Importe</th><th>Eslabón</th><th>Trazabilidad</th><th>Clasif.</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+</div>
+<div id="view-grafos" class="view" style="display:none">
+  <div class="card" style="margin-bottom:18px">
+    <h3>🕸️ Red de flujo de fondos: AECID → Entidad → Eslabón de corte</h3>
+    <div class="filters">
+      <select id="grafo-top" onchange="cargarGrafo()">
+        <option value="15">Top 15 entidades</option>
+        <option value="30" selected>Top 30 entidades</option>
+        <option value="60">Top 60 entidades</option>
+        <option value="150">Top 150 entidades</option>
+      </select>
+      <span id="grafo-info" style="font-size:0.78rem;color:#7c8db5;align-self:center"></span>
+    </div>
+    <div style="display:flex;gap:14px;margin-bottom:10px;font-size:0.75rem;color:#a0aec0;flex-wrap:wrap">
+      <span>⭐ AECID (origen)</span>
+      <span>🔴 Clasif. ROJO</span>
+      <span>🟠 NARANJA</span>
+      <span>🟡 AMARILLO</span>
+      <span>🟢 VERDE</span>
+      <span>◻️ Eslabón de corte (E1–E7)</span>
+      <span>┄ Arista punteada = sin contrato PLACE/OCDS trazable (R2)</span>
+    </div>
+    <div id="grafo-container" style="height:560px;background:#0f1117;border-radius:8px;border:1px solid #2d3561"></div>
+  </div>
+</div>
+</main>
+<footer>
+  <span>&copy; 2026 Vicente H. Monteverde | Monitor Trazabilidad AECID. Todos los derechos reservados.</span>
+  <span>Monitor AECID v2.0 · github.com/Viny2030/Fenomenos_corruptivos_spain · Actualización diaria via GitHub Actions</span>
+</footer>
+<script>
+const COLORS=['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5fa','#f472b6','#4ade80','#facc15'];
+const REGION_COLORS={'América Latina':'#34d399','Multipaís/Global':'#a78bfa','MENA':'#fbbf24','África':'#f87171'};
+let _entidades=[],_fondos=[],_mensualData={},_chartMensual=null,_network=null,_grafoCargado=false;
+function mkChart(id,type,labels,datasets,opts={}){const ctx=document.getElementById(id);if(!ctx)return null;if(ctx._chart)ctx._chart.destroy();const c=new Chart(ctx,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a0aec0',font:{size:11}}}},scales:type!=='pie'&&type!=='doughnut'?{x:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}}}:{},...opts}});ctx._chart=c;return c;}
+async function cargar(){
+  const[res,ent,fond,mens]=await Promise.all([fetch('/api/resumen').then(r=>r.json()),fetch('/api/entidades?top=50').then(r=>r.json()),fetch('/api/fondos?limit=500').then(r=>r.json()),fetch('/api/mensual').then(r=>r.json())]);
+  document.getElementById('ts').textContent=(res.timestamp||'').substring(0,16).replace('T',' ');
+  document.getElementById('kpis').innerHTML=[{val:res.total_fondos||0,lbl:'Total fondos',cls:''},{val:`${res.total_eur||0}M€`,lbl:'Total analizado',cls:''},{val:`${res.score_trazabilidad_medio||0}/100`,lbl:'Score trazabilidad',cls:(res.score_trazabilidad_medio||0)<50?'alerta':'ok'},{val:`${res.pct_r1||0}%`,lbl:'R1 — OOII caja negra',cls:'alerta'},{val:`${res.pct_r2||0}%`,lbl:'R2 — Sin PLACE/OCDS',cls:'medio'},{val:`${res.pct_r3||0}%`,lbl:'R3 — Sin justificante',cls:'medio'}].map(k=>`<div class="kpi ${k.cls}"><div class="val">${k.val}</div><div class="lbl">${k.lbl}</div></div>`).join('');
+  document.getElementById('rupturas').innerHTML=[{lbl:'R1 — OOII caja negra',pct:res.pct_r1||0,cls:'r1'},{lbl:'R2 — Sin contrato OCDS',pct:res.pct_r2||0,cls:'r2'},{lbl:'R3 — Sin justificante',pct:res.pct_r3||0,cls:'r3'}].map(r=>`<div class="bar-wrap"><div class="bar-label"><span>${r.lbl}</span><span>${r.pct}%</span></div><div class="bar-bg"><div class="bar-fill ${r.cls}" style="width:${r.pct}%"></div></div></div>`).join('');
+  mkChart('chartRupturas','doughnut',['R1 OOII','R2 Sin PLACE','R3 Sin justif.','Trazables'],[{data:[res.pct_r1,res.pct_r2,res.pct_r3,Math.max(0,100-res.pct_r1)],backgroundColor:['#f87171','#fbbf24','#fb923c','#34d399'],borderWidth:0}],{plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}});
+  const dist=res.distribucion_eslabones||{};
+  mkChart('chartEslabones','bar',Object.keys(dist).sort().map(e=>`E${e}`),[{label:'Fondos',data:Object.keys(dist).sort().map(e=>dist[e]),backgroundColor:COLORS,borderRadius:4}],{plugins:{legend:{display:false}}});
+  const acum=res.acumulativo_anual||[];
+  mkChart('chartAnual','bar',acum.map(a=>String(a.año)),[{label:'Importe año (M€)',data:acum.map(a=>+(a.importe/1e6).toFixed(1)),backgroundColor:'#3b82f6',borderRadius:4,yAxisID:'y'},{label:'Acumulado (M€)',data:acum.map(a=>+(a.importe_acum/1e6).toFixed(1)),type:'line',borderColor:'#34d399',borderWidth:2,pointRadius:4,backgroundColor:'transparent',yAxisID:'y1'}],{scales:{y:{position:'left',ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}},y1:{position:'right',ticks:{color:'#34d399',font:{size:10}},grid:{display:false}},x:{ticks:{color:'#7c8db5'},grid:{color:'#1e2235'}}},plugins:{legend:{labels:{color:'#a0aec0',font:{size:10}}}}});
+  const topPaises=res.top_paises||[];
+  const regiones={};
+  topPaises.forEach(p=>{let reg='Otros';const n=p.pais_region||'';if(['Bolivia','Colombia','Ecuador','Guatemala','Honduras','México','Nicaragua','Perú','Cuba','Haití','Venezuela','El Salvador','Costa Rica','Panamá','Paraguay','Brasil','Chile','Argentina'].some(x=>n.includes(x)))reg='América Latina';else if(['Marruecos','Túnez','Argelia','Jordania','Líbano','Palestina','Siria','Irak','Yemen'].some(x=>n.includes(x)))reg='MENA';else if(['Etiopía','Mozambique','Mali','Niger','Senegal','Chad','Kenya','Tanzania','Uganda','Ghana'].some(x=>n.includes(x)))reg='África';else if(['Global','Multipaís','América Latina y Caribe'].some(x=>n.includes(x)))reg='Multipaís/Global';regiones[reg]=(regiones[reg]||0)+p.importe;});
+  const regKeys=Object.keys(regiones);
+  mkChart('chartRegion','doughnut',regKeys,[{data:regKeys.map(k=>+(regiones[k]/1e6).toFixed(1)),backgroundColor:regKeys.map(k=>REGION_COLORS[k]||'#6b7280'),borderWidth:0}],{plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}});
+  const top15=topPaises.slice(0,15);
+  mkChart('chartPaises','bar',top15.map(p=>p.pais_region||'').reverse(),[{label:'Importe (M€)',data:top15.map(p=>+(p.importe/1e6).toFixed(1)).reverse(),backgroundColor:top15.map((_,i)=>COLORS[i%COLORS.length]).reverse(),borderRadius:4}],{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:9}},grid:{color:'#1e2235'}}}});
+  _mensualData=mens.region||{};
+  const rm=Object.keys(_mensualData);
+  document.getElementById('tabsRegion').innerHTML=rm.map((r,i)=>`<div class="tab ${i===0?'active':''}" onclick="switchRegion('${r}',this)">${r}</div>`).join('');
+  if(rm.length>0)renderMensual(rm[0]);
+  _entidades=ent.data||[];renderEntidades(_entidades);
+  _fondos=fond.data||[];renderFondos(_fondos);
+}
+function renderMensual(region){const data=_mensualData[region]||[];if(_chartMensual)_chartMensual.destroy();const ctx=document.getElementById('chartMensual');if(!ctx)return;_chartMensual=new Chart(ctx,{type:'line',data:{labels:data.map(d=>d.mes),datasets:[{label:`${region} (M€)`,data:data.map(d=>+(d.importe/1e6).toFixed(2)),borderColor:REGION_COLORS[region]||'#3b82f6',backgroundColor:(REGION_COLORS[region]||'#3b82f6')+'33',fill:true,tension:0.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a0aec0',font:{size:11}}}},scales:{x:{ticks:{color:'#7c8db5',font:{size:9}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}}}}});}
+function switchRegion(region,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderMensual(region);}
+function renderEntidades(data){document.querySelector('#tabla-entidades tbody').innerHTML=data.slice(0,30).map(e=>`<tr><td>${e.entidad||''}</td><td>${(e.score_riesgo||0).toFixed(1)}</td><td><span class="pill ${e.nivel_riesgo||''}">${e.nivel_riesgo||''}</span></td><td>${e.n_fondos||0}</td><td>${((e.importe_total||0)/1e6).toFixed(1)}M€</td><td>${(e.sog_medio||0).toFixed(0)}</td><td>${(e.icr||0).toFixed(0)}</td></tr>`).join('');}
+function renderFondos(data){document.querySelector('#tabla-fondos tbody').innerHTML=data.slice(0,100).map(f=>`<tr><td title="${f.titulo||''}">${(f.titulo||'').substring(0,40)}…</td><td>${(f.entidad||'').substring(0,25)}</td><td>${f.pais_region||'—'}</td><td>${f.año||f.fecha?.substring(0,4)||'—'}</td><td>${((f.importe_eur||0)/1e6).toFixed(2)}M€</td><td>E${f.eslabon_corte||'—'}</td><td>${f.score_trazabilidad||0}/100</td><td><span class="pill ${f.clasificacion||''}">${f.clasificacion||'—'}</span></td></tr>`).join('');}
+function filtrarEntidades(){const busq=document.getElementById('busq-entidad').value.toLowerCase();const nivel=document.getElementById('filtro-nivel').value;renderEntidades(_entidades.filter(e=>(!busq||(e.entidad||'').toLowerCase().includes(busq))&&(!nivel||e.nivel_riesgo===nivel)));}
+function filtrarFondos(){const busq=document.getElementById('busq-fondo').value.toLowerCase();const clasif=document.getElementById('filtro-clasif').value;const eslab=document.getElementById('filtro-eslabon').value;const año=document.getElementById('filtro-año').value;renderFondos(_fondos.filter(f=>(!busq||(f.titulo||'').toLowerCase().includes(busq)||(f.entidad||'').toLowerCase().includes(busq))&&(!clasif||f.clasificacion===clasif)&&(!eslab||String(f.eslabon_corte)===eslab)&&(!año||String(f.año||f.fecha?.substring(0,4))===año)));}
+function switchView(view,el){
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('view-resumen').style.display = view==='resumen' ? '' : 'none';
+  document.getElementById('view-grafos').style.display = view==='grafos' ? '' : 'none';
+  if(view==='grafos' && !_grafoCargado){ _grafoCargado=true; cargarGrafo(); }
+}
+async function cargarGrafo(){
+  const top=document.getElementById('grafo-top').value||30;
+  const res=await fetch(`/api/grafo?top=${top}`).then(r=>r.json());
+  const GROUP_COLOR={root:'#3b82f6',entidad:'#7eb8f7',eslabon:'#a0aec0'};
+  const nodesData=new vis.DataSet(res.nodes.map(n=>({id:n.id,label:n.label,value:n.value,title:n.title||n.label,color:n.color||GROUP_COLOR[n.group]||'#7eb8f7',shape:n.group==='root'?'star':(n.group==='eslabon'?'box':'dot'),font:{color:'#e0e0e0',size:11}})));
+  const edgesData=new vis.DataSet(res.edges.map(e=>({from:e.from,to:e.to,value:e.value,dashes:!!e.dashes,color:{color:'#2d3561',highlight:'#7eb8f7',opacity:0.6},title:e.title||''})));
+  const container=document.getElementById('grafo-container');
+  const options={nodes:{scaling:{min:8,max:40}},edges:{scaling:{min:1,max:12},smooth:{type:'continuous'}},physics:{stabilization:true,barnesHut:{gravitationalConstant:-3000,springLength:120}},interaction:{hover:true,tooltipDelay:120}};
+  if(_network)_network.destroy();
+  _network=new vis.Network(container,{nodes:nodesData,edges:edgesData},options);
+  document.getElementById('grafo-info').textContent=`${res.nodes.length} nodos · ${res.edges.length} conexiones · ${res.total_entidades||0} entidades totales en el sistema`;
+}
+cargar();
+</script>
+</body>
+</html>
+
