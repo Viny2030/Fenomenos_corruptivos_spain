@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 03/09/2026 06:25*
+*Generado: 04/09/2026 06:22*
 
 ---
 
