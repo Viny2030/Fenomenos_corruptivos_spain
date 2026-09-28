@@ -24,7 +24,7 @@ import pandas as pd
 
 log = logging.getLogger(__name__)
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent  # db.py vive en la raiz del repo (antes: parent.parent, apuntaba fuera del repo)
 DATA_PRO = (Path("/app/data") if Path("/app").exists() else ROOT / "data") / "processed"
 
 # Mapeo tabla SQL ←→ archivo CSV procesado

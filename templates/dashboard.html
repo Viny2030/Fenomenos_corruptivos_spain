@@ -102,7 +102,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 </div>
 <div class="grid2">
   <div class="card"><h3>🗺️ Top países por importe</h3><div class="chart-wrap tall"><canvas id="chartPaises"></canvas></div></div>
-  <div class="card"><h3>📆 Evolución mensual por región</h3><div class="tabs" id="tabsRegion"></div><div class="chart-wrap tall"><canvas id="chartMensual"></canvas></div></div>
+  <div class="card"><h3>📆 Evolución mensual por región</h3><div class="tabs" id="tabsRegion"></div><div id="nota-mensual" style="display:none;font-size:0.72rem;color:#7c8db5;margin-bottom:6px">ℹ️ La fuente AECID publica fechas anuales (1 de enero), por eso cada año aparece como un único punto.</div><div class="chart-wrap tall"><canvas id="chartMensual"></canvas></div></div>
 </div>
 <div class="card" style="margin-bottom:18px">
   <h3>🏢 Ranking entidades por riesgo</h3>
@@ -166,12 +166,19 @@ const COLORS=['#3b82f6','#f87171','#fbbf24','#34d399','#a78bfa','#fb923c','#60a5
 const REGION_COLORS={'América Latina':'#34d399','Multipaís/Global':'#a78bfa','MENA':'#fbbf24','África':'#f87171'};
 let _entidades=[],_fondos=[],_mensualData={},_chartMensual=null,_network=null,_grafoCargado=false;
 function mkChart(id,type,labels,datasets,opts={}){const ctx=document.getElementById(id);if(!ctx)return null;if(ctx._chart)ctx._chart.destroy();const c=new Chart(ctx,{type,data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a0aec0',font:{size:11}}}},scales:type!=='pie'&&type!=='doughnut'?{x:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}}}:{},...opts}});ctx._chart=c;return c;}
+async function cargarTodosFondos(){
+  // FIX: antes pedia limit=500 y habia mas fondos; ahora pagina hasta traer todos.
+  let offset=0,todos=[],total=Infinity;
+  while(offset<total){const r=await fetch(`/api/fondos?limit=1000&offset=${offset}`).then(r=>r.json());const d=r.data||[];todos=todos.concat(d);total=r.total||0;if(!d.length)break;offset+=d.length;}
+  return {total:todos.length,data:todos};
+}
 async function cargar(){
-  const[res,ent,fond,mens]=await Promise.all([fetch('/api/resumen').then(r=>r.json()),fetch('/api/entidades?top=50').then(r=>r.json()),fetch('/api/fondos?limit=500').then(r=>r.json()),fetch('/api/mensual').then(r=>r.json())]);
+  const[res,ent,fond,mens]=await Promise.all([fetch('/api/resumen').then(r=>r.json()),fetch('/api/entidades?top=50').then(r=>r.json()),cargarTodosFondos(),fetch('/api/mensual').then(r=>r.json())]);
   document.getElementById('ts').textContent=(res.timestamp||'').substring(0,16).replace('T',' ');
   document.getElementById('kpis').innerHTML=[{val:res.total_fondos||0,lbl:'Total fondos',cls:''},{val:`${res.total_eur||0}M€`,lbl:'Total analizado',cls:''},{val:`${res.score_trazabilidad_medio||0}/100`,lbl:'Score trazabilidad',cls:(res.score_trazabilidad_medio||0)<50?'alerta':'ok'},{val:`${res.pct_r1||0}%`,lbl:'R1 — OOII caja negra',cls:'alerta'},{val:`${res.pct_r2||0}%`,lbl:'R2 — Sin PLACE/OCDS',cls:'medio'},{val:`${res.pct_r3||0}%`,lbl:'R3 — Sin justificante',cls:'medio'}].map(k=>`<div class="kpi ${k.cls}"><div class="val">${k.val}</div><div class="lbl">${k.lbl}</div></div>`).join('');
   document.getElementById('rupturas').innerHTML=[{lbl:'R1 — OOII caja negra',pct:res.pct_r1||0,cls:'r1'},{lbl:'R2 — Sin contrato OCDS',pct:res.pct_r2||0,cls:'r2'},{lbl:'R3 — Sin justificante',pct:res.pct_r3||0,cls:'r3'}].map(r=>`<div class="bar-wrap"><div class="bar-label"><span>${r.lbl}</span><span>${r.pct}%</span></div><div class="bar-bg"><div class="bar-fill ${r.cls}" style="width:${r.pct}%"></div></div></div>`).join('');
-  mkChart('chartRupturas','doughnut',['R1 OOII','R2 Sin PLACE','R3 Sin justif.','Trazables'],[{data:[res.pct_r1,res.pct_r2,res.pct_r3,Math.max(0,100-res.pct_r1)],backgroundColor:['#f87171','#fbbf24','#fb923c','#34d399'],borderWidth:0}],{plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}});
+  const rx=res.rupturas_exclusivas;
+  mkChart('chartRupturas','doughnut',['R1 OOII','R2 Sin PLACE','R3 Sin justif.','Trazables'],[{data:rx&&rx.trazables!==undefined?[rx.r1,rx.r2,rx.r3,rx.trazables]:[res.pct_r1,res.pct_r2,res.pct_r3,Math.max(0,100-res.pct_r1)],backgroundColor:['#f87171','#fbbf24','#fb923c','#34d399'],borderWidth:0}],{plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}});
   const dist=res.distribucion_eslabones||{};
   mkChart('chartEslabones','bar',Object.keys(dist).sort().map(e=>`E${e}`),[{label:'Fondos',data:Object.keys(dist).sort().map(e=>dist[e]),backgroundColor:COLORS,borderRadius:4}],{plugins:{legend:{display:false}}});
   const acum=res.acumulativo_anual||[];
@@ -179,6 +186,7 @@ async function cargar(){
   const topPaises=res.top_paises||[];
   const regiones={};
   topPaises.forEach(p=>{let reg='Otros';const n=p.pais_region||'';if(['Bolivia','Colombia','Ecuador','Guatemala','Honduras','México','Nicaragua','Perú','Cuba','Haití','Venezuela','El Salvador','Costa Rica','Panamá','Paraguay','Brasil','Chile','Argentina'].some(x=>n.includes(x)))reg='América Latina';else if(['Marruecos','Túnez','Argelia','Jordania','Líbano','Palestina','Siria','Irak','Yemen'].some(x=>n.includes(x)))reg='MENA';else if(['Etiopía','Mozambique','Mali','Niger','Senegal','Chad','Kenya','Tanzania','Uganda','Ghana'].some(x=>n.includes(x)))reg='África';else if(['Global','Multipaís','América Latina y Caribe'].some(x=>n.includes(x)))reg='Multipaís/Global';regiones[reg]=(regiones[reg]||0)+p.importe;});
+  if(Array.isArray(res.por_region)&&res.por_region.length){Object.keys(regiones).forEach(k=>delete regiones[k]);res.por_region.forEach(r=>{regiones[r.region]=r.importe;});}
   const regKeys=Object.keys(regiones);
   mkChart('chartRegion','doughnut',regKeys,[{data:regKeys.map(k=>+(regiones[k]/1e6).toFixed(1)),backgroundColor:regKeys.map(k=>REGION_COLORS[k]||'#6b7280'),borderWidth:0}],{plugins:{legend:{position:'bottom',labels:{color:'#a0aec0',font:{size:10}}}}});
   const top15=topPaises.slice(0,15);
@@ -187,8 +195,12 @@ async function cargar(){
   const rm=Object.keys(_mensualData);
   document.getElementById('tabsRegion').innerHTML=rm.map((r,i)=>`<div class="tab ${i===0?'active':''}" onclick="switchRegion('${r}',this)">${r}</div>`).join('');
   if(rm.length>0)renderMensual(rm[0]);
+  const nota=document.getElementById('nota-mensual');if(nota)nota.style.display=mens.granularidad==='anual'?'':'none';
   _entidades=ent.data||[];renderEntidades(_entidades);
   _fondos=fond.data||[];renderFondos(_fondos);
+  // FIX: el filtro tenia 2021-2024 fijos; ahora usa los años reales de los datos.
+  const anios=(res.anios_disponibles&&res.anios_disponibles.length)?res.anios_disponibles:[...new Set(_fondos.map(f=>String(f.año||(f.fecha||'').substring(0,4))).filter(a=>/^\d{4}$/.test(a)))].sort();
+  if(anios.length){document.getElementById('filtro-año').innerHTML='<option value="">Todos los años</option>'+anios.map(a=>`<option>${a}</option>`).join('');}
 }
 function renderMensual(region){const data=_mensualData[region]||[];if(_chartMensual)_chartMensual.destroy();const ctx=document.getElementById('chartMensual');if(!ctx)return;_chartMensual=new Chart(ctx,{type:'line',data:{labels:data.map(d=>d.mes),datasets:[{label:`${region} (M€)`,data:data.map(d=>+(d.importe/1e6).toFixed(2)),borderColor:REGION_COLORS[region]||'#3b82f6',backgroundColor:(REGION_COLORS[region]||'#3b82f6')+'33',fill:true,tension:0.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a0aec0',font:{size:11}}}},scales:{x:{ticks:{color:'#7c8db5',font:{size:9}},grid:{color:'#1e2235'}},y:{ticks:{color:'#7c8db5',font:{size:10}},grid:{color:'#1e2235'}}}}});}
 function switchRegion(region,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderMensual(region);}

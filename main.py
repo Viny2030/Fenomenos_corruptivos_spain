@@ -134,6 +134,37 @@ def _parsear_monto(v) -> float:
     except Exception:
         return 0.0
 
+def _sin_tildes(s) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", str(s)) if unicodedata.category(c) != "Mn").lower()
+
+# Listas sin tildes y en minuscula: se comparan contra el nombre normalizado,
+# asi "Malí"/"Mali" o "Níger"/"Niger" matchean igual.
+_REG_LATAM = ["bolivia","colombia","ecuador","guatemala","honduras","mexico","nicaragua","peru","cuba","haiti",
+              "venezuela","el salvador","costa rica","panama","paraguay","brasil","chile","argentina",
+              "republica dominicana","dominicana","uruguay","belice"]
+_REG_MENA  = ["marruecos","tunez","argelia","jordania","libano","palestina","siria","irak","yemen","egipto",
+              "libia","saharaui"]
+_REG_AFR   = ["etiopia","mozambique","mali","niger","senegal","chad","kenya","kenia","tanzania","uganda","ghana",
+              "mauritania","burkina","guinea","sudan","somalia","camerun","nigeria","angola","cabo verde",
+              "rep. dem. congo","congo","gambia","togo","benin","madagascar","ruanda","sahel","africa"]
+_REG_GLOB  = ["global","multipais","america latina y caribe","no especificado","vias de desarrollo"]
+
+def _region_de(pais) -> str:
+    """Asigna region a un pais/region AECID. Mismas 4 categorias que el dashboard + 'Otros'."""
+    n = _sin_tildes(pais)
+    # Un campo con varios paises (ej. 'Belice, Costa Rica, ...') cuenta como su region si todos coinciden;
+    # el orden replica el del dashboard original (LatAm > MENA > Africa > Global).
+    if any(x in n for x in _REG_LATAM):
+        return "América Latina"
+    if any(x in n for x in _REG_MENA):
+        return "MENA"
+    if any(x in n for x in _REG_AFR):
+        return "África"
+    if any(x in n for x in _REG_GLOB):
+        return "Multipaís/Global"
+    return "Otros"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ENDPOINTS UI
 # ─────────────────────────────────────────────────────────────────────────────
@@ -208,6 +239,41 @@ def resumen():
         grp = df3.groupby("pais_region").agg(n=("importe_num","count"), importe=("importe_num","sum")).reset_index().sort_values("importe", ascending=False).head(20)
         grp["pct"] = (grp["importe"] / total_eur * 100).round(1)
         por_pais = grp.to_dict(orient="records")
+
+    # NUEVO (aditivo): region calculada sobre TODOS los fondos, no solo el top 20 de paises.
+    por_region = []
+    if "pais_region" in df.columns:
+        df4 = df.copy()
+        df4["importe_num"] = df4["importe_eur"].apply(_parsear_monto)
+        df4["region_calc"] = df4["pais_region"].apply(_region_de)
+        grp_r = df4.groupby("region_calc").agg(n=("importe_num","count"), importe=("importe_num","sum")).reset_index()
+        grp_r = grp_r.rename(columns={"region_calc": "region"}).sort_values("importe", ascending=False)
+        por_region = grp_r.to_dict(orient="records")
+
+    # NUEVO (aditivo): rupturas excluyentes (cada fondo cuenta una sola vez,
+    # por su ruptura mas grave R1 > R2 > R3), para que el donut sume 100%.
+    rupturas_exclusivas = {}
+    if all(c in df.columns for c in ("ruptura_r1", "ruptura_r2", "ruptura_r3")) and len(df):
+        def _b(col):
+            return df[col].astype(str).str.upper().isin(["TRUE", "1"])
+        r1, r2, r3 = _b("ruptura_r1"), _b("ruptura_r2"), _b("ruptura_r3")
+        n = len(df)
+        solo_r1 = int(r1.sum())
+        solo_r2 = int((~r1 & r2).sum())
+        solo_r3 = int((~r1 & ~r2 & r3).sum())
+        traz    = n - solo_r1 - solo_r2 - solo_r3
+        rupturas_exclusivas = {
+            "r1": round(solo_r1 / n * 100, 1),
+            "r2": round(solo_r2 / n * 100, 1),
+            "r3": round(solo_r3 / n * 100, 1),
+            "trazables": round(traz / n * 100, 1),
+        }
+
+    # NUEVO (aditivo): años presentes en los datos (para el filtro del dashboard)
+    anios_disponibles = []
+    if "fecha" in df.columns:
+        anios_disponibles = sorted(int(a) for a in pd.to_datetime(df["fecha"], errors="coerce").dt.year.dropna().unique())
+
     return {
         "total_fondos": len(df),
         "total_eur": round(total_eur / 1e6, 1),
@@ -218,6 +284,9 @@ def resumen():
         "distribucion_eslabones": dist_eslabon,
         "acumulativo_anual": acumulativo,
         "top_paises": por_pais,
+        "por_region": por_region,
+        "rupturas_exclusivas": rupturas_exclusivas,
+        "anios_disponibles": anios_disponibles,
         "timestamp": datetime.now().isoformat(),
     }
 
@@ -366,12 +435,10 @@ def mensual():
             evol.columns = ["mes", "importe"]
             mensual_region[str(region)] = evol.to_dict(orient="records")
     elif "pais_region" in df.columns:
-        df["region_inf"] = df["pais_region"].apply(lambda p: (
-            "América Latina" if any(x in str(p) for x in ["Bolivia","Colombia","Ecuador","Guatemala","Honduras","México","Nicaragua","Perú","Cuba","Haití"]) else
-            "África" if any(x in str(p) for x in ["Etiopía","Mozambique","Mali","Niger","Senegal","Chad","Kenya"]) else
-            "MENA" if any(x in str(p) for x in ["Marruecos","Túnez","Jordania","Líbano","Palestina","Siria","Yemen"]) else
-            "Multipaís/Global"
-        ))
+        # FIX: antes comparaba con tildes exactas ("Mali" no matcheaba "Malí") y todo
+        # lo no reconocido caia en Multipaís/Global. Ahora usa el mismo _region_de()
+        # que /api/resumen; lo no reconocido va a "Otros".
+        df["region_inf"] = df["pais_region"].apply(_region_de)
         for region, grp in df.groupby("region_inf"):
             evol = grp.groupby("mes")["importe_num"].sum().reset_index()
             evol.columns = ["mes", "importe"]
@@ -386,7 +453,12 @@ def mensual():
             evol.columns = ["mes", "importe"]
             mensual_sector[str(sector)] = evol.to_dict(orient="records")
 
+    # NUEVO (aditivo): avisa si la fuente solo trae fechas anuales (todas en enero)
+    meses_validos = df["fecha_dt"].dropna()
+    granularidad = "anual" if len(meses_validos) and (meses_validos.dt.month == 1).all() and (meses_validos.dt.day == 1).all() else "mensual"
+
     return {
+        "granularidad": granularidad,
         "total": mensual_total.to_dict(orient="records"),
         "region": mensual_region,
         "sector": mensual_sector,
