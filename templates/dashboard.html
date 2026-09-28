@@ -91,9 +91,9 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
   <div class="view-tab" onclick="switchView('grafos',this)">🕸️ Grafos</div>
 </div>
 <div id="view-resumen" class="view">
-<div class="kpis" id="kpis"></div>
+<div class="kpis" id="kpis"></div><div style="font-size:0.72rem;color:#7c8db5;margin:-16px 0 20px">ℹ️ Un fondo puede tener varias rupturas a la vez: R1, R2 y R3 no son excluyentes y no suman 100%.</div>
 <div class="grid2">
-  <div class="card"><h3>🔗 Rupturas de trazabilidad</h3><div id="rupturas"></div><div class="chart-wrap" style="height:160px;margin-top:12px"><canvas id="chartRupturas"></canvas></div></div>
+  <div class="card"><h3>🔗 Rupturas de trazabilidad</h3><div id="rupturas"></div><div style="font-size:0.72rem;color:#7c8db5;margin:6px 0 0">ℹ️ Un fondo puede tener varias rupturas a la vez: R1, R2 y R3 no son excluyentes y no suman 100%. El gráfico circular cuenta cada fondo una sola vez, por su ruptura más grave (R1 &gt; R2 &gt; R3), y ese sí suma 100%.</div><div class="chart-wrap" style="height:160px;margin-top:12px"><canvas id="chartRupturas"></canvas></div></div>
   <div class="card"><h3>📊 Distribución por eslabón</h3><div class="chart-wrap"><canvas id="chartEslabones"></canvas></div></div>
 </div>
 <div class="grid2">
