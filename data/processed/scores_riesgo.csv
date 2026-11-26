@@ -1,7 +1,45 @@
 ﻿entidad,n_fondos,importe_total,sog_medio,res_medio,via_medio,score_medio,icr,score_riesgo,nivel_riesgo
-ACNUR,1,6400000,75.0,58.0,90.0,61.65,18.7,55.2,Alto
-Consultoria XYZ S.L.,1,890000,20.0,30.0,62.0,28.4,18.7,26.9,Medio
-FAO,1,7200000,50.0,58.0,78.0,50.5,18.7,45.7,Medio
-OMS,1,3100000,50.0,58.0,68.0,48.5,18.7,44.0,Medio
-PNUD,3,21000000,63.333333333333336,58.0,56.666666666666664,50.9,18.7,46.1,Medio
-UNICEF,1,2800000,50.0,58.0,60.0,46.9,18.7,42.7,Medio
+ACNUR - Oficina del Alto Comisionado de UNHCR,2,1300000.0,65.0,58.0,55.0,51.15,5.6,44.3,Medio
+ACP - Associació Catalana per la Pau,1,347306.0,0.0,15.0,40.0,12.5,5.6,11.5,Bajo
+AGARESO - Asociación Galega de Reporteiros Solidarios,1,85095.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+AIETI - Asociación de Investigación y Especialización sobre Temas Iberoamericanos,1,397528.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+ASFE - Arquitectura Sin Fronteras,1,1000000.0,20.0,30.0,68.0,29.6,5.6,26.0,Medio
+"Acción, Desarrollo y Sostenibilidad",1,411443.0,0.0,15.0,65.0,17.5,5.6,15.7,Bajo
+Asociación Hermanamiento León (Nicaragua) - Zaragoza (España),1,485000.0,0.0,15.0,68.0,18.1,5.6,16.2,Bajo
+Asociación Mobdiun Creative Youth,1,200000.0,0.0,15.0,42.0,12.9,5.6,11.8,Bajo
+Asociación Promoción Claretiana de Cooperación para el Desarrollo,1,313720.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+CEAMSO - Centro de Estudios Ambientales y Sociales,1,100000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+CERAI - Centro de Estudios Rurales y de Agricultura Internacional,1,405742.0,25.0,44.0,55.0,32.95,5.6,28.8,Medio
+CNFPLF - Centro Nacional de la Función Publica Local y de la Formación,1,352745.0,0.0,15.0,40.0,12.5,5.6,11.5,Bajo
+COADFORPAZ - Corporación Administrativa de Formación y Construcción de Paz,1,400000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+CONEMUND,1,788535.0,20.0,30.0,78.0,31.6,5.6,27.7,Medio
+COPADE - Fundación Comercio para el Desarrollo,1,638800.0,20.0,30.0,48.0,25.6,5.6,22.6,Bajo
+Casal dels Infants per la Accio Social als Barris,1,242940.0,0.0,15.0,45.0,13.5,5.6,12.3,Bajo
+Consejo Consultivo de Turismo de la Ciudad de Encarnacion,1,50000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+Corporación de Estudios de Opinión Pública Latinoamericana - Latinobar,1,200000.0,25.0,44.0,70.0,35.95,5.6,31.4,Medio
+Egoaizia Asociación para la Cooperacion,1,85240.0,0.0,15.0,65.0,17.5,5.6,15.7,Bajo
+FAMME - Federación de Asociaciones Medicus Mundi en España,1,500000.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
+FAO - Organización de las Naciones Unidas para la Alimentación y la Agricultura,9,6550000.0,57.77777777777778,58.0,73.11111111111111,52.24444444444444,5.6,45.2,Medio
+FPSC - Fundación Promoción Social de la Cultura,1,987163.0,20.0,30.0,70.0,30.0,5.6,26.3,Medio
+FRS - Fundación de Religiosos para la Salud,1,678880.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
+Fair Trade Lebanon,1,400000.0,0.0,15.0,70.0,18.5,5.6,16.6,Bajo
+Fondo de Población de Naciones Unidas,4,4895000.0,32.5,37.0,70.75,36.625,5.6,32.0,Medio
+"Front Line, The International Foundation for the Protection of Human Rights Defenders",1,1500000.0,45.0,44.0,70.0,42.949999999999996,5.6,37.3,Medio
+Fundació Privada Ulls del Mon,1,461874.0,25.0,44.0,55.0,32.95,5.6,28.8,Medio
+Fundación Madre Coraje,2,1696023.0,20.0,30.0,59.0,27.8,5.6,24.5,Bajo
+Fundación Oxfam Intermón,1,789156.0,20.0,30.0,62.0,28.4,5.6,25.0,Bajo
+Fundación del Valle,1,717334.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
+Gobierno Autónomo Municipal La Paz,1,55000.0,0.0,15.0,52.0,14.9,5.6,13.5,Bajo
+Haqel,1,300000.0,0.0,15.0,72.0,18.9,5.6,16.9,Bajo
+INDEMAYA - Instituto para el Desarrollo de la Cultura Maya del Estado de Yucatan,1,80000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+ISIS - Instituto de Salud Incluyente de Guatemala,1,400000.0,0.0,15.0,60.0,16.5,5.6,14.9,Bajo
+JUSDEM - Asociación de Jueces para la Justicia y la Democracia,1,280000.0,25.0,15.0,50.0,23.25,5.6,20.6,Bajo
+MZC - Mujeres en Zona de Conflicto,1,572353.0,20.0,30.0,45.0,25.0,5.6,22.1,Bajo
+Mundukide Fundazioa,1,599812.0,20.0,30.0,48.0,25.6,5.6,22.6,Bajo
+NOVACT - Nova Centre per a la Innovació Social,1,309431.0,0.0,15.0,42.0,12.9,5.6,11.8,Bajo
+"OEI - Organización de Estados Iberoamericanos para la Educación, la Ciencia y la Cultura",1,100000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
+OMS - Organización Mundial de la Salud,4,3950000.0,65.0,58.0,70.0,54.15,5.6,46.9,Medio
+ONGAWA - Ingeniería para el Desarrollo Humano,1,581354.0,20.0,30.0,60.0,28.0,5.6,24.6,Bajo
+SEGIB - Secretaría General Iberoamericana,1,35000.0,25.0,44.0,70.0,35.95,5.6,31.4,Medio
+Sendera ONG,1,709507.0,20.0,30.0,65.0,29.0,5.6,25.5,Medio
+UNRISD - Instituto de Investigación de las Naciones Unidas para el Desarrollo Social,1,600000.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo

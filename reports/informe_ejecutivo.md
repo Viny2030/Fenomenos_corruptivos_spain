@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 25/11/2026 06:17*
+*Generado: 26/11/2026 06:16*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total fondos analizados | 41.4 M€ |
-| Intervenciones | 8 |
-| Entidades receptoras | 6 |
-| Score medio de trazabilidad | 46/100 |
+| Total fondos analizados | 35.6 M€ |
+| Intervenciones | 60 |
+| Entidades receptoras | 44 |
+| Score medio de trazabilidad | 67/100 |
 
 ---
 
@@ -18,8 +18,10 @@
 
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
-| 3 | OOII sin desglose (R1) | 7 | 40.5 | 97.8% |
-| 5 | Sub-contratación sin OCDS (R2) | 1 | 0.9 | 2.2% |
+| 3 | OOII sin desglose (R1) | 15 | 11.8 | 33.2% |
+| 4 | Destino geográfico opaco | 7 | 6.2 | 17.4% |
+| 5 | Sub-contratación sin OCDS (R2) | 17 | 12.2 | 34.2% |
+| 6 | Sin justificante público (R3) | 21 | 5.4 | 15.2% |
 
 ---
 
@@ -27,8 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 3 | 6.8 | 16.4% |
-| NARANJA | 5 | 34.6 | 83.6% |
+| AMARILLO | 26 | 19.7 | 55.3% |
+| NARANJA | 13 | 10.5 | 29.5% |
+| VERDE | 21 | 5.4 | 15.2% |
 
 ---
 
@@ -36,20 +39,22 @@
 
 | Título | Entidad | Importe | Eslabón | Score | Clasificación |
 |--------|---------|---------|---------|-------|---------------|
-| Refugiados Siria ACNUR | ACNUR | 6.4M€ | E3 | 56 | NARANJA |
-| Programa Agua y Saneamiento Bolivia | PNUD | 4.5M€ | E3 | 51 | NARANJA |
-| Fondo Adaptacion Climatica Africa | PNUD | 15.0M€ | E3 | 51 | NARANJA |
-| Microfinanzas Ecuador PNUD | PNUD | 1.5M€ | E3 | 51 | NARANJA |
-| Seguridad Alimentaria Sahel FAO | FAO | 7.2M€ | E3 | 51 | NARANJA |
-| Salud Mozambique OMS | OMS | 3.1M€ | E3 | 50 | AMARILLO |
-| Educacion Guatemala UNICEF | UNICEF | 2.8M€ | E3 | 49 | AMARILLO |
-| Gobernabilidad Honduras consultoria | Consultoria XYZ S.L. | 0.9M€ | E5 | 28 | AMARILLO |
+| Protección e inmunización frente a la Polio | OMS - Organización Mundial de  | 0.1M€ | E3 | 51 | NARANJA |
+| Asistencia de Equipos Médicos de Emergencia para c… | OMS - Organización Mundial de  | 0.8M€ | E3 | 51 | NARANJA |
+| Investigación y respuesta frente a enfermedades tr… | OMS - Organización Mundial de  | 0.1M€ | E3 | 51 | NARANJA |
+| Salud y cambio climático en países en desarrollo | OMS - Organización Mundial de  | 3.0M€ | E3 | 51 | NARANJA |
+| Apoyo al Comité de seguridad alimentaria de la FAO | FAO - Organización de las Naci | 0.1M€ | E3 | 50 | NARANJA |
+| Agua y seguridad alimentaria para África | FAO - Organización de las Naci | 0.7M€ | E3 | 50 | NARANJA |
+| Apoyo a la Coalición de Sistemas Alimentarios de l… | FAO - Organización de las Naci | 0.1M€ | E3 | 50 | NARANJA |
+| Sistemas agroalimentarios sostenibles en Palestina | FAO - Organización de las Naci | 1.0M€ | E3 | 50 | NARANJA |
+| Empleo juvenil y emprendimiento agrícola en Orient… | FAO - Organización de las Naci | 1.2M€ | E3 | 50 | NARANJA |
+| Derecho a una alimentación adecuada | FAO - Organización de las Naci | 0.4M€ | E3 | 50 | NARANJA |
 
 ---
 
 ## Fuentes utilizadas
 
-- **aecid**: 8 registros (`aecid_intervenciones.csv`)
+- **aecid**: 60 registros (`aecid_intervenciones.csv`)
 - **bdns**: 74 registros (`bdns_subvenciones.csv`)
 - **bdns_concesiones**: 1,279 registros (`bdns_concesiones.csv`)
 - **place**: 381 registros (`place_contratos.csv`)
