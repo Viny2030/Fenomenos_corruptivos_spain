@@ -1,45 +1,37 @@
 ﻿entidad,n_fondos,importe_total,sog_medio,res_medio,via_medio,score_medio,icr,score_riesgo,nivel_riesgo
-ACNUR - Oficina del Alto Comisionado de UNHCR,2,1300000.0,65.0,58.0,55.0,51.15,5.6,44.3,Medio
-ACP - Associació Catalana per la Pau,1,347306.0,0.0,15.0,40.0,12.5,5.6,11.5,Bajo
-AGARESO - Asociación Galega de Reporteiros Solidarios,1,85095.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-AIETI - Asociación de Investigación y Especialización sobre Temas Iberoamericanos,1,397528.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-ASFE - Arquitectura Sin Fronteras,1,1000000.0,20.0,30.0,68.0,29.6,5.6,26.0,Medio
-"Acción, Desarrollo y Sostenibilidad",1,411443.0,0.0,15.0,65.0,17.5,5.6,15.7,Bajo
-Asociación Hermanamiento León (Nicaragua) - Zaragoza (España),1,485000.0,0.0,15.0,68.0,18.1,5.6,16.2,Bajo
-Asociación Mobdiun Creative Youth,1,200000.0,0.0,15.0,42.0,12.9,5.6,11.8,Bajo
-Asociación Promoción Claretiana de Cooperación para el Desarrollo,1,313720.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-CEAMSO - Centro de Estudios Ambientales y Sociales,1,100000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-CERAI - Centro de Estudios Rurales y de Agricultura Internacional,1,405742.0,25.0,44.0,55.0,32.95,5.6,28.8,Medio
-CNFPLF - Centro Nacional de la Función Publica Local y de la Formación,1,352745.0,0.0,15.0,40.0,12.5,5.6,11.5,Bajo
-COADFORPAZ - Corporación Administrativa de Formación y Construcción de Paz,1,400000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-CONEMUND,1,788535.0,20.0,30.0,78.0,31.6,5.6,27.7,Medio
-COPADE - Fundación Comercio para el Desarrollo,1,638800.0,20.0,30.0,48.0,25.6,5.6,22.6,Bajo
-Casal dels Infants per la Accio Social als Barris,1,242940.0,0.0,15.0,45.0,13.5,5.6,12.3,Bajo
-Consejo Consultivo de Turismo de la Ciudad de Encarnacion,1,50000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-Corporación de Estudios de Opinión Pública Latinoamericana - Latinobar,1,200000.0,25.0,44.0,70.0,35.95,5.6,31.4,Medio
-Egoaizia Asociación para la Cooperacion,1,85240.0,0.0,15.0,65.0,17.5,5.6,15.7,Bajo
-FAMME - Federación de Asociaciones Medicus Mundi en España,1,500000.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
-FAO - Organización de las Naciones Unidas para la Alimentación y la Agricultura,9,6550000.0,57.77777777777778,58.0,73.11111111111111,52.24444444444444,5.6,45.2,Medio
-FPSC - Fundación Promoción Social de la Cultura,1,987163.0,20.0,30.0,70.0,30.0,5.6,26.3,Medio
-FRS - Fundación de Religiosos para la Salud,1,678880.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
-Fair Trade Lebanon,1,400000.0,0.0,15.0,70.0,18.5,5.6,16.6,Bajo
-Fondo de Población de Naciones Unidas,4,4895000.0,32.5,37.0,70.75,36.625,5.6,32.0,Medio
-"Front Line, The International Foundation for the Protection of Human Rights Defenders",1,1500000.0,45.0,44.0,70.0,42.949999999999996,5.6,37.3,Medio
-Fundació Privada Ulls del Mon,1,461874.0,25.0,44.0,55.0,32.95,5.6,28.8,Medio
-Fundación Madre Coraje,2,1696023.0,20.0,30.0,59.0,27.8,5.6,24.5,Bajo
-Fundación Oxfam Intermón,1,789156.0,20.0,30.0,62.0,28.4,5.6,25.0,Bajo
-Fundación del Valle,1,717334.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
-Gobierno Autónomo Municipal La Paz,1,55000.0,0.0,15.0,52.0,14.9,5.6,13.5,Bajo
-Haqel,1,300000.0,0.0,15.0,72.0,18.9,5.6,16.9,Bajo
-INDEMAYA - Instituto para el Desarrollo de la Cultura Maya del Estado de Yucatan,1,80000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-ISIS - Instituto de Salud Incluyente de Guatemala,1,400000.0,0.0,15.0,60.0,16.5,5.6,14.9,Bajo
-JUSDEM - Asociación de Jueces para la Justicia y la Democracia,1,280000.0,25.0,15.0,50.0,23.25,5.6,20.6,Bajo
-MZC - Mujeres en Zona de Conflicto,1,572353.0,20.0,30.0,45.0,25.0,5.6,22.1,Bajo
-Mundukide Fundazioa,1,599812.0,20.0,30.0,48.0,25.6,5.6,22.6,Bajo
-NOVACT - Nova Centre per a la Innovació Social,1,309431.0,0.0,15.0,42.0,12.9,5.6,11.8,Bajo
-"OEI - Organización de Estados Iberoamericanos para la Educación, la Ciencia y la Cultura",1,100000.0,0.0,15.0,55.0,15.5,5.6,14.0,Bajo
-OMS - Organización Mundial de la Salud,4,3950000.0,65.0,58.0,70.0,54.15,5.6,46.9,Medio
-ONGAWA - Ingeniería para el Desarrollo Humano,1,581354.0,20.0,30.0,60.0,28.0,5.6,24.6,Bajo
-SEGIB - Secretaría General Iberoamericana,1,35000.0,25.0,44.0,70.0,35.95,5.6,31.4,Medio
-Sendera ONG,1,709507.0,20.0,30.0,65.0,29.0,5.6,25.5,Medio
-UNRISD - Instituto de Investigación de las Naciones Unidas para el Desarrollo Social,1,600000.0,20.0,30.0,55.0,27.0,5.6,23.8,Bajo
+ASFE - Arquitectura Sin Fronteras,1,725640.0,20.0,30.0,65.0,29.0,29.8,29.1,Medio
+Alianza por la Solidaridad Fundación Española para la Cooperación,1,876839.0,20.0,30.0,72.0,30.4,29.8,30.3,Medio
+Asociación España Con ACNUR,2,1900000.0,62.5,58.0,55.0,50.275,29.8,47.2,Medio
+CHUB7 - United Nations,5,2050000.0,29.0,44.0,70.0,37.35,29.8,36.2,Medio
+CICR - Comité International de la Croix-Rouge,2,900000.0,22.5,37.0,69.0,32.775000000000006,29.8,32.3,Medio
+CIHEAM - Instituto Agronómico Mediterráneo de Zaragoza,1,200000.0,25.0,44.0,70.0,35.95,29.8,35.0,Medio
+Cáritas Española,1,1000000.0,20.0,30.0,78.0,31.6,29.8,31.3,Medio
+ECREEE - ECOWAS Centre for Renewable Energy and Energy Efficiency,1,600000.0,20.0,30.0,75.0,31.0,29.8,30.8,Medio
+Europalia Internacional,1,1400000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+FAO - Organización de las Naciones Unidas para la Alimentación y la Agricultura,1,500000.0,75.0,58.0,70.0,57.65,29.8,53.5,Alto
+FPSC - Fundación Promoción Social de la Cultura,1,246918.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+FRS - Fundación de Religiosos para la Salud,1,600000.0,20.0,30.0,55.0,27.0,29.8,27.4,Medio
+"Fondo Mundial de Lucha contra el SIDA, la Tuberculosis y la Malaria",1,85000000.0,75.0,58.0,70.0,57.65,29.8,53.5,Alto
+Fundació Privada Mon-3,1,301338.0,0.0,15.0,40.0,12.5,29.8,15.1,Bajo
+Fundación Acodea,1,497645.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+Fundación Albihar,1,673395.0,20.0,30.0,50.0,26.0,29.8,26.6,Medio
+Fundación Ayuda en Acción,1,1000000.0,20.0,30.0,68.0,29.6,29.8,29.6,Medio
+Fundación Economistas Sin Fronteras,1,213675.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+Fundación Educación y Cooperación,1,375994.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+Fundación Mundubat,1,640806.0,45.0,44.0,55.0,39.949999999999996,29.8,38.4,Medio
+GAFSP - Programa Global para la Agricultura y la Seguridad Alimentaria,1,8000000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+GPE - Global Partnership for Education,1,20000000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+Justicia Alimentaria,1,349816.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+"MPDL - Movimiento por la Paz, el Desarme y la Libertad",1,320000.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+OEA - Organización Estados Americanos,1,2000000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+"OEI - Organización de Estados Iberoamericanos para la Educación, la Ciencia y la Cultura",1,600000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+OISS - Organización Iberoamericana de Seguridad Social,1,600000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+OMS - Organización Mundial de la Salud,5,3500000.0,67.0,58.0,70.0,54.85,29.8,51.1,Alto
+ONG Rescate Internacional,1,945434.0,20.0,30.0,78.0,31.6,29.8,31.3,Medio
+ONGAWA - Ingeniería para el Desarrollo Humano,1,242553.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+OPS - Organización Panamericana de la Salud,10,4510000.0,23.0,33.9,65.5,31.32,29.8,31.1,Medio
+PNUD - Programa de las Naciones Unidas para el Desarrollo,6,9190000.0,40.833333333333336,58.0,63.333333333333336,44.35833333333333,29.8,42.2,Medio
+PRODIVERSA - Progreso y Diversidad,1,429629.0,0.0,15.0,55.0,15.5,29.8,17.6,Bajo
+SEGIB - Secretaría General Iberoamericana,1,2300000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
+UNRWA,1,3500000.0,20.0,30.0,72.0,30.4,29.8,30.3,Medio
+UpM - Unión por el Mediterráneo,1,1000000.0,45.0,44.0,70.0,42.949999999999996,29.8,41.0,Medio
