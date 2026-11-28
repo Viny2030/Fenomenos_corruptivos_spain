@@ -1,5 +1,5 @@
 # Informe Ejecutivo — Trazabilidad de Fondos AECID
-*Generado: 27/11/2026 06:17*
+*Generado: 28/11/2026 06:17*
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total fondos analizados | 157.2 M€ |
+| Total fondos analizados | 35.6 M€ |
 | Intervenciones | 60 |
-| Entidades receptoras | 36 |
-| Score medio de trazabilidad | 61/100 |
+| Entidades receptoras | 44 |
+| Score medio de trazabilidad | 67/100 |
 
 ---
 
@@ -18,10 +18,10 @@
 
 | Eslabón | Etapa | Nº fondos | M€ | % total |
 |---------|-------|-----------|-----|---------|
-| 3 | OOII sin desglose (R1) | 15 | 100.1 | 63.7% |
-| 4 | Destino geográfico opaco | 22 | 42.2 | 26.8% |
-| 5 | Sub-contratación sin OCDS (R2) | 11 | 10.9 | 6.9% |
-| 6 | Sin justificante público (R3) | 12 | 4.0 | 2.5% |
+| 3 | OOII sin desglose (R1) | 15 | 11.8 | 33.2% |
+| 4 | Destino geográfico opaco | 7 | 6.2 | 17.4% |
+| 5 | Sub-contratación sin OCDS (R2) | 17 | 12.2 | 34.2% |
+| 6 | Sin justificante público (R3) | 21 | 5.4 | 15.2% |
 
 ---
 
@@ -29,9 +29,9 @@
 
 | Clasificación | Nº fondos | M€ | % total |
 |---------------|-----------|-----|---------|
-| AMARILLO | 39 | 62.3 | 39.6% |
-| NARANJA | 9 | 90.9 | 57.8% |
-| VERDE | 12 | 4.0 | 2.5% |
+| AMARILLO | 26 | 19.7 | 55.3% |
+| NARANJA | 13 | 10.5 | 29.5% |
+| VERDE | 21 | 5.4 | 15.2% |
 
 ---
 
@@ -39,16 +39,16 @@
 
 | Título | Entidad | Importe | Eslabón | Score | Clasificación |
 |--------|---------|---------|---------|-------|---------------|
-| Lucha global contra el sida, la tuberculosis y la … | Fondo Mundial de Lucha contra  | 85.0M€ | E3 | 55 | NARANJA |
-| Seguridad alimentaria y nutrición y promoción del … | FAO - Organización de las Naci | 0.5M€ | E3 | 55 | NARANJA |
-| Atención quirúrgica esencial y de emergencias y fo… | OMS - Organización Mundial de  | 0.8M€ | E3 | 54 | NARANJA |
-| Refuerzo estratégico de la Organización Mundial de… | OMS - Organización Mundial de  | 1.5M€ | E3 | 54 | NARANJA |
-| Apoyo la investigación y formación en enfermedades… | OMS - Organización Mundial de  | 0.1M€ | E3 | 54 | NARANJA |
-| Prevención y el tratamiento del cáncer cérvico ute… | OMS - Organización Mundial de  | 1.0M€ | E3 | 54 | NARANJA |
-| Erradicación de la polio y refuerzo de la inmuniza… | OMS - Organización Mundial de  | 0.1M€ | E3 | 54 | NARANJA |
-| Acceso a salud pública de la polación saharaui ref… | Asociación España Con ACNUR | 0.9M€ | E3 | 52 | NARANJA |
-| Atención de personas refugiadas y comunidades de a… | Asociación España Con ACNUR | 1.0M€ | E3 | 52 | NARANJA |
-| Análisis regional sobre el desarrollo humano en el… | PNUD - Programa de las Nacione | 0.4M€ | E3 | 49 | AMARILLO |
+| Protección e inmunización frente a la Polio | OMS - Organización Mundial de  | 0.1M€ | E3 | 51 | NARANJA |
+| Asistencia de Equipos Médicos de Emergencia para c… | OMS - Organización Mundial de  | 0.8M€ | E3 | 51 | NARANJA |
+| Investigación y respuesta frente a enfermedades tr… | OMS - Organización Mundial de  | 0.1M€ | E3 | 51 | NARANJA |
+| Salud y cambio climático en países en desarrollo | OMS - Organización Mundial de  | 3.0M€ | E3 | 51 | NARANJA |
+| Apoyo al Comité de seguridad alimentaria de la FAO | FAO - Organización de las Naci | 0.1M€ | E3 | 50 | NARANJA |
+| Agua y seguridad alimentaria para África | FAO - Organización de las Naci | 0.7M€ | E3 | 50 | NARANJA |
+| Apoyo a la Coalición de Sistemas Alimentarios de l… | FAO - Organización de las Naci | 0.1M€ | E3 | 50 | NARANJA |
+| Sistemas agroalimentarios sostenibles en Palestina | FAO - Organización de las Naci | 1.0M€ | E3 | 50 | NARANJA |
+| Empleo juvenil y emprendimiento agrícola en Orient… | FAO - Organización de las Naci | 1.2M€ | E3 | 50 | NARANJA |
+| Derecho a una alimentación adecuada | FAO - Organización de las Naci | 0.4M€ | E3 | 50 | NARANJA |
 
 ---
 
